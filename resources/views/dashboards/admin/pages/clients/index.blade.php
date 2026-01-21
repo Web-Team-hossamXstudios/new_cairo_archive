@@ -777,8 +777,8 @@
         }
     </style>
 
+@include('dashboards.admin.pages.clients.partials.scripts')
     @include('dashboards.shared.theme_settings')
     @include('dashboards.shared.scripts')
-    @include('dashboards.admin.pages.clients.partials.scripts')
 </body>
 </html>
