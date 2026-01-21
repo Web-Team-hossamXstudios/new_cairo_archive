@@ -722,6 +722,7 @@
     });
 </script> --}}
 
+
     {{-- All Modals --}}
     @can('clients.create')
         @include('dashboards.admin.pages.clients.partials.create-modal')
@@ -737,6 +738,9 @@
     @can('files.upload')
         @include('dashboards.admin.pages.clients.partials.upload-modal')
     @endcan
+
+@include('dashboards.admin.pages.clients.partials.scripts')
+
 
     {{-- Show File Modal for viewing files from client list --}}
     <div class="modal fade" id="showFileModal" tabindex="-1" style="z-index: 1060;">
@@ -777,7 +781,6 @@
         }
     </style>
 
-@include('dashboards.admin.pages.clients.partials.scripts')
     @include('dashboards.shared.theme_settings')
     @include('dashboards.shared.scripts')
 </body>
