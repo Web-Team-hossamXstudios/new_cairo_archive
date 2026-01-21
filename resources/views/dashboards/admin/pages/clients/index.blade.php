@@ -420,7 +420,8 @@
             </div>
         </div>
     </div>
-    @include('dashboards.shared.modal-styles')
+    @include('dashboards.shared.modal-styles')ة
+    @include('dashboards.admin.pages.clients.partials.scripts')
     {{-- @include('dashboards.shared.scripts') --}}
 
     {{-- <script>
@@ -779,6 +780,5 @@
 
     @include('dashboards.shared.theme_settings')
     @include('dashboards.shared.scripts')
-    @include('dashboards.admin.pages.clients.partials.scripts')
 </body>
 </html>
