@@ -394,8 +394,6 @@ function printBarcodeContent() {
                     };
                 };
             <\/script>
-        </body>
-        </html>
     `);
     printWindow.document.close();
 }
