@@ -6,7 +6,7 @@
 
 <!-- JsBarcode Library -->
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-
+{{--
 <!-- Barcode Search Result Modal -->
 <div class="modal fade" id="barcodeResultModal" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
@@ -352,7 +352,7 @@ function printBarcode(barcode, fileName) {
         console.error('Barcode generation error:', error);
         showToast.error('فشل إنشاء الباركود');
     }
-}
+} --}}
 
 // function printBarcodeContent() {
 //     const printWindow = window.open('', '', 'width=600,height=400');
