@@ -1,6 +1,6 @@
 
     <meta charset="utf-8">
-    <title>Biry Suits - Admin Dashboard</title>
+    <title>أرشيف القاهرة الجديدة</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
         content="admin dashboard template on Themeforest. Perfect for building CRM, CMS, project management tools, and custom web apps with clean UI, responsive design, and powerful features.">
@@ -30,3 +30,5 @@
        align-items: center;
     }
 </style>
+
+@include('dashboards.shared.modal-styles')

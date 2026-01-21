@@ -26,10 +26,10 @@ class UserSeeder extends Seeder
             ]
         );
         if (method_exists($superAdmin, 'assignRole')) {
-            $superAdmin->assignRole('super-admin');
+            $superAdmin->assignRole('Super Admin');
         }
 
-        // Admin
+        // Admin (Manager role)
         $admin = User::firstOrCreate(
             ['email' => 'admin@nca.com'],
             [
@@ -39,8 +39,38 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+        if (method_exists($admin, 'assignRole')) {
+            $admin->assignRole('Manager');
+        }
 
+        // Employee
+        $employee = User::firstOrCreate(
+            ['email' => 'employee@nca.com'],
+            [
+                'first_name' => 'Employee',
+                'last_name' => 'User',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
+        if (method_exists($employee, 'assignRole')) {
+            $employee->assignRole('Employee');
+        }
 
-        $this->command->info('Created system users, employee portal users, and 10 of each employee type (admin, permanent, daily) with roles.');
+        // Viewer
+        $viewer = User::firstOrCreate(
+            ['email' => 'viewer@nca.com'],
+            [
+                'first_name' => 'Viewer',
+                'last_name' => 'User',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
+        if (method_exists($viewer, 'assignRole')) {
+            $viewer->assignRole('Viewer');
+        }
+
+        $this->command->info('Created system users: superadmin@nca.com, admin@nca.com, employee@nca.com, viewer@nca.com (password: password)');
     }
 }

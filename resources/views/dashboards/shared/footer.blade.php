@@ -6,7 +6,7 @@
                 ©
                 <script>
                     document.write(new Date().getFullYear())
-                </script> Biry Suits By <span class="fw-semibold">Hossam X Studios</span>
+                </script>   ارشيف القاهرة الجديدة <span class="fw-semibold">Hossam X Studios</span>
             </div>
 
         </div>

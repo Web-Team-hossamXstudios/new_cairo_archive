@@ -22,49 +22,49 @@
                                     <div>
                                         <span
                                             class="badge badge-default fw-normal shadow px-2 fst-italic fs-sm d-inline-flex align-items-center">
-                                            <i class="ti ti-users me-1"></i> Users & Roles Management
+                                            <i class="ti ti-users me-1"></i> إدارة المستخدمين والأدوار
                                         </span>
                                         <nav aria-label="breadcrumb">
                                             <ol class="breadcrumb mb-0">
                                                 <li class="breadcrumb-item"><a
-                                                        href="{{ route('admin.dashboard') }}">{{ x_('Dashboard', 'dashboards.admin.pages.user.users.index') }}</a></li>
-                                                <li class="breadcrumb-item active" aria-current="page">Users</li>
+                                                        href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">المستخدمين</li>
                                             </ol>
                                         </nav>
                                     </div>
                                 </div>
 
                                 <div class="d-flex flex-wrap gap-2 mt-2 mt-lg-0">
-                                    @can('view-roles')
+                                    @can('roles.view')
                                         <a href="{{ route('admin.roles.index') }}"
                                             style="border-radius: var(--ins-border-radius);"
                                             class="btn btn-outline-primary shadow-sm px-3">
                                             <i class="ti ti-shield me-1"></i>
-                                            <span>Manage Roles</span>
+                                            <span>إدارة الأدوار</span>
                                         </a>
                                     @endcan
-                                    @can('bulk-download-users')
+                                    @can('users.bulk-download')
                                         <a href="{{ route('admin.users.bulk-download') }}?{{ http_build_query(request()->query()) }}"
                                             style="border-radius: var(--ins-border-radius);"
                                             class="btn btn-soft-success shadow-sm px-3">
                                             <i class="ti ti-download me-1"></i>
-                                            <span>{{ x_('Export', 'dashboards.admin.pages.user.users.index') }}</span>
+                                            <span>تصدير</span>
                                         </a>
                                     @endcan
-                                    @can('bulk-upload-users')
+                                    @can('users.bulk-upload')
                                         <button type="button" class="btn btn-outline-primary shadow-sm px-3"
                                             style="border-radius: var(--ins-border-radius);" data-bs-toggle="modal"
                                             data-bs-target="#bulkUploadModal">
                                             <i class="ti ti-upload me-1"></i>
-                                            <span>{{ x_('Import', 'dashboards.admin.pages.user.users.index') }}</span>
+                                            <span>استيراد</span>
                                         </button>
                                     @endcan
-                                    @can('create-users')
+                                    @can('users.create')
                                         <button type="button" class="btn btn-primary shadow-sm px-3"
                                             style="border-radius: var(--ins-border-radius);" data-bs-toggle="modal"
                                             data-bs-target="#createModal">
                                             <i class="ti ti-plus me-1"></i>
-                                            <span>Add User</span>
+                                            <span>إضافة مستخدم</span>
                                         </button>
                                     @endcan
                                 </div>
@@ -79,12 +79,12 @@
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-mdbg-primary-subtle text-primary rounded me-3">
+                                    <div class="avatar avatar-md bg-primary-subtle text-primary rounded me-3">
                                         <i class="ti ti-users fs-4"></i>
                                     </div>
                                     <div>
                                         <h4 class="mb-0">{{ \App\Models\User::count() }}</h4>
-                                        <small class="text-muted">{{ x_('Total Users', 'dashboards.admin.pages.user.users.index') }}</small>
+                                        <small class="text-muted">إجمالي المستخدمين</small>
                                     </div>
                                 </div>
                             </div>
@@ -98,9 +98,8 @@
                                         <i class="ti ti-user-check fs-4"></i>
                                     </div>
                                     <div>
-                                        <h4 class="mb-0">{{ \App\Models\User::where('is_active', true)->count() }}
-                                        </h4>
-                                        <small class="text-muted">{{ x_('Active Users', 'dashboards.admin.pages.user.users.index') }}</small>
+                                        <h4 class="mb-0">{{ \App\Models\User::where('is_active', true)->count() }}</h4>
+                                        <small class="text-muted">مستخدمين نشطين</small>
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +114,7 @@
                                     </div>
                                     <div>
                                         <h4 class="mb-0">{{ \Spatie\Permission\Models\Role::count() }}</h4>
-                                        <small class="text-muted">{{ x_('Roles', 'dashboards.admin.pages.user.users.index') }}</small>
+                                        <small class="text-muted">الأدوار</small>
                                     </div>
                                 </div>
                             </div>
@@ -129,9 +128,8 @@
                                         <i class="ti ti-user-off fs-4"></i>
                                     </div>
                                     <div>
-                                        <h4 class="mb-0">{{ \App\Models\User::where('is_active', false)->count() }}
-                                        </h4>
-                                        <small class="text-muted">{{ x_('Inactive Users', 'dashboards.admin.pages.user.users.index') }}</small>
+                                        <h4 class="mb-0">{{ \App\Models\User::where('is_active', false)->count() }}</h4>
+                                        <small class="text-muted">مستخدمين غير نشطين</small>
                                     </div>
                                 </div>
                             </div>
@@ -144,18 +142,18 @@
                     $rolesCollection = $roles ?? collect();
                     $roleValue = request('role');
                     $currentRole = $rolesCollection->firstWhere('name', $roleValue);
-                    $roleLabel = $currentRole ? ucfirst(str_replace('-', ' ', $currentRole->name)) : 'All Roles';
+                    $roleLabel = $currentRole ? ucfirst(str_replace('-', ' ', $currentRole->name)) : 'كل الأدوار';
 
                     $departmentsCollection = $departments ?? collect();
                     $departmentValue = request('department_id');
                     $currentDepartment = $departmentsCollection->firstWhere('id', $departmentValue);
-                    $departmentLabel = $currentDepartment?->name ?? 'All Departments';
+                    $departmentLabel = $currentDepartment?->name ?? 'كل الأقسام';
 
                     $statusValue = request('status');
-                    $statusLabel = $statusValue === 'active' ? 'Active' : ($statusValue === 'inactive' ? 'Inactive' : 'All Status');
+                    $statusLabel = $statusValue === 'active' ? 'نشط' : ($statusValue === 'inactive' ? 'غير نشط' : 'كل الحالات');
 
                     $trashedValue = request('trashed');
-                    $trashedLabel = $trashedValue === 'only' ? 'Deleted Only' : 'Active Records';
+                    $trashedLabel = $trashedValue === 'only' ? 'المحذوفة فقط' : 'السجلات النشطة';
 
                     $hasFilters =
                         request()->filled('search') ||
@@ -171,11 +169,11 @@
                                 <form method="GET" action="{{ route('admin.users.index') }}">
                                     <div class="row d-flex align-items-end justify-content-start">
                                         <div class="col-md-6 mb-2">
-                                            <label class="form-label fw-semibold">{{ x_('Search', 'dashboards.admin.pages.user.users.index') }}</label>
+                                            <label class="form-label fw-semibold">بحث</label>
                                             <div class="input-group shadow-sm border border-secondary border-opacity-10 overflow-hidden bg-body"
                                                 style="border-radius: var(--ins-border-radius);">
                                                 <input type="text" name="search" class="form-control border-0 bg-transparent"
-                                                    placeholder="{{ x_('Name, email, code...', 'dashboards.admin.pages.user.users.index') }}" value="{{ request('search') }}">
+                                                    placeholder="الاسم، البريد، الكود..." value="{{ request('search') }}">
                                             </div>
                                         </div>
 
@@ -183,10 +181,10 @@
                                             <div class="d-flex flex-wrap gap-1">
                                                 <button type="submit" class="btn btn-primary shadow-sm px-3"
                                                     style="border-radius: var(--ins-border-radius);">
-                                                    <i class="ti ti-filter me-1"></i> {{ x_('Filter', 'dashboards.admin.pages.user.users.index') }}</button>
+                                                    <i class="ti ti-filter me-1"></i> تصفية</button>
                                                 <a href="{{ route('admin.users.index') }}" style="border-radius: var(--ins-border-radius);"
                                                     class="btn btn-secondary shadow-sm px-3">
-                                                    <i class="ti ti-refresh me-1"></i> {{ x_('Reset', 'dashboards.admin.pages.user.users.index') }}</a>
+                                                    <i class="ti ti-refresh me-1"></i> إعادة تعيين</a>
                                             </div>
 
                                             <button id="toggleTransferFilters"
@@ -195,14 +193,14 @@
                                                 data-bs-target="#transferFilters" aria-expanded="{{ $hasFilters ? 'true' : 'false' }}"
                                                 aria-controls="transferFilters">
                                                 <i class="ti {{ $hasFilters ? 'ti-eye-off' : 'ti-filter' }}"></i>
-                                                <span>{{ $hasFilters ? 'Hide filters' : 'Show filters' }}</span>
+                                                <span>{{ $hasFilters ? 'إخفاء الفلاتر' : 'إظهار الفلاتر' }}</span>
                                             </button>
                                         </div>
                                     </div>
 
                                     <div class="collapse {{ $hasFilters ? 'show' : '' }} row g-3 align-items-end" id="transferFilters">
                                         <div class="col-md-3">
-                                            <label class="form-label fw-semibold">{{ x_('Role', 'dashboards.admin.pages.user.users.index') }}</label>
+                                            <label class="form-label fw-semibold">الدور</label>
 
                                             <input type="hidden" name="role" value="{{ request('role') }}">
 
@@ -221,8 +219,8 @@
                                                     style="border-radius: var(--ins-border-radius);">
                                                     <li>
                                                         <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ $roleValue === null ? 'active' : '' }}"
-                                                            href="#" data-value="" data-text="All Roles">
-                                                            <span>All Roles</span>
+                                                            href="#" data-value="" data-text="كل الأدوار">
+                                                            <span>كل الأدوار</span>
                                                         </a>
                                                     </li>
                                                     @foreach ($rolesCollection as $role)
@@ -239,7 +237,7 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            <label class="form-label fw-semibold">{{ x_('Department', 'dashboards.admin.pages.user.users.index') }}</label>
+                                            <label class="form-label fw-semibold">القسم</label>
 
                                             <input type="hidden" name="department_id" value="{{ request('department_id') }}">
 
@@ -258,8 +256,8 @@
                                                     style="border-radius: var(--ins-border-radius);">
                                                     <li>
                                                         <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ $departmentValue === null ? 'active' : '' }}"
-                                                            href="#" data-value="" data-text="All Departments">
-                                                            <span>All Departments</span>
+                                                            href="#" data-value="" data-text="كل الأقسام">
+                                                            <span>كل الأقسام</span>
                                                         </a>
                                                     </li>
                                                     @foreach ($departmentsCollection as $dept)
@@ -275,50 +273,7 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            <label class="form-label fw-semibold">{{ x_('Status', 'dashboards.admin.pages.user.users.index') }}</label>
-
-                                            <input type="hidden" name="status" value="{{ request('status') }}">
-
-                                            <div class="dropdown filter-dropdown w-100">
-                                                <button
-                                                    class="btn w-100 text-start d-flex align-items-center justify-content-between bg-body border border-secondary border-opacity-10 shadow-sm px-3 py-2"
-                                                    style="border-radius: var(--ins-border-radius);" type="button" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                    <span class="d-inline-flex align-items-center gap-2">
-                                                        <span data-selected-text>{{ $statusLabel }}</span>
-                                                    </span>
-                                                    <i class="ti ti-chevron-down text-muted"></i>
-                                                </button>
-
-                                                <ul class="dropdown-menu w-100 shadow-sm border border-secondary border-opacity-10 py-2 overflow-auto dropdown-scroll"
-                                                    style="border-radius: var(--ins-border-radius);">
-                                                    <li>
-                                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ $statusValue === null ? 'active' : '' }}"
-                                                            href="#" data-value="" data-text="All Status">
-                                                            <i class="ti ti-adjustments fs-16 text-muted"></i>
-                                                            <span>All Status</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ $statusValue === 'active' ? 'active' : '' }}"
-                                                            href="#" data-value="active" data-text="Active">
-                                                            <i class="ti ti-circle-check fs-16 text-muted"></i>
-                                                            <span>{{ x_('Active', 'dashboards.admin.pages.user.users.index') }}</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ $statusValue === 'inactive' ? 'active' : '' }}"
-                                                            href="#" data-value="inactive" data-text="Inactive">
-                                                            <i class="ti ti-circle-x fs-16 text-muted"></i>
-                                                            <span>{{ x_('Inactive', 'dashboards.admin.pages.user.users.index') }}</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <label class="form-label fw-semibold">{{ x_('Show', 'dashboards.admin.pages.user.users.index') }}</label>
+                                            <label class="form-label fw-semibold">إظهار</label>
 
                                             <input type="hidden" name="trashed" value="{{ request('trashed') }}">
 
@@ -337,16 +292,16 @@
                                                     style="border-radius: var(--ins-border-radius);">
                                                     <li>
                                                         <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ $trashedValue !== 'only' ? 'active' : '' }}"
-                                                            href="#" data-value="" data-text="Active Records">
+                                                            href="#" data-value="" data-text="السجلات النشطة">
                                                             <i class="ti ti-circle-check fs-16 text-muted"></i>
-                                                            <span>Active Records</span>
+                                                            <span>السجلات النشطة</span>
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ $trashedValue === 'only' ? 'active' : '' }}"
-                                                            href="#" data-value="only" data-text="Deleted Only">
+                                                            href="#" data-value="only" data-text="المحذوفة فقط">
                                                             <i class="ti ti-trash fs-16 text-muted"></i>
-                                                            <span>Deleted Only</span>
+                                                            <span>المحذوفة فقط</span>
                                                         </a>
                                                     </li>
                                                 </ul>
@@ -365,30 +320,30 @@
                         <div class="card" style="border-radius: var(--ins-border-radius);">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center gap-3">
-                                    <h5 class="card-title mb-0">{{ x_('Users', 'dashboards.admin.pages.user.users.index') }}</h5>
+                                    <h5 class="card-title mb-0">المستخدمين</h5>
                                     <span class="badge bg-primary-subtle text-primary">{{ $users->total() }}
-                                        Users</span>
+                                        مستخدم</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
                                     <!-- Bulk Actions -->
                                     <div class="bulk-actions d-none me-2" id="bulkActions">
                                         @if (request('trashed') != 'only')
-                                            @can('bulk-delete-users')
+                                            @can('users.bulk-delete')
                                                 <button type="button" class="btn btn-soft-danger btn-sm"
                                                     onclick="bulkDelete()">
-                                                    <i class="ti ti-trash me-1"></i> {{ x_('Delete Selected', 'dashboards.admin.pages.user.users.index') }}</button>
+                                                    <i class="ti ti-trash me-1"></i> حذف المحدد</button>
                                             @endcan
                                         @endif
                                         @if (request('trashed') == 'only')
-                                            @can('bulk-restore-users')
+                                            @can('users.bulk-restore')
                                                 <button type="button" class="btn btn-soft-success btn-sm"
                                                     onclick="bulkRestore()">
-                                                    <i class="ti ti-refresh me-1"></i> {{ x_('Restore Selected', 'dashboards.admin.pages.user.users.index') }}</button>
+                                                    <i class="ti ti-refresh me-1"></i> استعادة المحدد</button>
                                             @endcan
-                                            @can('bulk-force-delete-users')
+                                            @can('users.bulk-force-delete')
                                                 <button type="button" class="btn btn-danger btn-sm"
                                                     onclick="bulkForceDelete()">
-                                                    <i class="ti ti-trash-x me-1"></i> {{ x_('Permanently Delete', 'dashboards.admin.pages.user.users.index') }}</button>
+                                                    <i class="ti ti-trash-x me-1"></i> حذف نهائي</button>
                                             @endcan
                                         @endif
                                     </div>
@@ -413,13 +368,12 @@
                                             <tr>
                                                 <th width="10"><input type="checkbox" class="form-check-input"
                                                         id="selectAll"></th>
-                                                <th>{{ x_('User', 'dashboards.admin.pages.user.users.index') }}</th>
-                                                <th>{{ x_('Email', 'dashboards.admin.pages.user.users.index') }}</th>
-                                                <th>{{ x_('Role', 'dashboards.admin.pages.user.users.index') }}</th>
-                                                <th>{{ x_('Department', 'dashboards.admin.pages.user.users.index') }}</th>
-                                                <th>{{ x_('Last Login', 'dashboards.admin.pages.user.users.index') }}</th>
-                                                <th>{{ x_('Status', 'dashboards.admin.pages.user.users.index') }}</th>
-                                                <th width="150" class="text-center">{{ x_('Actions', 'dashboards.admin.pages.user.users.index') }}</th>
+                                                <th>المستخدم</th>
+                                                <th>البريد الإلكتروني</th>
+                                                <th>الدور</th>
+                                                <th>آخر دخول</th>
+                                                <th>الحالة</th>
+                                                <th width="200" class="text-center">الإجراءات</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -456,60 +410,58 @@
                                                                 {{ ucfirst(str_replace('-', ' ', $role->name)) }}
                                                             </span>
                                                         @empty
-                                                            <span class="badge bg-secondary-subtle text-secondary">No
-                                                                Role</span>
+                                                            <span class="badge bg-secondary-subtle text-secondary">بدون دور</span>
                                                         @endforelse
                                                     </td>
-                                                    <td>{{ $user->department?->name ?? '-' }}</td>
                                                     <td>
                                                         @if ($user->last_login_at)
                                                             <span
                                                                 title="{{ $user->last_login_at->format('Y-m-d H:i:s') }}">{{ $user->last_login_at->diffForHumans() }}</span>
                                                         @else
-                                                            <span class="text-muted">Never</span>
+                                                            <span class="text-muted">لم يسجل دخول</span>
                                                         @endif
                                                     </td>
                                                     <td>
                                                         @if ($user->trashed())
                                                             <span class="badge bg-warning-subtle text-warning"><i
-                                                                    class="ti ti-trash me-1"></i> {{ x_('Trashed', 'dashboards.admin.pages.user.users.index') }}</span>
+                                                                    class="ti ti-trash me-1"></i> محذوف</span>
                                                         @elseif($user->is_active)
                                                             <span
-                                                                class="badge bg-success-subtle text-success">{{ x_('Active', 'dashboards.admin.pages.user.users.index') }}</span>
+                                                                class="badge bg-success-subtle text-success">نشط</span>
                                                         @else
                                                             <span
-                                                                class="badge bg-danger-subtle text-danger">{{ x_('Inactive', 'dashboards.admin.pages.user.users.index') }}</span>
+                                                                class="badge bg-danger-subtle text-danger">غير نشط</span>
                                                         @endif
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td class="text-center" width="200">
                                                         @if ($user->trashed())
-                                                            @can('restore-users')
+                                                            @can('users.restore')
                                                                 <button class="btn btn-soft-success btn-sm"
                                                                     onclick="restoreRecord({{ $user->id }})"
-                                                                    title="{{ x_('Restore', 'dashboards.admin.pages.user.users.index') }}"><i class="ti ti-refresh"></i></button>
+                                                                    title="استعادة"><i class="ti ti-refresh"></i></button>
                                                             @endcan
-                                                            @can('force-delete-users')
+                                                            @can('users.force-delete')
                                                                 <button class="btn btn-danger btn-sm"
                                                                     onclick="forceDeleteRecord({{ $user->id }})"
-                                                                    title="{{ x_('Permanently Delete', 'dashboards.admin.pages.user.users.index') }}"><i
+                                                                    title="حذف نهائي"><i
                                                                         class="ti ti-trash-x"></i></button>
                                                             @endcan
                                                         @else
-                                                            @can('view-users')
+                                                            @can('users.view')
                                                                 <button class="btn btn-soft-info btn-sm"
                                                                     onclick="viewRecord({{ $user->id }})"
-                                                                    title="{{ x_('View', 'dashboards.admin.pages.user.users.index') }}"><i class="ti ti-eye"></i></button>
+                                                                    title="عرض"><i class="ti ti-eye"></i></button>
                                                             @endcan
-                                                            @can('edit-users')
+                                                            @can('users.edit')
                                                                 <button class="btn btn-soft-warning btn-sm"
                                                                     onclick="editRecord({{ $user->id }})"
-                                                                    title="{{ x_('Edit', 'dashboards.admin.pages.user.users.index') }}"><i class="ti ti-pencil"></i></button>
+                                                                    title="تعديل"><i class="ti ti-pencil"></i></button>
                                                             @endcan
-                                                            @can('delete-users')
+                                                            @can('users.delete')
                                                                 @if ($user->id !== auth()->id())
                                                                     <button class="btn btn-soft-danger btn-sm"
                                                                         onclick="deleteRecord({{ $user->id }})"
-                                                                        title="{{ x_('Delete', 'dashboards.admin.pages.user.users.index') }}"><i
+                                                                        title="حذف"><i
                                                                             class="ti ti-trash"></i></button>
                                                                 @endif
                                                             @endcan
@@ -521,7 +473,7 @@
                                                     <td colspan="8" class="text-center py-4">
                                                         <div class="text-muted">
                                                             <i class="ti ti-users-off fs-1 d-block mb-2"></i>
-                                                            No users found
+                                                            لا يوجد مستخدمين
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -549,10 +501,10 @@
                                                                         class="ti ti-trash"></i></span>
                                                             @elseif($user->is_active)
                                                                 <span
-                                                                    class="badge bg-success-subtle text-success">{{ x_('Active', 'dashboards.admin.pages.user.users.index') }}</span>
+                                                                    class="badge bg-success-subtle text-success">نشط</span>
                                                             @else
                                                                 <span
-                                                                    class="badge bg-danger-subtle text-danger">{{ x_('Inactive', 'dashboards.admin.pages.user.users.index') }}</span>
+                                                                    class="badge bg-danger-subtle text-danger">غير نشط</span>
                                                             @endif
                                                         </div>
                                                         <div class="mb-3 mt-2">
@@ -577,44 +529,42 @@
                                                                     {{ ucfirst(str_replace('-', ' ', $role->name)) }}
                                                                 </span>
                                                             @empty
-                                                                <span
-                                                                    class="badge bg-secondary-subtle text-secondary">No
-                                                                    Role</span>
+                                                                <span class="badge bg-secondary-subtle text-secondary">بدون دور</span>
                                                             @endforelse
                                                         </div>
                                                         <small class="text-muted d-block mb-3">
                                                             <i class="ti ti-building me-1"></i>
-                                                            {{ $user->department?->name ?? 'No Department' }}
+                                                            {{ $user->department?->name ?? 'بدون قسم' }}
                                                         </small>
                                                         <div class="d-flex gap-1 justify-content-center">
                                                             @if ($user->trashed())
-                                                                @can('restore-users')
+                                                                @can('users.restore')
                                                                     <button class="btn btn-soft-success btn-sm"
                                                                         onclick="restoreRecord({{ $user->id }})"><i
                                                                             class="ti ti-refresh"></i></button>
                                                                 @endcan
-                                                                @can('force-delete-users')
+                                                                @can('users.force-delete')
                                                                     <button class="btn btn-danger btn-sm"
                                                                         onclick="forceDeleteRecord({{ $user->id }})"><i
                                                                             class="ti ti-trash-x"></i></button>
                                                                 @endcan
                                                             @else
-                                                                @can('view-users')
+                                                                @can('users.view')
                                                                     <button class="btn btn-soft-info btn-sm"
                                                                         onclick="viewRecord({{ $user->id }})"
-                                                                        title="{{ x_('View', 'dashboards.admin.pages.user.users.index') }}"><i class="ti ti-eye"></i></button>
+                                                                        title="عرض"><i class="ti ti-eye"></i></button>
                                                                 @endcan
-                                                                @can('edit-users')
+                                                                @can('users.edit')
                                                                     <button class="btn btn-soft-warning btn-sm"
                                                                         onclick="editRecord({{ $user->id }})"
-                                                                        title="{{ x_('Edit', 'dashboards.admin.pages.user.users.index') }}"><i
+                                                                        title="تعديل"><i
                                                                             class="ti ti-pencil"></i></button>
                                                                 @endcan
-                                                                @can('delete-users')
+                                                                @can('users.delete')
                                                                     @if ($user->id !== auth()->id())
                                                                         <button class="btn btn-soft-danger btn-sm"
                                                                             onclick="deleteRecord({{ $user->id }})"
-                                                                            title="{{ x_('Delete', 'dashboards.admin.pages.user.users.index') }}"><i
+                                                                            title="حذف"><i
                                                                                 class="ti ti-trash"></i></button>
                                                                     @endif
                                                                 @endcan
@@ -627,7 +577,7 @@
                                             <div class="col-12 text-center py-4">
                                                 <div class="text-muted">
                                                     <i class="ti ti-users-off fs-1 d-block mb-2"></i>
-                                                    No users found
+                                                    لا يوجد مستخدمين
                                                 </div>
                                             </div>
                                         @endforelse
@@ -647,27 +597,27 @@
     </div>
 
     {{-- All Modals --}}
-    @can('create-users')
-        @include('dashboards.admin.pages.user.users.partials.create-modal')
+    @can('users.create')
+        @include('dashboards.admin.pages.users.partials.create-modal')
     @endcan
-    @can('edit-users')
-        @include('dashboards.admin.pages.user.users.partials.edit-modal')
+    @can('users.edit')
+        @include('dashboards.admin.pages.users.partials.edit-modal')
     @endcan
-    @can('view-users')
-        @include('dashboards.admin.pages.user.users.partials.show-modal')
+    @can('users.view')
+        @include('dashboards.admin.pages.users.partials.show-modal')
     @endcan
-    @can('delete-users')
-        @include('dashboards.admin.pages.user.users.partials.delete-modal')
+    @can('users.delete')
+        @include('dashboards.admin.pages.users.partials.delete-modal')
     @endcan
-    @can('bulk-upload-users')
-        @include('dashboards.admin.pages.user.users.partials.bulk-upload-modal')
+    @can('users.bulk-upload')
+        @include('dashboards.admin.pages.users.partials.bulk-upload-modal')
     @endcan
 
     @include('dashboards.shared.theme_settings')
     @include('dashboards.shared.scripts')
 
     {{-- Page-specific Scripts --}}
-    @include('dashboards.admin.pages.user.users.partials.scripts')
+    @include('dashboards.admin.pages.users.partials.scripts')
 </body>
 
 </html>

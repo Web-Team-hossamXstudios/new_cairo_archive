@@ -21,7 +21,7 @@
                                                     <i data-lucide="sparkles" class="fs-md"></i>
                                                 </span>
                                             </span> --}}
-                                            {{-- <img src="{{ asset('logo.jpg') }}" alt="" class="w-25 rounded-circle"> --}}
+                                            <img src="{{ asset('logo.webp') }}" alt="" class="w-25 rounded-circle">
 
                                             <span class="logo-text text-body fw-bold fs-xl">New Cairo Archive System</span>
                                         </span>

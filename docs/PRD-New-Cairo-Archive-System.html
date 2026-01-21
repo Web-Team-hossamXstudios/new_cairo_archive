@@ -318,7 +318,7 @@
 
         <section class="section">
             <h2>1. نظرة عامة على المشروع</h2>
-            
+
             <h3>1.1 الهدف من النظام</h3>
             <p>تطوير نظام أرشفة إلكتروني شامل لإدارة بيانات العملاء والملفات الخاصة بالأراضي المباعة في مدينة القاهرة الجديدة، مع ربط الملفات الرقمية بمواقعها الفيزيائية في الأرشيف لتسهيل عملية البحث والوصول السريع.</p>
 
@@ -344,7 +344,7 @@
 
         <section class="section">
             <h2>2. البيئة التقنية</h2>
-            
+
             <h3>2.1 التقنيات المستخدمة</h3>
             <table>
                 <thead>
@@ -406,14 +406,14 @@
 
         <section class="section">
             <h2>3. هيكل قاعدة البيانات</h2>
-            
+
             <div class="highlight-box warning">
                 <strong>ملحوظة هامة:</strong> جميع الجداول تحتوي على <code>timestamps</code> (created_at, updated_at) و <code>soft deletes</code> (deleted_at) للحفاظ على البيانات.
             </div>
 
             <div class="db-schema">
                 <h3>3.1 إدارة العملاء</h3>
-                
+
                 <div class="table-schema">
                     <h4>📋 clients</h4>
                     <ul class="field-list">
@@ -429,7 +429,7 @@
                 </div>
 
                 <h3>3.2 المناطق والعناوين</h3>
-                
+
                 <div class="table-schema">
                     <h4>📍 governorates</h4>
                     <ul class="field-list">
@@ -466,7 +466,7 @@
                 </div>
 
                 <h3>3.3 الأراضي</h3>
-                
+
                 <div class="table-schema">
                     <h4>🏗️ lands</h4>
                     <ul class="field-list">
@@ -477,8 +477,8 @@
                     </ul>
                 </div>
 
-                <h3>3.4 المواقع الفيزيائية</h3>
-                
+                <h3>3.4 مواقع التخزين</h3>
+
                 <div class="table-schema">
                     <h4>🏢 rooms</h4>
                     <ul class="field-list">
@@ -508,7 +508,7 @@
                 </div>
 
                 <h3>3.5 الملفات والمحتوى</h3>
-                
+
                 <div class="table-schema">
                     <h4>📄 files</h4>
                     <ul class="field-list">
@@ -541,7 +541,7 @@
             <h2>4. المميزات الوظيفية</h2>
 
             <h3>4.1 إدارة العملاء (Client Management)</h3>
-            
+
             <div class="highlight-box">
                 <h4>📋 نظرة عامة على الفيتشر:</h4>
                 <p>هذه الصفحة الرئيسية للنظام حيث يتم عرض جميع العملاء بطريقتين (Table/Cards) مع إمكانية البحث والفلترة والتحكم الكامل في بياناتهم.</p>
@@ -550,17 +550,17 @@
             <div class="feature-list">
                 <div class="feature-item">
                     <h4>📊 Feature 4.1.1: عرض العملاء (Clients Listing Page)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>صفحة عرض العملاء بشكلين مختلفين (Table View & Cards View) مع فلاتر قوية للبحث السريع.</p>
-                    
+
                     <p><strong>📍 Route:</strong></p>
                     <ul>
                         <li><code>GET /clients</code> → ClientController@index</li>
                     </ul>
 
                     <p><strong>🔧 المتطلبات التقنية:</strong></p>
-                    
+
                     <p><strong>1️⃣ Toggle بين Table و Cards View:</strong></p>
                     <ul>
                         <li><strong>الواجهة:</strong> زر Toggle في أعلى الصفحة (أيقونة Table 📋 وأيقونة Cards 🃏)</li>
@@ -689,7 +689,7 @@
 
                 <div class="feature-item">
                     <h4>➕ Feature 4.1.2: إضافة عميل جديد (Create Client)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>Modal لإضافة عميل جديد مع إمكانية إضافة أراضي له مباشرة في نفس الوقت.</p>
 
@@ -699,7 +699,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ Modal Structure:</strong></p>
                     <ul>
                         <li><strong>العنوان:</strong> "إضافة عميل جديد"</li>
@@ -810,7 +810,7 @@
 
                 <div class="feature-item">
                     <h4>👁️ Feature 4.1.3: عرض تفاصيل العميل (View Client)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>Modal يعرض جميع معلومات العميل + كل الأراضي المملوكة له + كل الملفات المرفوعة بشكل منظم ومرتب.</p>
 
@@ -820,7 +820,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ Modal Structure:</strong></p>
                     <ul>
                         <li><strong>الحجم:</strong> Extra Large Modal (شاشة كاملة تقريباً)</li>
@@ -849,7 +849,7 @@
                         <li><strong>العرض:</strong> Accordion/Collapsible List</li>
                         <li><strong>كل أرض تحتوي:</strong>
                             <ul>
-                                <li><strong>Header (Clickable):</strong> 
+                                <li><strong>Header (Clickable):</strong>
                                     <ul>
                                         <li>أيقونة 🏗️</li>
                                         <li>العنوان الكامل: "المحافظة - المدينة - الحي - المنطقة - القطاع"</li>
@@ -872,7 +872,7 @@
                         <li><strong>عرض الملف الرئيسي فقط</strong> (parent_id = null)</li>
                         <li><strong>Actions على كل ملف:</strong>
                             <ul>
-                                <li><strong>زر View (👁️):</strong> 
+                                <li><strong>زر View (👁️):</strong>
                                     <ul>
                                         <li>يفتح Modal جديد فوق Modal الحالي (Nested Modal)</li>
                                         <li>يحتوي على iframe يعرض الملف PDF</li>
@@ -891,7 +891,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li><strong>عرض Items:</strong> 
+                        <li><strong>عرض Items:</strong>
                             <ul>
                                 <li>Tags بجانب الملف توضح أنواع المحتوى (عقد، فاتورة، إلخ)</li>
                                 <li>كل Tag يحتوي: اسم الـ Item + أرقام الصفحات (مثلاً: "عقد [ص 1-5]")</li>
@@ -902,13 +902,13 @@
                     <p><strong>5️⃣ Modal الملف (Nested Modal):</strong></p>
                     <ul>
                         <li><strong>Header:</strong> اسم الملف + زر Close</li>
-                        <li><strong>Body:</strong> 
+                        <li><strong>Body:</strong>
                             <ul>
                                 <li>iframe src="url_to_pdf"</li>
                                 <li>Loading Spinner أثناء تحميل الملف</li>
                             </ul>
                         </li>
-                        <li><strong>Footer:</strong> 
+                        <li><strong>Footer:</strong>
                             <ul>
                                 <li>زر Download</li>
                                 <li>زر Print (يفتح نافذة الطباعة)</li>
@@ -936,7 +936,7 @@
 
                 <div class="feature-item">
                     <h4>✏️ Feature 4.1.4: تعديل العميل (Edit Client)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>Modal لتعديل بيانات العميل فقط (الأراضي تُعدّل من مكان آخر).</p>
 
@@ -960,7 +960,7 @@
 
                 <div class="feature-item">
                     <h4>🗑️ Feature 4.1.5: حذف العميل (Delete Client)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>Soft Delete للعميل مع تأكيد قبل الحذف.</p>
 
@@ -970,7 +970,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ Confirmation Modal:</strong></p>
                     <ul>
                         <li><strong>العنوان:</strong> "⚠️ تأكيد الحذف"</li>
@@ -988,7 +988,7 @@
                     <ul>
                         <li>AJAX DELETE Request</li>
                         <li>Soft Delete: <code>$client->delete()</code></li>
-                        <li><strong>Cascade Behavior:</strong> 
+                        <li><strong>Cascade Behavior:</strong>
                             <ul>
                                 <li>الأراضي والملفات لا تُحذف</li>
                                 <li>فقط العميل يُحذف (soft delete)</li>
@@ -1011,7 +1011,7 @@
 
                 <div class="feature-item">
                     <h4>📤 Feature 4.1.6: رفع ملف لعميل (Upload File from Client Page)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>زر سريع لرفع ملف جديد للعميل من صفحة العملاء مباشرة.</p>
 
@@ -1028,7 +1028,7 @@
             </div>
 
             <h3>4.2 رفع الملفات ومعالجتها (File Upload & PDF Processing)</h3>
-            
+
             <div class="highlight-box warning">
                 <h4>⚠️ ميزة حرجة: تقسيم PDF إلى صفحات</h4>
                 <p>هذه من أهم وأعقد المميزات في النظام. يجب التعامل معها بحذر شديد والاختبار المكثف.</p>
@@ -1042,7 +1042,7 @@
             <div class="feature-list">
                 <div class="feature-item">
                     <h4>📤 Feature 4.2.1: رفع ملف جديد (Upload New File)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>رفع ملف PDF، تقسيمه إلى صفحات منفصلة، ربطه بالعميل والأرض، تحديد موقعه الفيزيائي، وتوثيق محتواه.</p>
 
@@ -1054,7 +1054,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ - المرحلة 1: فتح Modal الرفع</strong></p>
-                    
+
                     <p><strong>1️⃣ Modal Structure:</strong></p>
                     <ul>
                         <li><strong>العنوان:</strong> "📤 رفع ملف جديد"</li>
@@ -1157,10 +1157,10 @@
                                         <li>Required: نعم</li>
                                     </ul>
                                 </li>
-                                <li><strong>3. الدولاب (Stand):</strong>
+                                <li><strong>3. الستاند (Stand):</strong>
                                     <ul>
                                         <li>Disabled حتى يتم اختيار Lane</li>
-                                        <li>Options: الدواليب التابعة للـ Lane المحدد</li>
+                                        <li>Options:الاستاندات التابعة للـ Lane المحدد</li>
                                         <li>Required: نعم</li>
                                     </ul>
                                 </li>
@@ -1176,7 +1176,7 @@
                         <li><strong>عرض المسار الكامل:</strong>
                             <ul>
                                 <li>بعد اختيار جميع المستويات</li>
-                                <li>يعرض: "📂 الموقع: [مبنى] → [غرفة] → [ممر] → [دولاب] → [رف]"</li>
+                                <li>يعرض: "📂 الموقع: [مبنى] → [غرفة] → [ممر] → [ستاند] → [رف]"</li>
                                 <li>بخط واضح ولون مميز</li>
                             </ul>
                         </li>
@@ -1249,7 +1249,7 @@
 
                 <div class="feature-item">
                     <h4>⚙️ Feature 4.2.2: معالجة PDF وتقسيمه (PDF Processing & Splitting)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>معالجة ملف PDF في Background، تقسيمه إلى صفحات منفصلة، وحفظ كل صفحة كملف مستقل.</p>
 
@@ -1259,7 +1259,7 @@
                     </div>
 
                     <p><strong>🔧 التنفيذ التقني:</strong></p>
-                    
+
                     <p><strong>1️⃣ عند الضغط على "حفظ الملف":</strong></p>
                     <ul>
                         <li><strong>حفظ السجل الرئيسي في قاعدة البيانات:</strong>
@@ -1423,7 +1423,7 @@
 
                 <div class="feature-item">
                     <h4>📊 Feature 4.2.3: عرض حالة المعالجة (Processing Status)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>إعلام المستخدم بحالة معالجة الملف (Processing / Completed / Failed).</p>
 
@@ -1460,12 +1460,12 @@
 
                 <div class="feature-item">
                     <h4>👁️ Feature 4.2.4: عرض الملفات والصفحات (View Files & Pages)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>عرض الملف الأساسي والصفحات المنفصلة للمستخدم بشكل منظم وسهل.</p>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ في صفحة View Client (من Feature 4.1.3):</strong></p>
                     <ul>
                         <li>عرض الملف الرئيسي فقط في القائمة</li>
@@ -1509,7 +1509,7 @@
 
                 <div class="feature-item">
                     <h4>🏷️ Feature 4.2.5: إدارة Items (Content Types Management)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>صفحة منفصلة لإدارة أنواع المحتوى (Items) المستخدمة في توصيف الملفات.</p>
 
@@ -1548,7 +1548,7 @@
                 </div>
             </div>
 
-            <h3>4.3 إدارة المواقع الفيزيائية (Physical Locations Management)</h3>
+            <h3>4.3 إدارة مواقع التخزين (Physical Locations Management)</h3>
 
             <div class="highlight-box">
                 <h4>📋 نظرة عامة:</h4>
@@ -1557,10 +1557,10 @@
 
             <div class="feature-list">
                 <div class="feature-item">
-                    <h4>🏢 Feature 4.3.1: عرض المواقع الفيزيائية (Physical Locations Listing)</h4>
-                    
+                    <h4>🏢 Feature 4.3.1: عرض مواقع التخزين (Physical Locations Listing)</h4>
+
                     <p><strong>🎯 الهدف:</strong></p>
-                    <p>عرض جميع المواقع الفيزيائية في جدول واحد بشكل Hierarchical Tree مع إمكانية Expand/Collapse.</p>
+                    <p>عرض جميع مواقع التخزين في جدول واحد بشكل Hierarchical Tree مع إمكانية Expand/Collapse.</p>
 
                     <p><strong>📍 Route:</strong></p>
                     <ul>
@@ -1568,12 +1568,12 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ التفصيلي:</strong></p>
-                    
+
                     <p><strong>1️⃣ Page Layout:</strong></p>
                     <ul>
-                        <li><strong>Header:</strong> "📂 إدارة المواقع الفيزيائية"</li>
+                        <li><strong>Header:</strong> "📂 إدارة مواقع التخزين"</li>
                         <li><strong>زر إضافة غرفة جديدة:</strong> "+ إضافة غرفة" (أعلى يمين الصفحة)</li>
-                        <li><strong>Search Box:</strong> للبحث في أسماء الغرف/الممرات/الدواليب/الرفوف</li>
+                        <li><strong>Search Box:</strong> للبحث في أسماء الغرف/الممرات/الاستاندات/الرفوف</li>
                     </ul>
 
                     <p><strong>2️⃣ Hierarchical Table Structure:</strong></p>
@@ -1611,17 +1611,17 @@
                                 <li><strong>Icon:</strong> 📚</li>
                                 <li><strong>عرض:</strong> اسم الممر</li>
                                 <li><strong>مثال:</strong> "&nbsp;&nbsp;&nbsp;📚 ممر 1"</li>
-                                <li><strong>Badge:</strong> عدد الدواليب (Stands Count)</li>
+                                <li><strong>Badge:</strong> عددالاستاندات (Stands Count)</li>
                                 <li><strong>Expand Icon:</strong> ▶️/▼</li>
                                 <li><strong>عند الـ Expand:</strong> يعرض جميع Stands التابعة</li>
                             </ul>
                         </li>
-                        <li><strong>المستوى 3 - Stands (الدواليب):</strong>
+                        <li><strong>المستوى 3 - Stands (الاستاندات):</strong>
                             <ul>
                                 <li><strong>Indentation:</strong> 60px من اليمين</li>
                                 <li><strong>Icon:</strong> 🗄️</li>
-                                <li><strong>عرض:</strong> اسم الدولاب</li>
-                                <li><strong>مثال:</strong> "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🗄️ دولاب A"</li>
+                                <li><strong>عرض:</strong> اسم الستاند</li>
+                                <li><strong>مثال:</strong> "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🗄️ ستاند A"</li>
                                 <li><strong>Badge:</strong> عدد الرفوف (Racks Count)</li>
                                 <li><strong>Expand Icon:</strong> ▶️/▼</li>
                                 <li><strong>عند الـ Expand:</strong> يعرض جميع Racks التابعة</li>
@@ -1667,14 +1667,14 @@
                             <ul>
                                 <li>✏️ Edit</li>
                                 <li>🗑️ Delete</li>
-                                <li>➕ Add Stand (إضافة دولاب لهذا الممر)</li>
+                                <li>➕ Add Stand (إضافة ستاند لهذا الممر)</li>
                             </ul>
                         </li>
                         <li><strong>Stands:</strong>
                             <ul>
                                 <li>✏️ Edit</li>
                                 <li>🗑️ Delete</li>
-                                <li>➕ Add Rack (إضافة رف لهذا الدولاب)</li>
+                                <li>➕ Add Rack (إضافة رف لهذا الستاند)</li>
                             </ul>
                         </li>
                         <li><strong>Racks:</strong>
@@ -1717,7 +1717,7 @@
 
                 <div class="feature-item">
                     <h4>➕ Feature 4.3.2: إضافة غرفة جديدة (Add New Room)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>Modal لإضافة غرفة جديدة.</p>
 
@@ -1761,8 +1761,8 @@
                 </div>
 
                 <div class="feature-item">
-                    <h4>➕ Feature 4.3.3: إضافة ممر/دولاب/رف (Add Lane/Stand/Rack)</h4>
-                    
+                    <h4>➕ Feature 4.3.3: إضافة ممر/ستاند/رف (Add Lane/Stand/Rack)</h4>
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>Modal سريع لإضافة عنصر فرعي (Lane/Stand/Rack) تحت عنصر معين.</p>
 
@@ -1774,7 +1774,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ Trigger:</strong></p>
                     <ul>
                         <li>زر "➕ Add Lane" بجانب Room → يفتح Modal لإضافة Lane</li>
@@ -1784,8 +1784,8 @@
 
                     <p><strong>2️⃣ Modal Structure:</strong></p>
                     <ul>
-                        <li><strong>العنوان:</strong> "إضافة [ممر/دولاب/رف] جديد"</li>
-                        <li><strong>عرض Parent:</strong> 
+                        <li><strong>العنوان:</strong> "إضافة [ممر/ستاند/رف] جديد"</li>
+                        <li><strong>عرض Parent:</strong>
                             <ul>
                                 <li>يعرض العنصر الأب (مثلاً: "غرفة A - مبنى الإدارة")</li>
                                 <li>Read-only، لتوضيح أين سيُضاف العنصر الجديد</li>
@@ -1794,7 +1794,7 @@
                         <li><strong>حقل الاسم:</strong>
                             <ul>
                                 <li>Type: Text Input</li>
-                                <li>Label: "اسم الممر" / "اسم الدولاب" / "اسم الرف"</li>
+                                <li>Label: "اسم الممر" / "اسم الستاند" / "اسم الرف"</li>
                                 <li>Required: نعم</li>
                                 <li>Validation: required|string|max:255</li>
                             </ul>
@@ -1808,7 +1808,7 @@
                         <li>AJAX Request لإضافة العنصر</li>
                         <li>Auto-expand الـ Parent لعرض العنصر الجديد</li>
                         <li>Highlight العنصر الجديد</li>
-                        <li>Toast: "تم إضافة [الممر/الدولاب/الرف] بنجاح ✅"</li>
+                        <li>Toast: "تم إضافة [الممر/الستاند/الرف] بنجاح ✅"</li>
                     </ul>
 
                     <p><span class="tag priority-high">أولوية عالية</span></p>
@@ -1816,7 +1816,7 @@
 
                 <div class="feature-item">
                     <h4>✏️ Feature 4.3.4: تعديل موقع فيزيائي (Edit Location)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>Modal لتعديل اسم أي عنصر.</p>
 
@@ -1841,7 +1841,7 @@
 
                 <div class="feature-item">
                     <h4>🗑️ Feature 4.3.5: حذف موقع فيزيائي (Delete Location)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>حذف عنصر مع تأكيد (Soft Delete).</p>
 
@@ -1854,15 +1854,15 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ Confirmation Modal:</strong></p>
                     <ul>
                         <li><strong>العنوان:</strong> "⚠️ تأكيد الحذف"</li>
-                        <li><strong>الرسالة:</strong> 
+                        <li><strong>الرسالة:</strong>
                             <ul>
-                                <li>للـ Room: "هل تريد حذف الغرفة [اسم]؟ سيتم حذف جميع الممرات والدواليب والرفوف بداخلها!"</li>
-                                <li>للـ Lane: "هل تريد حذف الممر [اسم]؟ سيتم حذف جميع الدواليب والرفوف بداخله!"</li>
-                                <li>للـ Stand: "هل تريد حذف الدولاب [اسم]؟ سيتم حذف جميع الرفوف بداخله!"</li>
+                                <li>للـ Room: "هل تريد حذف الغرفة [اسم]؟ سيتم حذف جميع الممرات والاستاندات والرفوف بداخلها!"</li>
+                                <li>للـ Lane: "هل تريد حذف الممر [اسم]؟ سيتم حذف جميعالاستاندات والرفوف بداخله!"</li>
+                                <li>للـ Stand: "هل تريد حذف الستاند [اسم]؟ سيتم حذف جميع الرفوف بداخله!"</li>
                                 <li>للـ Rack: "هل تريد حذف الرف [اسم]؟"</li>
                             </ul>
                         </li>
@@ -1889,7 +1889,7 @@
 
                 <div class="feature-item">
                     <h4>👁️ Feature 4.3.6: عرض الملفات في رف معين (View Files in Rack)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>عرض جميع الملفات المحفوظة في رف معين.</p>
 
@@ -1898,7 +1898,7 @@
                         <li><strong>Trigger:</strong> زر "👁️ View Files" بجانب أي Rack</li>
                         <li><strong>Modal:</strong>
                             <ul>
-                                <li>العنوان: "الملفات في: [مبنى] → [غرفة] → [ممر] → [دولاب] → [رف]"</li>
+                                <li>العنوان: "الملفات في: [مبنى] → [غرفة] → [ممر] → [ستاند] → [رف]"</li>
                                 <li>جدول بالملفات المحفوظة</li>
                                 <li>Columns: اسم الملف، العميل، الأرض، عدد الصفحات، Actions</li>
                             </ul>
@@ -1919,13 +1919,13 @@
 
             <div class="highlight-box">
                 <h4>📋 نظرة عامة:</h4>
-                <p>إدارة التقسيم الجغرافي (Governorates → Cities → Districts → Zones → Areas) بنفس نظام المواقع الفيزيائية - جدول واحد Hierarchical.</p>
+                <p>إدارة التقسيم الجغرافي (Governorates → Cities → Districts → Zones → Areas) بنفس نظام مواقع التخزين - جدول واحد Hierarchical.</p>
             </div>
 
             <div class="feature-list">
                 <div class="feature-item">
                     <h4>📍 Feature 4.4.1: عرض المناطق الجغرافية (Geographic Areas Listing)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>عرض جميع المناطق الجغرافية في جدول واحد Hierarchical Tree (نفس التنفيذ من Feature 4.3).</p>
 
@@ -1935,7 +1935,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>المستويات الـ 5:</strong></p>
                     <ul>
                         <li><strong>Level 1 - Governorates (المحافظات):</strong>
@@ -2000,7 +2000,7 @@
 
                 <div class="feature-item">
                     <h4>➕ Feature 4.4.2: إضافة مناطق جغرافية (Add Geographic Areas)</h4>
-                    
+
                     <p><strong>📍 Routes:</strong></p>
                     <ul>
                         <li><code>POST /governorates</code></li>
@@ -2022,7 +2022,7 @@
 
                 <div class="feature-item">
                     <h4>✏️🗑️ Feature 4.4.3: تعديل وحذف مناطق (Edit & Delete)</h4>
-                    
+
                     <p><strong>🔧 التنفيذ:</strong></p>
                     <ul>
                         <li>نفس النظام من Feature 4.3.4 و 4.3.5</li>
@@ -2049,7 +2049,7 @@
             <div class="feature-list">
                 <div class="feature-item">
                     <h4>📥 Feature 4.5.1: رفع ملف Excel (Upload Excel File)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>صفحة مخصصة لرفع ملفات Excel وتوفير Template للتحميل.</p>
 
@@ -2061,7 +2061,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ Page Layout:</strong></p>
                     <ul>
                         <li><strong>Header:</strong> "📥 استيراد البيانات من Excel"</li>
@@ -2146,7 +2146,7 @@
 
                 <div class="feature-item">
                     <h4>✅ Feature 4.5.2: معالجة وتحليل الملف (File Processing & Validation)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>قراءة الملف، Validation، وعرض Preview قبل الاستيراد النهائي.</p>
 
@@ -2156,7 +2156,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ عند رفع الملف:</strong></p>
                     <ul>
                         <li>عرض Loading Spinner: "جاري تحليل الملف..."</li>
@@ -2235,12 +2235,12 @@
 
                 <div class="feature-item">
                     <h4>👁️ Feature 4.5.3: معاينة البيانات (Data Preview)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>عرض البيانات للمستخدم قبل الاستيراد النهائي مع توضيح الأخطاء.</p>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ Preview Screen Layout:</strong></p>
                     <ul>
                         <li><strong>Summary Card:</strong>
@@ -2326,7 +2326,7 @@
 
                 <div class="feature-item">
                     <h4>💾 Feature 4.5.4: الاستيراد النهائي (Final Import)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>استيراد البيانات إلى قاعدة البيانات مع Transaction للحماية.</p>
 
@@ -2336,7 +2336,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ عند الضغط على "استيراد":</strong></p>
                     <ul>
                         <li>Confirmation Modal:
@@ -2443,7 +2443,7 @@
 
                 <div class="feature-item">
                     <h4>📊 Feature 4.5.5: تقرير الاستيراد (Import Report)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>تقرير تفصيلي بنتائج الاستيراد.</p>
 
@@ -2487,7 +2487,7 @@
             <div class="feature-list">
                 <div class="feature-item">
                     <h4>👥 Feature 4.6.1: إدارة المستخدمين (Users Management)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>صفحة لإدارة المستخدمين (إضافة، تعديل، حذف، تعيين الأدوار).</p>
 
@@ -2500,7 +2500,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ Users Listing Page:</strong></p>
                     <ul>
                         <li><strong>Table Columns:</strong>
@@ -2552,7 +2552,7 @@
 
                 <div class="feature-item">
                     <h4>🎭 Feature 4.6.2: إدارة الأدوار (Roles Management)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>إدارة الأدوار (Roles) وتعيين الصلاحيات (Permissions) لكل دور.</p>
 
@@ -2612,12 +2612,12 @@
 
                 <div class="feature-item">
                     <h4>🔐 Feature 4.6.3: إدارة الصلاحيات (Permissions Management)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>تحديد الصلاحيات المتاحة في النظام وربطها بالأدوار.</p>
 
                     <p><strong>🔧 قائمة الصلاحيات الكاملة:</strong></p>
-                    
+
                     <p><strong>Client Management:</strong></p>
                     <ul>
                         <li><code>clients.view</code> - عرض العملاء</li>
@@ -2696,7 +2696,7 @@
 
                 <div class="feature-item">
                     <h4>⚙️ Feature 4.6.4: ربط الصلاحيات بالأدوار (Assign Permissions to Roles)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>واجهة لربط الصلاحيات بكل دور.</p>
 
@@ -2706,7 +2706,7 @@
                     </ul>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>Permissions Assignment Page:</strong></p>
                     <ul>
                         <li><strong>Header:</strong> "إدارة صلاحيات دور: [Role Name]"</li>
@@ -2741,12 +2741,12 @@
 
                 <div class="feature-item">
                     <h4>🛡️ Feature 4.6.5: تطبيق الصلاحيات (Implementing Permissions)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>تطبيق التحقق من الصلاحيات في جميع أنحاء التطبيق.</p>
 
                     <p><strong>🔧 التنفيذ:</strong></p>
-                    
+
                     <p><strong>1️⃣ في الـ Controllers:</strong></p>
                     <div class="highlight-box">
                         <code>
@@ -2810,7 +2810,7 @@
 
                 <div class="feature-item">
                     <h4>📊 Feature 4.6.6: Activity Logs (اختياري)</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>تسجيل جميع العمليات الحساسة للمراجعة والأمان.</p>
 
@@ -2840,7 +2840,7 @@
 
                 <div class="feature-item">
                     <h4>🔒 Feature 4.6.7: Database Seeder للصلاحيات</h4>
-                    
+
                     <p><strong>🎯 الهدف:</strong></p>
                     <p>Seeder لإنشاء الأدوار والصلاحيات الافتراضية.</p>
 
@@ -3012,7 +3012,7 @@
                         <td>متوسط</td>
                         <td>Validation قوي + Preview + Templates</td>
                     </tr>
-                    
+
                 </tbody>
             </table>
         </section>
