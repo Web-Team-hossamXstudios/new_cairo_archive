@@ -354,51 +354,51 @@ function printBarcode(barcode, fileName) {
     }
 }
 
-function printBarcodeContent() {
-    const printWindow = window.open('', '', 'width=600,height=400');
-    const barcodeHtml = document.getElementById('barcodeContainer').innerHTML;
-    const fileName = document.getElementById('barcodeFileName').textContent;
+// function printBarcodeContent() {
+//     const printWindow = window.open('', '', 'width=600,height=400');
+//     const barcodeHtml = document.getElementById('barcodeContainer').innerHTML;
+//     const fileName = document.getElementById('barcodeFileName').textContent;
 
-    printWindow.document.write(`
-        <html dir="rtl">
-        <head>
-            <title>طباعة الباركود</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 20px;
-                }
-                h3 {
-                    margin-bottom: 20px;
-                    text-align: center;
-                }
-                @media print {
-                    @page {
-                        margin: 1cm;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <h3>${fileName}</h3>
-            ${barcodeHtml}
-            <script>
-                window.onload = function() {
-                    window.print();
-                    window.onafterprint = function() {
-                        window.close();
-                    };
-                };
-            <\/script>
-        </body>
-        </html>
-    `);
-    printWindow.document.close();
-}
+//     printWindow.document.write(`
+//         <html dir="rtl">
+//         <head>
+//             <title>طباعة الباركود</title>
+//             <style>
+//                 body {
+//                     font-family: Arial, sans-serif;
+//                     display: flex;
+//                     flex-direction: column;
+//                     align-items: center;
+//                     justify-content: center;
+//                     padding: 20px;
+//                 }
+//                 h3 {
+//                     margin-bottom: 20px;
+//                     text-align: center;
+//                 }
+//                 @media print {
+//                     @page {
+//                         margin: 1cm;
+//                     }
+//                 }
+//             </style>
+//         </head>
+//         <body>
+//             <h3>${fileName}</h3>
+//             ${barcodeHtml}
+//             <script>
+//                 window.onload = function() {
+//                     window.print();
+//                     window.onafterprint = function() {
+//                         window.close();
+//                     };
+//                 };
+//             <\/script>
+//         </body>
+//         </html>
+//     `);
+//     printWindow.document.close();
+// }
 
 // ==================== Upload Functions ====================
 function openUploadForFile(fileId, fileName) {
