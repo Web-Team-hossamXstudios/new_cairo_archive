@@ -23,10 +23,10 @@
                                 </h6>
                                 <div id="clientPdfPreviewContainer" class="text-center">
                                     <div class="alert alert-info" id="clientPdfPlaceholder">
-                                        <i class="ti ti-upload fs-1 mb-3 d-block"></i>
+                                        <i class="mb-3 ti ti-upload fs-1 d-block"></i>
                                         <p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>
                                     </div>
-                                    <canvas id="clientPdfCanvas" class="border rounded shadow-sm" style="max-width: 100%; display: none;"></canvas>
+                                    <canvas id="clientPdfCanvas" class="rounded border shadow-sm" style="max-width: 100%; display: none;"></canvas>
                                     <div id="clientPdfLoading" class="d-none">
                                         <div class="spinner-border text-primary" role="status">
                                             <span class="visually-hidden">جاري التحميل...</span>
@@ -43,14 +43,14 @@
                                 <div class="row g-3">
                         <!-- Client Info Alert -->
                         <div class="col-12">
-                            <div class="alert alert-info mb-3">
+                            <div class="mb-3 alert alert-info">
                                 <i class="ti ti-info-circle me-1"></i>
                                 <strong>العميل:</strong> <span id="uploadClientName"></span>
                             </div>
                         </div>
 
                         <!-- Land Selection -->
-                        <div class="col-md-12 mt-1">
+                        <div class="mt-1 col-md-12">
                             <label class="form-label">القطعة <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <select name="land_id" id="uploadLandId" class="form-select">
@@ -132,9 +132,9 @@
 
                         <!-- Physical Location Collapsible -->
                         <div class="col-12">
-                            <div class="card border" style="background-color: #f3f4f6;">
-                                <div class="card-header p-0 border-0" style="background-color: #f3f4f6;">
-                                    <button class="btn w-100 text-start p-3 text-dark d-flex align-items-center justify-content-between" type="button" onclick="toggleClientStorageLocation(event)" style="background-color: #f3f4f6; border: none;">
+                            <div class="border card" style="background-color: #f3f4f6;">
+                                <div class="p-0 border-0 card-header" style="background-color: #f3f4f6;">
+                                    <button class="p-3 btn w-100 text-start text-dark d-flex align-items-center justify-content-between" type="button" onclick="toggleClientStorageLocation(event)" style="background-color: #f3f4f6; border: none;">
                                         <span>
                                             <i class="ti ti-map-pin me-2"></i>
                                             اضافة موقع تخزين
@@ -143,7 +143,7 @@
                                     </button>
                                 </div>
                                 <div id="clientStorageLocationCollapse" class="collapse">
-                                    <div class="card-body bg-white">
+                                    <div class="bg-white card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <label class="form-label">الغرفة</label>
@@ -218,7 +218,7 @@
                             </div>
 
                             <!-- Quick Actions -->
-                            <div class="mb-3 d-flex gap-2">
+                            <div class="gap-2 mb-3 d-flex">
                                 <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllClientItems()">
                                     <i class="ti ti-checkbox me-1"></i>تحديد الكل
                                 </button>
@@ -228,8 +228,8 @@
                             </div>
 
                             <!-- Items Table - Remove hidden inputs, only use checkboxes -->
-                            <div class="border rounded" style="max-height: 100%; overflow-y: auto; background: white;">
-                                <table class="table table-bordered mb-0" id="clientItemsTable" style="direction: rtl">
+                            <div class="rounded border" style="max-height: 100%; overflow-y: auto; background: white;">
+                                <table class="table mb-0 table-bordered" id="clientItemsTable" style="direction: rtl">
                                     <thead class="table-light" style="position: sticky; top: 0; z-index: 10;">
                                         <tr>
                                             <th class="text-center" style="width: 30%;">توصيف المستند</th>
@@ -256,18 +256,18 @@
                                             <tr class="client-item-row" data-item-name="{{ $searchName }}">
                                                 @if($rightItem)
                                                     <td class="align-middle">
-                                                        <div class="form-check mb-0">
+                                                        <div class="mb-0 form-check">
                                                             <input class="form-check-input client-item-checkbox" type="checkbox"
                                                                 data-item-id="{{ $rightItem->id }}"
                                                                 id="clientItem{{ $rightItem->id }}"
                                                                 onchange="toggleClientPageRange({{ $rightItem->id }})">
-                                                            <label class="form-check-label cursor-pointer" for="clientItem{{ $rightItem->id }}">
+                                                            <label class="cursor-pointer form-check-label" for="clientItem{{ $rightItem->id }}">
                                                                 {{ $rightItem->name }}
                                                             </label>
                                                         </div>
                                                     </td>
                                                     <td class="text-center align-middle">
-                                                        <select class="form-select form-select-sm text-center d-none page-select"
+                                                        <select class="text-center form-select form-select-sm d-none page-select"
                                                             data-item-id="{{ $rightItem->id }}"
                                                             data-type="from"
                                                             id="clientFromPage{{ $rightItem->id }}">
@@ -275,7 +275,7 @@
                                                         </select>
                                                     </td>
                                                     <td class="text-center align-middle">
-                                                        <select class="form-select form-select-sm text-center d-none page-select"
+                                                        <select class="text-center form-select form-select-sm d-none page-select"
                                                             data-item-id="{{ $rightItem->id }}"
                                                             data-type="to"
                                                             id="clientToPage{{ $rightItem->id }}">
@@ -289,18 +289,18 @@
                                                 @endif
                                                 @if($leftItem)
                                                     <td class="align-middle">
-                                                        <div class="form-check mb-0">
+                                                        <div class="mb-0 form-check">
                                                             <input class="form-check-input client-item-checkbox" type="checkbox"
                                                                 data-item-id="{{ $leftItem->id }}"
                                                                 id="clientItem{{ $leftItem->id }}"
                                                                 onchange="toggleClientPageRange({{ $leftItem->id }})">
-                                                            <label class="form-check-label cursor-pointer" for="clientItem{{ $leftItem->id }}">
+                                                            <label class="cursor-pointer form-check-label" for="clientItem{{ $leftItem->id }}">
                                                                 {{ $leftItem->name }}
                                                             </label>
                                                         </div>
                                                     </td>
                                                     <td class="text-center align-middle">
-                                                        <select class="form-select form-select-sm text-center d-none page-select"
+                                                        <select class="text-center form-select form-select-sm d-none page-select"
                                                             data-item-id="{{ $leftItem->id }}"
                                                             data-type="from"
                                                             id="clientFromPage{{ $leftItem->id }}">
@@ -308,7 +308,7 @@
                                                         </select>
                                                     </td>
                                                     <td class="text-center align-middle">
-                                                        <select class="form-select form-select-sm text-center d-none page-select"
+                                                        <select class="text-center form-select form-select-sm d-none page-select"
                                                             data-item-id="{{ $leftItem->id }}"
                                                             data-type="to"
                                                             id="clientToPage{{ $leftItem->id }}">
@@ -325,7 +325,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <small class="text-muted mt-2 d-block">
+                            <small class="mt-2 text-muted d-block">
                                 <i class="ti ti-bulb text-warning"></i>
                                 عند تحديد نطاق الصفحات، سيتم قص الصفحات المحددة وإنشاء ملف فرعي جديد لكل نوع محتوى
                             </small>
@@ -593,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (loading) loading.classList.add('d-none');
             if (placeholder) {
                 placeholder.classList.remove('d-none');
-                placeholder.innerHTML = '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
+                placeholder.innerHTML = '<i class="mb-3 ti ti-upload fs-1 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
             }
 
             // Reset land form

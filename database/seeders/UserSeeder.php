@@ -29,33 +29,6 @@ class UserSeeder extends Seeder
             $superAdmin->assignRole('Super Admin');
         }
 
-        // Admin (Manager role)
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@nca.com'],
-            [
-                'first_name' => 'Admin',
-                'last_name' => 'User',
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
-            ]
-        );
-        if (method_exists($admin, 'assignRole')) {
-            $admin->assignRole('Manager');
-        }
-
-        // Employee
-        $employee = User::firstOrCreate(
-            ['email' => 'employee@nca.com'],
-            [
-                'first_name' => 'Employee',
-                'last_name' => 'User',
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
-            ]
-        );
-        if (method_exists($employee, 'assignRole')) {
-            $employee->assignRole('Employee');
-        }
 
         // Viewer
         $viewer = User::firstOrCreate(

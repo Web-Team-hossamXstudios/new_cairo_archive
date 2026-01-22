@@ -7,14 +7,14 @@
 <div class="modal fade" id="barcodeResultModal" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
+            <div class="text-white modal-header bg-dark">
                 <h5 class="modal-title">
                     <i class="ti ti-barcode me-2"></i>نتيجة البحث بالباركود
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="barcodeResultBody">
-                <div class="text-center py-5">
+                <div class="py-5 text-center">
                     <div class="spinner-border text-dark" role="status"></div>
                     <p class="mt-3 text-muted">جاري البحث...</p>
                 </div>
@@ -35,15 +35,15 @@
 <div class="modal fade" id="barcodePrintModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
+            <div class="text-white modal-header bg-dark">
                 <h5 class="modal-title">
                     <i class="ti ti-barcode me-2"></i>طباعة الباركود
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body text-center p-4">
+            <div class="p-4 text-center modal-body">
                 <div class="mb-3">
-                    <h6 id="barcodeFileName" class="text-muted mb-3"></h6>
+                    <h6 id="barcodeFileName" class="mb-3 text-muted"></h6>
                     <div id="barcodeContainer" class="d-flex justify-content-center align-items-center"
                         style="min-height: 150px;">
                     </div>
@@ -65,7 +65,7 @@
 <div class="modal fade" id="fileUploadModal" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content" style="height: 100vh;">
-            <div class="modal-header bg-primary text-white">
+            <div class="text-white modal-header bg-primary">
                 <h5 class="modal-title">
                     <i class="ti ti-upload me-2"></i>رفع ملف PDF
                 </h5>
@@ -74,7 +74,7 @@
             <form id="fileUploadForm" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="file_id" id="uploadFileId">
-                <div class="modal-body p-0" style="height: calc(100vh - 140px); overflow: hidden;">
+                <div class="p-0 modal-body" style="height: calc(100vh - 140px); overflow: hidden;">
                     <div class="row g-0" style="height: 100%;">
                         <!-- Left Side: PDF Preview -->
                         <div class="col-md-5 border-end" style="height: 100%; overflow-y: auto; background: #f8f9fa;">
@@ -85,10 +85,10 @@
                                 </h6>
                                 <div id="uploadPdfPreviewContainer" class="text-center">
                                     <div class="alert alert-info" id="uploadPdfPlaceholder">
-                                        <i class="ti ti-upload fs-1 mb-3 d-block"></i>
+                                        <i class="mb-3 ti ti-upload fs-1 d-block"></i>
                                         <p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>
                                     </div>
-                                    <canvas id="uploadPdfCanvas" class="border rounded shadow-sm"
+                                    <canvas id="uploadPdfCanvas" class="rounded border shadow-sm"
                                         style="max-width: 100%; display: none;"></canvas>
                                     <div id="uploadPdfLoading" class="d-none">
                                         <div class="spinner-border text-primary" role="status">
@@ -106,7 +106,7 @@
                                 <div class="row g-3">
                                     <!-- File Info Alert -->
                                     <div class="col-12">
-                                        <div class="alert alert-info d-flex align-items-center mb-3">
+                                        <div class="mb-3 alert alert-info d-flex align-items-center">
                                             <i class="ti ti-info-circle fs-4 me-3"></i>
                                             <div>
                                                 <strong>رقم الملف:</strong> <span id="uploadFileName"></span>
@@ -114,7 +114,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- File Name/Number -->
+                                    {{-- <!-- File Name/Number -->
                                     <div class="col-12">
                                         <label class="form-label fw-semibold">
                                             <i class="ti ti-file-text me-2 text-primary"></i>
@@ -126,7 +126,7 @@
                                             <i class="ti ti-info-circle me-1"></i>
                                             سيتم حفظ هذا الرقم كاسم للملف
                                         </small>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- PDF File Upload -->
                                     <div class="col-12">
@@ -171,7 +171,7 @@
                                         </div>
 
                                         <!-- Quick Actions -->
-                                        <div class="mb-3 d-flex gap-2">
+                                        <div class="gap-2 mb-3 d-flex">
                                             <button type="button" class="btn btn-sm btn-outline-primary"
                                                 onclick="selectAllUploadItems()">
                                                 <i class="ti ti-checkbox me-1"></i>تحديد الكل
@@ -183,9 +183,9 @@
                                         </div>
 
                                         <!-- Items Table -->
-                                        <div class="border rounded"
-                                            style="max-height: 400px; overflow-y: auto; background: white;">
-                                            <table class="table table-bordered table-hover mb-0" id="uploadItemsTable"
+                                        <div class="rounded border"
+                                            style="max-height: 100%; overflow-y: auto; background: white;">
+                                            <table class="table mb-0 table-bordered table-hover" id="uploadItemsTable"
                                                 style="direction: rtl">
                                                 <thead class="table-light"
                                                     style="position: sticky; top: 0; z-index: 10;">
@@ -219,14 +219,14 @@
                                                             data-item-name="{{ $searchName }}">
                                                             @if ($rightItem)
                                                                 <td class="align-middle">
-                                                                    <div class="form-check mb-0">
+                                                                    <div class="mb-0 form-check">
                                                                         <input
                                                                             class="form-check-input upload-item-checkbox"
                                                                             type="checkbox"
                                                                             data-item-id="{{ $rightItem->id }}"
                                                                             id="uploadItem{{ $rightItem->id }}"
                                                                             onchange="toggleUploadPageRange({{ $rightItem->id }})">
-                                                                        <label class="form-check-label cursor-pointer"
+                                                                        <label class="cursor-pointer form-check-label"
                                                                             for="uploadItem{{ $rightItem->id }}">
                                                                             {{ $rightItem->name }}
                                                                         </label>
@@ -237,14 +237,14 @@
                                                                 </td>
                                                                 <td class="text-center align-middle">
                                                                     <select name="items[{{ $rightItem->id }}][from_page]"
-                                                                        class="form-select form-select-sm text-center d-none upload-page-select"
+                                                                        class="text-center form-select form-select-sm d-none upload-page-select"
                                                                         id="uploadFromPage{{ $rightItem->id }}">
                                                                         <option value="">من</option>
                                                                     </select>
                                                                 </td>
                                                                 <td class="text-center align-middle">
                                                                     <select name="items[{{ $rightItem->id }}][to_page]"
-                                                                        class="form-select form-select-sm text-center d-none upload-page-select"
+                                                                        class="text-center form-select form-select-sm d-none upload-page-select"
                                                                         id="uploadToPage{{ $rightItem->id }}">
                                                                         <option value="">إلى</option>
                                                                     </select>
@@ -256,14 +256,14 @@
                                                             @endif
                                                             @if ($leftItem)
                                                                 <td class="align-middle">
-                                                                    <div class="form-check mb-0">
+                                                                    <div class="mb-0 form-check">
                                                                         <input
                                                                             class="form-check-input upload-item-checkbox"
                                                                             type="checkbox"
                                                                             data-item-id="{{ $leftItem->id }}"
                                                                             id="uploadItem{{ $leftItem->id }}"
                                                                             onchange="toggleUploadPageRange({{ $leftItem->id }})">
-                                                                        <label class="form-check-label cursor-pointer"
+                                                                        <label class="cursor-pointer form-check-label"
                                                                             for="uploadItem{{ $leftItem->id }}">
                                                                             {{ $leftItem->name }}
                                                                         </label>
@@ -274,14 +274,14 @@
                                                                 </td>
                                                                 <td class="text-center align-middle">
                                                                     <select name="items[{{ $leftItem->id }}][from_page]"
-                                                                        class="form-select form-select-sm text-center d-none upload-page-select"
+                                                                        class="text-center form-select form-select-sm d-none upload-page-select"
                                                                         id="uploadFromPage{{ $leftItem->id }}">
                                                                         <option value="">من</option>
                                                                     </select>
                                                                 </td>
                                                                 <td class="text-center align-middle">
                                                                     <select name="items[{{ $leftItem->id }}][to_page]"
-                                                                        class="form-select form-select-sm text-center d-none upload-page-select"
+                                                                        class="text-center form-select form-select-sm d-none upload-page-select"
                                                                         id="uploadToPage{{ $leftItem->id }}">
                                                                         <option value="">إلى</option>
                                                                     </select>
@@ -296,7 +296,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <small class="text-muted mt-2 d-block">
+                                        <small class="mt-2 text-muted d-block">
                                             <i class="ti ti-bulb text-warning me-1"></i>
                                             عند تحديد نطاق الصفحات، سيتم قص الصفحات المحددة وإنشاء ملف فرعي جديد لكل نوع
                                             محتوى
@@ -395,7 +395,7 @@
         });
     }
 
-    // ==================== Barcode Functions ====================
+// ==================== Barcode Functions ====================
     function printBarcode(barcode, fileName) {
         document.getElementById('barcodeFileName').textContent = fileName;
         const container = document.getElementById('barcodeContainer');
@@ -404,11 +404,12 @@
         try {
             JsBarcode("#barcodeSvg", barcode, {
                 format: "CODE128",
-                width: 2,
-                height: 100,
+                width: 1.2,
+                height: 35,
                 displayValue: true,
-                fontSize: 20,
-                margin: 10
+                fontSize: 10,
+                margin: 2,
+                textMargin: 1
             });
 
             const modal = new bootstrap.Modal(document.getElementById('barcodePrintModal'));
@@ -460,14 +461,16 @@
                                 allBarcodes.push({
                                     barcode: file.barcode,
                                     landAddress: landAddress,
-                                    storageLocation: storageLocation
+                                    storageLocation: storageLocation,
+                                    clientName: client.name
                                 });
                             });
                         } else {
                             allBarcodes.push({
                                 barcode: file.barcode,
                                 landAddress: 'لا توجد قطع',
-                                storageLocation: storageLocation
+                                storageLocation: storageLocation,
+                                clientName: client.name
                             });
                         }
                     });
@@ -478,16 +481,12 @@
                     let barcodesHtml = '';
                     allBarcodes.forEach((item, index) => {
                         barcodesHtml += `
-                        <div class="barcode-item" style="page-break-inside: avoid; background: white; margin-bottom: 20px;">
-                            <div style="text-align: center; margin-bottom: 10px;">
+                        <div class="sticker">
+                            <div class="barcode-area">
                                 <svg id="barcode-${index}"></svg>
                             </div>
-                            <div style="text-align: center;">
-                                <p style="font-size: 10px; color: #333; margin: 5px 0;">${item.landAddress}</p>
-                            </div>
-                            <div style="text-align: center;">
-                                <p style="font-size: 10px; color: #333; margin: 5px 0;">${item.storageLocation}</p>
-                            </div>
+                            <div class="info-line">${item.landAddress}</div>
+                            <div class="info-line client-name">${item.clientName}</div>
                         </div>
                     `;
                     });
@@ -498,22 +497,77 @@
                         <title>طباعة باركودات - ${client.name}</title>
                         <script src="{{ asset('dashboard/assets/vendor/jsbarcode/JsBarcode.all.min.js') }}"><\/script>
                         <style>
+                            @page {
+                                size: 38mm 25mm;
+                                margin: 0;
+                            }
+                            * {
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
                             body {
                                 font-family: Arial, sans-serif;
-                                padding: 20px;
                             }
-                            .barcode-item {
-                                margin-bottom: 20px;
+                            .sticker {
+                                width: 38mm;
+                                height: 25mm;
+                                padding: 1mm;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                page-break-after: always;
+                                overflow: hidden;
+                            }
+                            .sticker:last-child {
+                                page-break-after: auto;
+                            }
+                            .barcode-area {
+                                text-align: center;
+                                width: 100%;
+                            }
+                            .barcode-area svg {
+                                max-width: 36mm;
+                                height: auto;
+                                max-height: 16mm;
+                            }
+                            .info-line {
+                                font-size: 4pt;
+                                text-align: center;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                max-width: 36mm;
+                                margin-top: 0.3mm;
+                                line-height: 1.1;
+                            }
+                            .info-line.client-name {
+                                font-weight: bold;
+                            }
+                            .no-print {
+                                position: fixed;
+                                bottom: 10px;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                background: #fff;
+                                padding: 10px;
+                                border-radius: 8px;
+                                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
                             }
                             @media print {
-                                body { margin: 0; padding: 10px; }
                                 .no-print { display: none; }
+                                body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                            }
+                            @media screen {
+                                body { padding: 20px; background: #f5f5f5; }
+                                .sticker { background: white; margin: 10px auto; border: 1px dashed #ccc; }
                             }
                         </style>
                     </head>
                     <body>
                         ${barcodesHtml}
-                        <div class="no-print" style="text-align: center; margin-top: 20px;">
+                        <div class="no-print">
                             <button onclick="window.print()" style="padding: 10px 30px; font-size: 16px; cursor: pointer;">طباعة</button>
                             <button onclick="window.close()" style="padding: 10px 30px; font-size: 16px; cursor: pointer; margin-right: 10px;">إغلاق</button>
                         </div>
@@ -523,11 +577,12 @@
                                     try {
                                         JsBarcode("#barcode-${index}", "${item.barcode}", {
                                             format: "CODE128",
-                                            width: 1.5,
-                                            height: 60,
+                                            width: 1,
+                                            height: 30,
                                             displayValue: true,
-                                            fontSize: 12,
-                                            margin: 5
+                                            fontSize: 8,
+                                            margin: 1,
+                                            textMargin: 0
                                         });
                                     } catch(e) {
                                         console.error('Barcode error:', e);
@@ -565,13 +620,13 @@
 
         document.getElementById('barcodeModalTitle').textContent = `طباعة باركودات - ${clientIds.length} عميل`;
         document.getElementById('bulkBarcodeContent').innerHTML = `
-        <div class="text-center py-5">
+        <div class="py-5 text-center">
             <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
                 <span class="visually-hidden">جاري التحميل...</span>
             </div>
             <p class="mt-3 text-muted fs-5">جاري تحميل بيانات ${clientIds.length} عميل...</p>
         </div>
-    `;
+        `;
 
         // Fetch all clients data
         const fetchPromises = clientIds.map(id =>
@@ -666,27 +721,14 @@
                 let barcodesHtml = '';
                 allBarcodes.forEach((item, index) => {
                     const barcodeSection = item.barcode ?
-                        `<div style="text-align: center; margin-bottom: 10px; fs-4">
-                         <svg id="barcode-${index}"></svg>
-                       </div>` :
-                        `<div style="text-align: center; padding: 20px; background: #f8d7da; color: #721c24; border-radius: 6px; margin-bottom: 15px;">
-                         <p style="margin: 0; font-size: 16px;">لا يوجد باركود لهذا الملف</p>
-                       </div>`;
+                        `<div class="barcode-area"><svg id="barcode-${index}"></svg></div>` :
+                        `<div class="no-barcode">لا يوجد باركود</div>`;
 
                     barcodesHtml += `
-                    <div class="barcode-item" style="page-break-inside: avoid;   background: white;">
-                        <!-- Barcode Section -->
+                    <div class="sticker-preview">
                         ${barcodeSection}
-
-                        <!-- Land Address -->
-                        <div style="background: #fff;  text-align: center;">
-                            <p style="font-size: 10px; color: #333;">${item.landAddress}</p>
-                        </div>
-
-                        <!-- Storage Location -->
-                        <div style="background: #fff;  text-align: center;">
-                            <p style="font-size: 10px; color: #333;">${item.storageLocation}</p>
-                        </div>
+                        <div class="info-line">${item.landAddress}</div>
+                        <div class="info-line client-name">${item.clientName}</div>
                     </div>
                 `;
                 });
@@ -703,11 +745,12 @@
                             try {
                                 JsBarcode(`#barcode-${index}`, item.barcode, {
                                     format: "CODE128",
-                                    width: 1.5,
-                                    height: 60,
+                                    width: 1,
+                                    height: 30,
                                     displayValue: true,
-                                    fontSize: 12,
-                                    margin: 5
+                                    fontSize: 8,
+                                    margin: 1,
+                                    textMargin: 0
                                 });
                             } catch (e) {
                                 console.error('Barcode generation error for ' + item.barcode + ':',
@@ -720,7 +763,7 @@
             .catch(error => {
                 console.error('Error:', error);
                 document.getElementById('bulkBarcodeContent').innerHTML = `
-                <div class="alert alert-danger text-center">
+                <div class="text-center alert alert-danger">
                     <i class="ti ti-alert-circle fs-1"></i>
                     <p class="mt-3">حدث خطأ أثناء تحميل بيانات العملاء</p>
                 </div>
@@ -733,7 +776,7 @@
         const modalContent = document.getElementById('bulkBarcodeContent').innerHTML;
         const modalTitle = document.getElementById('barcodeModalTitle').textContent;
 
-        const printWindow = window.open('', '', 'width=900,height=700');
+        const printWindow = window.open('', '', 'width=400,height=600');
         printWindow.document.write(`
         <!DOCTYPE html>
         <html dir="rtl">
@@ -741,26 +784,65 @@
             <meta charset="UTF-8">
             <title>${modalTitle}</title>
             <style>
+                @page {
+                    size: 38mm 25mm;
+                    margin: 0;
+                }
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
                 body {
                     font-family: Arial, sans-serif;
-                    padding: 20px;
-                    background-color: #f5f5f5;
                 }
-                .barcode-item {
-                    background: white;
-                    margin-bottom: 30px;
-                    page-break-inside: avoid;
+                .sticker-preview {
+                    width: 38mm;
+                    height: 25mm;
+                    padding: 1mm;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    page-break-after: always;
+                    overflow: hidden;
+                }
+                .sticker-preview:last-child {
+                    page-break-after: auto;
+                }
+                .barcode-area {
+                    text-align: center;
+                    width: 100%;
+                }
+                .barcode-area svg {
+                    max-width: 36mm;
+                    height: auto;
+                    max-height: 16mm;
+                }
+                .info-line {
+                    font-size: 4pt;
+                    text-align: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 36mm;
+                    margin-top: 0.3mm;
+                    line-height: 1.1;
+                }
+                .info-line.client-name {
+                    font-weight: bold;
+                }
+                .no-barcode {
+                    font-size: 6pt;
+                    color: #721c24;
+                    text-align: center;
                 }
                 @media print {
-                    body {
-                        margin: 0;
-                        padding: 10px;
-                        background-color: white;
-                    }
-                    .barcode-item {
-                        page-break-inside: avoid;
-                        border: 1px solid #333;
-                    }
+                    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                }
+                @media screen {
+                    body { padding: 20px; background: #f5f5f5; }
+                    .sticker-preview { background: white; margin: 10px auto; border: 1px dashed #ccc; }
                 }
             </style>
         </head>
@@ -773,12 +855,12 @@
             <\/script>
         </body>
         </html>
-    `);
+        `);
         printWindow.document.close();
     }
 
     function printBarcodeContent() {
-        const printWindow = window.open('', '', 'width=600,height=400');
+        const printWindow = window.open('', '', 'width=200,height=150');
         const barcodeHtml = document.getElementById('barcodeContainer').innerHTML;
         const fileName = document.getElementById('barcodeFileName').textContent;
 
@@ -787,28 +869,55 @@
         <head>
             <title>طباعة الباركود</title>
             <style>
+                @page {
+                    size: 38mm 25mm;
+                    margin: 0;
+                }
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
                 body {
                     font-family: Arial, sans-serif;
+                    width: 38mm;
+                    height: 25mm;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    padding: 20px;
+                    padding: 1mm;
+                    overflow: hidden;
                 }
-                h3 {
-                    margin-bottom: 20px;
+                .barcode-wrapper {
+                    text-align: center;
+                    width: 100%;
+                }
+                .barcode-wrapper svg {
+                    max-width: 36mm;
+                    height: auto;
+                    max-height: 18mm;
+                }
+                .file-name {
+                    font-size: 6pt;
+                    margin-top: 1mm;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 36mm;
                     text-align: center;
                 }
                 @media print {
-                    @page {
-                        margin: 1cm;
+                    body {
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
                     }
                 }
             </style>
         </head>
         <body>
-            <h3>${fileName}</h3>
-            ${barcodeHtml}
+            <div class="barcode-wrapper">${barcodeHtml}</div>
+            <div class="file-name">${fileName}</div>
             <script>
                 window.onload = function() {
                     window.print();
@@ -817,6 +926,8 @@
                     };
                 };
             <\/script>
+        </body>
+        </html>
     `);
         printWindow.document.close();
     }
@@ -862,7 +973,7 @@
             if (placeholder) {
                 placeholder.classList.remove('d-none');
                 placeholder.innerHTML =
-                    '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
+                    '<i class="mb-3 ti ti-upload fs-1 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
             }
 
             const fileUploadModalEl = document.getElementById('fileUploadModal');
@@ -1002,7 +1113,7 @@
                 if (placeholder) {
                     placeholder.classList.remove('d-none');
                     placeholder.innerHTML =
-                        '<i class="ti ti-alert-circle fs-1 mb-3 d-block text-danger"></i><p class="mb-0 text-danger">خطأ في تحميل الملف</p>';
+                        '<i class="mb-3 ti ti-alert-circle fs-1 d-block text-danger"></i><p class="mb-0 text-danger">خطأ في تحميل الملف</p>';
                 }
             });
         };
@@ -1037,7 +1148,7 @@
         if (placeholder) {
             placeholder.classList.remove('d-none');
             placeholder.innerHTML =
-                '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
+                '<i class="mb-3 ti ti-upload fs-1 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
         }
         if (fileInput) fileInput.value = '';
     });
@@ -1100,7 +1211,7 @@
         const row = document.createElement('div');
         row.className = 'card mb-2 border-primary';
         row.innerHTML = `
-        <div class="card-header bg-primary-subtle d-flex justify-content-between align-items-center py-2">
+        <div class="py-2 card-header bg-primary-subtle d-flex justify-content-between align-items-center">
             <h6 class="mb-0 text-primary small"><i class="ti ti-map-pin me-1"></i>قطعه #${landRowIndex + 1}</h6>
             <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.card').remove()">
                 <i class="ti ti-trash"></i> حذف
@@ -1509,7 +1620,7 @@
                         });
                     } else {
                         landsContent.innerHTML =
-                            '<div class="col-12 text-center text-muted py-4">لا توجد قطع مسجلة</div>';
+                            '<div class="py-4 text-center col-12 text-muted">لا توجد قطع مسجلة</div>';
                     }
 
                     new bootstrap.Modal(document.getElementById('viewClientModal')).show();
@@ -1552,28 +1663,28 @@
 
                         return `
                         <div class="col-md-2 col-sm-4 col-6">
-                            <div class="card border h-100 shadow-sm hover-shadow" style="transition: all 0.3s; border-radius: 12px;">
-                                <div class="card-body p-2">
-                                    <div class="d-flex align-items-start mb-2">
-                                        <div class="bg-primary-subtle text-primary rounded me-2 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                            <div class="border shadow-sm card h-100 hover-shadow" style="transition: all 0.3s; border-radius: 12px;">
+                                <div class="p-2 card-body">
+                                    <div class="mb-2 d-flex align-items-start">
+                                        <div class="flex-shrink-0 rounded bg-primary-subtle text-primary me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                             <i class="ti ti-file-text"></i>
                                         </div>
-                                        <div class="flex-grow-1 min-w-0">
+                                        <div class="min-w-0 flex-grow-1">
                                             <h6 class="mb-0 text-truncate small fw-bold" title="${itemName}">${itemName}</h6>
                                         </div>
                                     </div>
                                     <div class="mb-2">
-                                        <div class="d-flex align-items-center justify-content-between mb-1">
+                                        <div class="mb-1 d-flex align-items-center justify-content-between">
                                             <small class="text-muted" style="font-size: 0.7rem;">الصفحات:</small>
                                             <span class="badge bg-info-subtle text-info" style="font-size: 0.65rem;">${fromPage} - ${toPage}</span>
                                         </div>
                                     </div>
                                     ${subPdfUrl ? `
-                                        <div class="d-flex gap-1 justify-content-center">
-                                            <button type="button" class="btn btn-sm btn-info flex-fill py-1" title="عرض" onclick="openSubFileIframe('${subPdfUrl}', '${itemName}')">
+                                        <div class="gap-1 d-flex justify-content-center">
+                                            <button type="button" class="py-1 btn btn-sm btn-info flex-fill" title="عرض" onclick="openSubFileIframe('${subPdfUrl}', '${itemName}')">
                                                 <i class="ti ti-eye" style="font-size: 0.8rem;"></i>
                                             </button>
-                                            <a href="${subPdfUrl}" download class="btn btn-sm btn-primary py-1" title="تحميل">
+                                            <a href="${subPdfUrl}" download class="py-1 btn btn-sm btn-primary" title="تحميل">
                                                 <i class="ti ti-download" style="font-size: 0.8rem;"></i>
                                             </a>
                                         </div>
@@ -1585,7 +1696,7 @@
                     }).join('');
 
                     subFilesHtml = `
-                        <div class="row g-2 mt-2">
+                        <div class="mt-2 row g-2">
                             ${subFileCards}
                         </div>
                     `;
@@ -1597,32 +1708,32 @@
                 const createdAt = file.created_at ? new Date(file.created_at).toLocaleDateString('ar-EG') : '-';
 
                 return `
-                <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px; overflow: hidden;">
+                <div class="mb-3 border-0 shadow-sm card" style="border-radius: 12px; overflow: hidden;">
                     <!-- File Header -->
-                    <div class="card-header p-3" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%);">
+                    <div class="p-3 card-header" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%);">
                         <div class="d-flex align-items-start">
-                            <div class="bg-white bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 45px; height: 45px;">
-                                <i class="ti ti-file-text text-white fs-5"></i>
+                            <div class="flex-shrink-0 bg-white bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                <i class="text-white ti ti-file-text fs-5"></i>
                             </div>
                             <div class="flex-grow-1">
-                                <div class="d-flex align-items-center gap-2 mb-1">
-                                    <h6 class="mb-0 fw-bold text-white">${file.file_name || 'ملف رقم ' + (fileIndex + 1)}</h6>
+                                <div class="gap-2 mb-1 d-flex align-items-center">
+                                    <h6 class="mb-0 text-white fw-bold">${file.file_name || 'ملف رقم ' + (fileIndex + 1)}</h6>
                                     <span class="badge bg-success" style="font-size: 0.7rem;">${pagesCount} صفحات</span>
                                 </div>
                                 <small class="text-white-50 d-block" style="font-size: 0.75rem;">${locationString}</small>
-                                <div class="d-flex align-items-center gap-2 mt-2 flex-wrap">
+                                <div class="flex-wrap gap-2 mt-2 d-flex align-items-center">
                                     ${hasFileUploadPermission ? `
-                                        <button class="btn btn-dark btn-sm px-3" onclick="openUploadForFile(${file.id}, '${file.file_name || 'ملف'}')" style="border-radius: 6px;">
+                                        <button class="px-3 btn btn-dark btn-sm" onclick="openUploadForFile(${file.id}, '${file.file_name || 'ملف'}')" style="border-radius: 6px;">
                                             <i class="ti ti-upload me-1"></i>رفع ملف
                                         </button>
                                     ` : ''}
                                     ${file.barcode ? `
-                                        <span class="badge bg-dark text-white px-2 py-1" style="border-radius: 6px; font-size: 0.7rem; cursor: pointer;" onclick="printBarcode('${file.barcode}', '${file.file_name || 'ملف'}')">
+                                        <span class="px-2 py-1 text-white badge bg-dark" style="border-radius: 6px; font-size: 0.7rem; cursor: pointer;" onclick="printBarcode('${file.barcode}', '${file.file_name || 'ملف'}')">
                                             <i class="ti ti-barcode me-1"></i>${file.barcode}
                                         </span>
                                     ` : ''}
                                     ${pagesCount > 0 ? `
-                                        <span class="badge bg-info-subtle text-info px-2 py-1" style="border-radius: 6px; font-size: 0.7rem;">
+                                        <span class="px-2 py-1 badge bg-info-subtle text-info" style="border-radius: 6px; font-size: 0.7rem;">
                                             <i class="ti ti-file-text me-1"></i>${pagesCount} صفحات
                                         </span>
                                     ` : ''}
@@ -1631,23 +1742,23 @@
                         </div>
                     </div>
                     <!-- File Content -->
-                    <div class="card-body p-3" style="background: #f8fafc; min-height: 120px;">
+                    <div class="p-3 card-body" style="background: #f8fafc; min-height: 120px;">
                         ${file.sub_files && file.sub_files.length > 0 ? subFilesHtml : `
-                            <div class="text-center text-muted py-4">
-                                <i class="ti ti-file-off fs-1 d-block mb-2 opacity-50"></i>
+                            <div class="py-4 text-center text-muted">
+                                <i class="mb-2 opacity-50 ti ti-file-off fs-1 d-block"></i>
                                 <p class="mb-0" style="font-size: 0.85rem;">لا توجد مستندات مسندة لهذا الملف</p>
                             </div>
                         `}
                     </div>
                     <!-- File Footer -->
-                    <div class="card-footer bg-white border-top d-flex justify-content-between align-items-center py-2 px-3">
+                    <div class="px-3 py-2 bg-white card-footer border-top d-flex justify-content-between align-items-center">
                         <small class="text-muted">
                             <i class="ti ti-user me-1"></i>المستخدم: ${file.created_by?.name || 'غير محدد'}
                         </small>
                         <small class="text-muted">
                             <i class="ti ti-calendar me-1"></i>تاريخ الرفع: ${createdAt}
                         </small>
-                        <div class="d-flex gap-1">
+                        <div class="gap-1 d-flex">
                             ${hasDocument ? `
                                 <button class="btn btn-sm btn-outline-info" onclick="showFile(${file.id})" title="عرض الملف">
                                     <i class="ti ti-eye"></i>
@@ -1658,8 +1769,8 @@
                 </div>
             `;
             }).join('') :
-            `<div class="text-center text-muted py-5">
-                <i class="ti ti-folder-off fs-1 d-block mb-2 opacity-50"></i>
+            `<div class="py-5 text-center text-muted">
+                <i class="mb-2 opacity-50 ti ti-folder-off fs-1 d-block"></i>
                 <p class="mb-0">لا توجد ملفات مرتبطة بهذه القطعة</p>
             </div>`;
 
@@ -1721,8 +1832,8 @@
         let html = `
         <div style="height: 100%; overflow-y: auto; padding: 1.5rem;">
             <!-- PDF Viewer Section (Hidden by default) -->
-            <div id="clientPdfViewerSection" class="d-none mb-4">
-                <div class="card border-0 shadow-sm">
+            <div id="clientPdfViewerSection" class="mb-4 d-none">
+                <div class="border-0 shadow-sm card">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">
                             <i class="ti ti-file-type-pdf text-danger me-2"></i>
@@ -1732,7 +1843,7 @@
                             <i class="ti ti-x me-1"></i>إغلاق المعاينة
                         </button>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="p-0 card-body">
                         <iframe id="clientPdfIframe" style="width: 100%; height: 500px; border: none;" src=""></iframe>
                     </div>
                 </div>
@@ -1740,18 +1851,18 @@
 
             <!-- File Info Section -->
             <div id="clientFileInfoSection">
-                <div class="row g-4 mb-4">
+                <div class="mb-4 row g-4">
                     <div class="col-md-8">
-                        <div class="card border-0 shadow-sm h-100">
+                        <div class="border-0 shadow-sm card h-100">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0"><i class="ti ti-info-circle me-2"></i>معلومات الملف</h6>
                             </div>
                             <div class="card-body">
                                 <div class="row g-3">
-                                    <div class="col-12 mb-2">
-                                        <div class="d-flex align-items-center justify-content-between p-3 bg-dark text-white rounded">
+                                    <div class="mb-2 col-12">
+                                        <div class="p-3 text-white rounded d-flex align-items-center justify-content-between bg-dark">
                                             <div class="d-flex align-items-center">
-                                                <div class="avatar avatar-sm bg-white text-dark rounded me-3">
+                                                <div class="bg-white rounded avatar avatar-sm text-dark me-3">
                                                     <i class="ti ti-barcode"></i>
                                                 </div>
                                                 <div>
@@ -1759,12 +1870,12 @@
                                                     <strong class="font-monospace fs-5">${file.barcode || 'غير متوفر'}</strong>
                                                 </div>
                                             </div>
-                                            ${file.barcode ? '<button class="btn btn-sm btn-outline-light text-white" onclick="copyBarcode(\'' + file.barcode + '\')"><i class="ti ti-copy"></i></button>' : ''}
+                                            ${file.barcode ? '<button class="text-white btn btn-sm btn-outline-light" onclick="copyBarcode(\'' + file.barcode + '\')"><i class="ti ti-copy"></i></button>' : ''}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm bg-primary-subtle text-primary rounded me-3">
+                                            <div class="rounded avatar avatar-sm bg-primary-subtle text-primary me-3">
                                                 <i class="ti ti-user"></i>
                                             </div>
                                             <div>
@@ -1775,7 +1886,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm bg-success-subtle text-success rounded me-3">
+                                            <div class="rounded avatar avatar-sm bg-success-subtle text-success me-3">
                                                 <i class="ti ti-map-pin"></i>
                                             </div>
                                             <div>
@@ -1786,7 +1897,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm bg-info-subtle text-info rounded me-3">
+                                            <div class="rounded avatar avatar-sm bg-info-subtle text-info me-3">
                                                 <i class="ti ti-building"></i>
                                             </div>
                                             <div>
@@ -1797,7 +1908,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm bg-warning-subtle text-warning rounded me-3">
+                                            <div class="rounded avatar avatar-sm bg-warning-subtle text-warning me-3">
                                                 <i class="ti ti-file"></i>
                                             </div>
                                             <div>
@@ -1811,19 +1922,19 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card border-0 shadow-sm h-100">
+                        <div class="border-0 shadow-sm card h-100">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0"><i class="ti ti-download me-2"></i>تحميل الملف</h6>
                             </div>
-                            <div class="card-body text-center">
+                            <div class="text-center card-body">
                                 ${pdfUrl ? `
                                     <div class="mb-3">
                                         <i class="ti ti-file-type-pdf text-danger" style="font-size: 3rem;"></i>
                                     </div>
-                                    <button type="button" class="btn btn-primary w-100 mb-2" onclick="viewClientPdfInModal('${pdfUrl}', '${file.file_name}')">
+                                    <button type="button" class="mb-2 btn btn-primary w-100" onclick="viewClientPdfInModal('${pdfUrl}', '${file.file_name}')">
                                         <i class="ti ti-eye me-2"></i>عرض في المعاينة
                                     </button>
-                                    <a href="${pdfUrl}" target="_blank" class="btn btn-outline-secondary w-100 mb-2">
+                                    <a href="${pdfUrl}" target="_blank" class="mb-2 btn btn-outline-secondary w-100">
                                         <i class="ti ti-external-link me-2"></i>فتح في تبويب جديد
                                     </a>
                                     <a href="${pdfUrl}" download class="btn btn-outline-primary w-100">
@@ -1837,7 +1948,7 @@
 
                 <!-- Sub-Files Section -->
                 ${file.sub_files && file.sub_files.length > 0 ? `
-                    <div class="card border-0 shadow-sm">
+                    <div class="border-0 shadow-sm card">
                         <div class="card-header bg-gradient text-dark" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                             <h5 class="mb-0 text-dark">
                                 <i class="ti ti-folders me-2"></i>
@@ -1845,7 +1956,7 @@
                             </h5>
                             <small class="text-dark-50">الملفات التي تم إنشاؤها بناءً على أنواع المحتوى المحددة</small>
                         </div>
-                        <div class="card-body p-3">
+                        <div class="p-3 card-body">
                             <div class="row g-3">
                                 ${file.sub_files.map((subFile, index) => {
                                     const item = subFile.items && subFile.items[0];
@@ -1856,16 +1967,16 @@
                                     const subPdfUrl = subFile.media && subFile.media[0] ? subFile.media[0].original_url : null;
 
                                     return '<div class="col-md-4 col-lg-3">' +
-                                        '<div class="card border shadow-sm h-100">' +
+                                        '<div class="border shadow-sm card h-100">' +
                                             '<div class="card-img-top bg-light position-relative" style="height: 120px; overflow: hidden;">' +
                                                 (subPdfUrl ?
                                                     '<iframe src="' + subPdfUrl + '#toolbar=0&navpanes=0&scrollbar=0" style="width: 100%; height: 200px; border: none; pointer-events: none; transform: scale(0.8); transform-origin: top center;" loading="lazy"></iframe>' +
-                                                    '<div class="position-absolute top-0 start-0 w-100 h-100" style="cursor: pointer;" onclick="viewSubFilePdf(\'' + subPdfUrl + '\', \'' + itemName + '\')"></div>'
+                                                    '<div class="top-0 position-absolute start-0 w-100 h-100" style="cursor: pointer;" onclick="viewSubFilePdf(\'' + subPdfUrl + '\', \'' + itemName + '\')"></div>'
                                                 : '<div class="d-flex align-items-center justify-content-center h-100"><i class="ti ti-file-off text-muted fs-1"></i></div>') +
                                             '</div>' +
-                                            '<div class="card-body p-2">' +
-                                                '<h6 class="card-title mb-1 small fw-bold text-truncate" title="' + itemName + '">' + itemName + '</h6>' +
-                                                '<div class="d-flex align-items-center gap-2 mb-2">' +
+                                            '<div class="p-2 card-body">' +
+                                                '<h6 class="mb-1 card-title small fw-bold text-truncate" title="' + itemName + '">' + itemName + '</h6>' +
+                                                '<div class="gap-2 mb-2 d-flex align-items-center">' +
                                                     '<span class="badge bg-info-subtle text-info small">ص ' + fromPage + '-' + toPage + '</span>' +
                                                     '<span class="badge bg-success-subtle text-success small">' + (subFile.pages_count || 0) + ' صفحة</span>' +
                                                 '</div>' +
@@ -1936,7 +2047,7 @@
                     <i class="ti ti-file-type-pdf text-danger fs-4 me-2"></i>
                     <span class="fw-bold">${title}</span>
                 </div>
-                <div class="d-flex gap-2">
+                <div class="gap-2 d-flex">
                     <a href="${pdfUrl}" target="_blank" class="btn btn-sm btn-outline-secondary">
                         <i class="ti ti-external-link me-1"></i>فتح في تبويب جديد
                     </a>
@@ -1988,7 +2099,7 @@
         if (loading) loading.classList.add('d-none');
         if (placeholder) {
             placeholder.classList.remove('d-none');
-            placeholder.innerHTML = '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
+            placeholder.innerHTML = '<i class="mb-3 ti ti-upload fs-1 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
         }
 
         // Hide new land form if visible
@@ -2345,7 +2456,7 @@
                 loading.classList.add('d-none');
                 placeholder.classList.remove('d-none');
                 placeholder.innerHTML =
-                    '<i class="ti ti-alert-circle fs-1 mb-3 d-block text-danger"></i><p class="mb-0 text-danger">خطأ في تحميل الملف</p>';
+                    '<i class="mb-3 ti ti-alert-circle fs-1 d-block text-danger"></i><p class="mb-0 text-danger">خطأ في تحميل الملف</p>';
             });
         };
 
@@ -2383,7 +2494,7 @@
         if (placeholder) {
             placeholder.classList.remove('d-none');
             placeholder.innerHTML =
-                '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
+                '<i class="mb-3 ti ti-upload fs-1 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
         }
         if (fileInput) fileInput.value = '';
     });
@@ -2818,16 +2929,16 @@
             if (!statusBadge) return;
 
             const statuses = {
-                ready: `<span class="badge bg-success-subtle text-success fs-6 px-3 py-2">
+                ready: `<span class="px-3 py-2 badge bg-success-subtle text-success fs-6">
                         <i class="ti ti-device-desktop-analytics me-1"></i>جاهز للمسح
                     </span>`,
-                scanning: `<span class="badge bg-warning-subtle text-warning fs-6 px-3 py-2">
+                scanning: `<span class="px-3 py-2 badge bg-warning-subtle text-warning fs-6">
                         <i class="ti ti-loader me-1 spinner-border spinner-border-sm"></i>جاري المسح...
                     </span>`,
-                success: `<span class="badge bg-success-subtle text-success fs-6 px-3 py-2">
+                success: `<span class="px-3 py-2 badge bg-success-subtle text-success fs-6">
                         <i class="ti ti-check me-1"></i>تم العثور على الملف
                     </span>`,
-                error: `<span class="badge bg-danger-subtle text-danger fs-6 px-3 py-2">
+                error: `<span class="px-3 py-2 badge bg-danger-subtle text-danger fs-6">
                         <i class="ti ti-x me-1"></i>لم يتم العثور
                     </span>`
             };
@@ -2874,7 +2985,7 @@
         // Show modal with loading state
         const modal = new bootstrap.Modal(document.getElementById('barcodeResultModal'));
         document.getElementById('barcodeResultBody').innerHTML = `
-        <div class="text-center py-5">
+        <div class="py-5 text-center">
             <div class="spinner-border text-dark" role="status"></div>
             <p class="mt-3 text-muted">جاري البحث عن الباركود: <strong>${barcode}</strong></p>
         </div>
@@ -2934,11 +3045,11 @@
             <!-- File Information -->
             <div class="col-md-6">
                 <div class="card border-dark h-100">
-                    <div class="card-header bg-dark text-white">
+                    <div class="text-white card-header bg-dark">
                         <h6 class="mb-0"><i class="ti ti-file me-2"></i>معلومات الملف</h6>
                     </div>
                     <div class="card-body">
-                        <table class="table table-sm table-borderless mb-0">
+                        <table class="table mb-0 table-sm table-borderless">
                             <tr>
                                 <td class="text-muted" width="40%">الباركود:</td>
                                 <td><strong class="text-dark">${file.barcode || '-'}</strong></td>
@@ -2971,11 +3082,11 @@
             <!-- Physical Location -->
             <div class="col-md-6">
                 <div class="card border-success h-100">
-                    <div class="card-header bg-success text-white">
+                    <div class="text-white card-header bg-success">
                         <h6 class="mb-0"><i class="ti ti-building-warehouse me-2"></i>موقع التخزين</h6>
                     </div>
                     <div class="card-body">
-                        <table class="table table-sm table-borderless mb-0">
+                        <table class="table mb-0 table-sm table-borderless">
                             <tr>
                                 <td class="text-muted" width="40%">الغرفة:</td>
                                 <td>${file.room?.name || '-'}</td>
@@ -3003,11 +3114,11 @@
             html += `
             <div class="col-md-6">
                 <div class="card border-primary h-100">
-                    <div class="card-header bg-primary text-white">
+                    <div class="text-white card-header bg-primary">
                         <h6 class="mb-0"><i class="ti ti-user me-2"></i>معلومات العميل</h6>
                     </div>
                     <div class="card-body">
-                        <table class="table table-sm table-borderless mb-0">
+                        <table class="table mb-0 table-sm table-borderless">
                             <tr>
                                 <td class="text-muted" width="40%">الاسم:</td>
                                 <td><strong>${client.name || '-'}</strong></td>
@@ -3051,7 +3162,7 @@
                         <h6 class="mb-0"><i class="ti ti-map-pin me-2"></i>معلومات القطعة</h6>
                     </div>
                     <div class="card-body">
-                        <table class="table table-sm table-borderless mb-0">
+                        <table class="table mb-0 table-sm table-borderless">
                             <tr>
                                 <td class="text-muted" width="40%">رقم القطعة:</td>
                                 <td><strong>${land.plot_number || '-'}</strong></td>
@@ -3093,12 +3204,12 @@
      */
     function renderBarcodeNotFound(barcode, message) {
         document.getElementById('barcodeResultBody').innerHTML = `
-        <div class="text-center py-5">
-            <div class="avatar avatar-lg bg-danger-subtle text-danger rounded-circle mx-auto mb-3">
+        <div class="py-5 text-center">
+            <div class="mx-auto mb-3 avatar avatar-lg bg-danger-subtle text-danger rounded-circle">
                 <i class="ti ti-barcode-off fs-1"></i>
             </div>
-            <h5 class="text-danger mb-2">لم يتم العثور على الملف</h5>
-            <p class="text-muted mb-3">الباركود: <strong>${barcode}</strong></p>
+            <h5 class="mb-2 text-danger">لم يتم العثور على الملف</h5>
+            <p class="mb-3 text-muted">الباركود: <strong>${barcode}</strong></p>
             <p class="text-muted">${message || 'تأكد من صحة الباركود وحاول مرة أخرى'}</p>
             <div class="mt-4">
                 <button class="btn btn-outline-dark" onclick="document.getElementById('barcodeSearchInput').focus(); bootstrap.Modal.getInstance(document.getElementById('barcodeResultModal')).hide();">
@@ -3126,7 +3237,7 @@
 
         // Reset modal body to loading state
         document.getElementById('fileModalBody').innerHTML = `
-        <div class="text-center py-5">
+        <div class="py-5 text-center">
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">جاري التحميل...</span>
             </div>
@@ -3205,8 +3316,8 @@
 
         let html = `
         <!-- PDF Viewer Section (Hidden by default) -->
-        <div id="pdfViewerSection" class="d-none mb-4">
-            <div class="card border-0 shadow-sm">
+        <div id="pdfViewerSection" class="mb-4 d-none">
+            <div class="border-0 shadow-sm card">
                 <div class="card-header bg-light d-flex justify-content-between align-items-center">
                     <h6 class="mb-0">
                         <i class="ti ti-file-type-pdf text-danger me-2"></i>
@@ -3216,7 +3327,7 @@
                         <i class="ti ti-x me-1"></i>إغلاق المعاينة
                     </button>
                 </div>
-                <div class="card-body p-0">
+                <div class="p-0 card-body">
                     <iframe id="pdfIframe" style="width: 100%; height: 600px; border: none;" src=""></iframe>
                 </div>
             </div>
@@ -3224,18 +3335,18 @@
 
         <!-- File Info Section -->
         <div id="fileInfoSection">
-        <div class="row g-4 mb-4">
+        <div class="mb-4 row g-4">
             <div class="col-md-8">
-                <div class="card border-0 shadow-sm h-100">
+                <div class="border-0 shadow-sm card h-100">
                     <div class="card-header bg-light">
                         <h6 class="mb-0"><i class="ti ti-info-circle me-2"></i>معلومات الملف</h6>
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
-                            <div class="col-12 mb-2">
-                                <div class="d-flex align-items-center justify-content-between p-3 bg-dark text-white rounded">
+                            <div class="mb-2 col-12">
+                                <div class="p-3 text-white rounded d-flex align-items-center justify-content-between bg-dark">
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-sm bg-white text-dark rounded me-3">
+                                        <div class="bg-white rounded avatar avatar-sm text-dark me-3">
                                             <i class="ti ti-barcode"></i>
                                         </div>
                                         <div>
@@ -3243,12 +3354,12 @@
                                             <strong class="font-monospace fs-5">${file.barcode || 'غير متوفر'}</strong>
                                         </div>
                                     </div>
-                                    ${file.barcode ? '<button class="btn btn-sm btn-outline-light text-white" onclick="copyFileBarcode(\'' + file.barcode + '\')"><i class="ti ti-copy"></i></button>' : ''}
+                                    ${file.barcode ? '<button class="text-white btn btn-sm btn-outline-light" onclick="copyFileBarcode(\'' + file.barcode + '\')"><i class="ti ti-copy"></i></button>' : ''}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm bg-primary-subtle text-primary rounded me-3">
+                                    <div class="rounded avatar avatar-sm bg-primary-subtle text-primary me-3">
                                         <i class="ti ti-user"></i>
                                     </div>
                                     <div>
@@ -3259,7 +3370,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm bg-success-subtle text-success rounded me-3">
+                                    <div class="rounded avatar avatar-sm bg-success-subtle text-success me-3">
                                         <i class="ti ti-map-pin"></i>
                                     </div>
                                     <div>
@@ -3270,7 +3381,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm bg-info-subtle text-info rounded me-3">
+                                    <div class="rounded avatar avatar-sm bg-info-subtle text-info me-3">
                                         <i class="ti ti-building"></i>
                                     </div>
                                     <div>
@@ -3281,7 +3392,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm bg-warning-subtle text-warning rounded me-3">
+                                    <div class="rounded avatar avatar-sm bg-warning-subtle text-warning me-3">
                                         <i class="ti ti-file"></i>
                                     </div>
                                     <div>
@@ -3295,19 +3406,19 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100">
+                <div class="border-0 shadow-sm card h-100">
                     <div class="card-header bg-light">
                         <h6 class="mb-0"><i class="ti ti-download me-2"></i>تحميل الملف</h6>
                     </div>
-                    <div class="card-body text-center">
+                    <div class="text-center card-body">
                         ${pdfUrl ? `
                             <div class="mb-3">
                                 <i class="ti ti-file-type-pdf text-danger" style="font-size: 3rem;"></i>
                             </div>
-                            <button type="button" class="btn btn-primary w-100 mb-2" onclick="viewPdfInModal('${pdfUrl}', '${file.file_name}')">
+                            <button type="button" class="mb-2 btn btn-primary w-100" onclick="viewPdfInModal('${pdfUrl}', '${file.file_name}')">
                                 <i class="ti ti-eye me-2"></i>عرض في المعاينة
                             </button>
-                            <a href="${pdfUrl}" target="_blank" class="btn btn-outline-secondary w-100 mb-2">
+                            <a href="${pdfUrl}" target="_blank" class="mb-2 btn btn-outline-secondary w-100">
                                 <i class="ti ti-external-link me-2"></i>فتح في تبويب جديد
                             </a>
                             <a href="${pdfUrl}" download class="btn btn-outline-primary w-100">
@@ -3321,7 +3432,7 @@
 
         <!-- Sub-Files Section -->
         ${file.subFiles && file.subFiles.length > 0 ? `
-            <div class="card border-0 shadow-sm mb-4">
+            <div class="mb-4 border-0 shadow-sm card">
                 <div class="card-header bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                     <h5 class="mb-0 text-dark">
                         <i class="ti ti-folders me-2"></i>
@@ -3329,9 +3440,9 @@
                     </h5>
                     <small class="text-dark-50">الملفات التي تم إنشاؤها بناءً على أنواع المحتوى المحددة</small>
                 </div>
-                <div class="card-body p-0">
+                <div class="p-0 card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0">
+                        <table class="table mb-0 table-hover">
                             <thead class="table-light">
                                 <tr>
                                     <th width="50">#</th>
@@ -3352,7 +3463,7 @@
                                     return `
                                         <tr>
                                             <td>
-                                                <div class="avatar avatar-sm bg-primary-subtle text-primary rounded">
+                                                <div class="rounded avatar avatar-sm bg-primary-subtle text-primary">
                                                     <i class="ti ti-file-text"></i>
                                                 </div>
                                             </td>
@@ -3397,7 +3508,7 @@
 
         <!-- All Items Summary Section -->
         ${file.items && file.items.length > 0 ? `
-            <div class="card border-0 shadow-sm">
+            <div class="border-0 shadow-sm card">
                 <div class="card-header bg-light">
                     <h6 class="mb-0"><i class="ti ti-list me-2"></i>ملخص أنواع المحتوى (${file.items.length})</h6>
                 </div>
@@ -3405,7 +3516,7 @@
                     <div class="row g-2">
                         ${file.items.map(item => `
                             <div class="col-md-6">
-                                <div class="d-flex align-items-center p-2 border rounded">
+                                <div class="p-2 rounded border d-flex align-items-center">
                                     <i class="ti ti-file-text text-primary me-2"></i>
                                     <div class="flex-grow-1">
                                         <strong class="d-block">${item.name}</strong>

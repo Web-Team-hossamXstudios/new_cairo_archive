@@ -25,7 +25,6 @@ return new class extends Migration
 
             $table->index('client_id');
             $table->index('governorate_id');
-            $table->index('land_no');
         });
     }
 
