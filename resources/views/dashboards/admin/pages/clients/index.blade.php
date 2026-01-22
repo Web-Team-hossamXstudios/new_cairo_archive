@@ -21,12 +21,14 @@
                                 style="border-radius: var(--ins-border-radius);">
                                 <div class="d-flex align-items-start align-items-md-center">
                                     <div>
-                                        <span class="badge badge-default fw-normal shadow px-2 fst-italic fs-sm d-inline-flex align-items-center">
+                                        <span
+                                            class="badge badge-default fw-normal shadow px-2 fst-italic fs-sm d-inline-flex align-items-center">
                                             <i class="ti ti-users me-1"></i> إدارة العملاء
                                         </span>
                                         <nav aria-label="breadcrumb">
                                             <ol class="breadcrumb mb-0">
-                                                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
+                                                <li class="breadcrumb-item"><a
+                                                        href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
                                                 <li class="breadcrumb-item active" aria-current="page">العملاء</li>
                                             </ol>
                                         </nav>
@@ -35,14 +37,15 @@
 
                                 <div class="d-flex flex-wrap gap-2 mt-2 mt-lg-0">
                                     @can('clients.export')
-                                        <a href="#" class="btn btn-soft-success shadow-sm px-3" style="border-radius: var(--ins-border-radius);">
+                                        <a href="#" class="btn btn-soft-success shadow-sm px-3"
+                                            style="border-radius: var(--ins-border-radius);">
                                             <i class="ti ti-download me-1"></i>
                                             <span>تصدير</span>
                                         </a>
                                     @endcan
                                     @can('clients.create')
-                                        <button type="button" class="btn btn-primary shadow-sm px-3" style="border-radius: var(--ins-border-radius);"
-                                            onclick="openCreateModal()">
+                                        <button type="button" class="btn btn-primary shadow-sm px-3"
+                                            style="border-radius: var(--ins-border-radius);" onclick="openCreateModal()">
                                             <i class="ti ti-plus me-1"></i>
                                             <span>إضافة عميل</span>
                                         </button>
@@ -55,7 +58,7 @@
 
                 <!-- Stats Cards -->
                 <div class="row ">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
@@ -70,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
@@ -79,13 +82,13 @@
                                     </div>
                                     <div>
                                         <h4 class="mb-0">{{ \App\Models\Land::count() }}</h4>
-                                        <small class="text-muted">إجمالي الأراضي</small>
+                                        <small class="text-muted">إجمالي القطع</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
@@ -100,111 +103,95 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-md bg-warning-subtle text-warning rounded me-3">
-                                        <i class="ti ti-clock fs-4"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="mb-0">{{ \App\Models\Client::whereDate('created_at', today())->count() }}</h4>
-                                        <small class="text-muted">عملاء اليوم</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Search & Filters Card -->
+                <!-- Unified Search Card -->
                 @php
-                    $hasFilters = request()->filled('search') || request()->filled('national_id') ||
-                                  request()->filled('governorate_id') || request('trashed') === 'only';
+                    $hasFilters =
+                        request()->filled('national_id') ||
+                        request()->filled('governorate_id') ||
+                        request('trashed') === 'only';
                 @endphp
                 <div class="row">
                     <div class="col-12">
                         <div class="card" style="border-radius: var(--ins-border-radius);">
                             <div class="card-body">
-                                <!-- Barcode Scanner Section -->
-                                <div class="mb-1 pb-3 border-bottom">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <i class="ti ti-barcode fs-4 me-2 text-dark"></i>
-                                        <h6 class="mb-0 fw-semibold">البحث بالباركود (الماسح الضوئي)</h6>
-                                    </div>
-                                    <div class="row align-items-center">
-                                        <div class="col-md-8">
-                                            <div class="input-group input-group-lg shadow-sm border border-dark border-opacity-25 overflow-hidden"
-                                                style="border-radius: var(--ins-border-radius);">
-                                                <span class="input-group-text bg-dark text-white border-0">
-                                                    <i class="ti ti-scan"></i>
+                                <!-- Unified Search Section -->
+                                <form method="GET" action="{{ route('admin.clients.index') }}" id="unifiedSearchForm">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-lg-2 col-md-3">
+                                            <label class="form-label fw-semibold mb-2">نوع البحث</label>
+                                            <select id="searchType" name="search_type" class="form-select form-select-lg shadow-sm"
+                                                style="border-radius: var(--ins-border-radius); height: 48px;" onchange="updateSearchPlaceholder()">
+                                                <option value="name" {{ request('search_type') == 'name' ? 'selected' : '' }}>اسم العميل</option>
+                                                <option value="area" {{ request('search_type') == 'area' ? 'selected' : '' }}>المنطقة</option>
+                                                <option value="land_no" {{ request('search_type') == 'land_no' ? 'selected' : '' }}>رقم القطعة</option>
+                                                <option value="file_no" {{ request('search_type') == 'file_no' ? 'selected' : '' }}>رقم الملف</option>
+                                                <option value="barcode" {{ request('search_type') == 'barcode' ? 'selected' : '' }}>كود الباركود</option>
+                                                <option value="national_id" {{ request('search_type') == 'national_id' ? 'selected' : '' }}>الرقم القومي</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-7 col-md-6">
+                                            <label class="form-label fw-semibold mb-2">البحث</label>
+                                            <div class="input-group shadow-sm border border-primary border-opacity-25 overflow-hidden"
+                                                style="border-radius: var(--ins-border-radius); height: 48px;">
+                                                <span class="input-group-text bg-primary text-white border-0 px-3">
+                                                    <i class="ti ti-search fs-5"></i>
                                                 </span>
-                                                <input type="text" id="barcodeSearchInput" class="form-control border-0 fs-5"
-                                                    placeholder="امسح الباركود أو أدخله يدوياً..." autocomplete="off" autofocus>
-                                                <button type="button" class="btn btn-dark border-0 fs-5" onclick="searchByBarcode()">
+                                                <input type="text" id="unifiedSearchInput" name="search"
+                                                    class="form-control border-0"
+                                                    placeholder="امسح الباركود أو أدخله يدوياً..."
+                                                    value="{{ request('search') }}"
+                                                    autocomplete="off"
+                                                    autofocus
+                                                    style="font-size: 15px;">
+                                                <button type="submit" class="btn btn-primary border-0 px-4">
                                                     <i class="ti ti-search me-1"></i> بحث
                                                 </button>
                                             </div>
-                                            <small class="text-muted mt-1 d-block">
+                                        </div>
+                                        <div class="col-lg-3 col-md-3">
+                                            <div class="d-flex gap-2 align-items-center" style="height: 48px;">
+                                                <a href="{{ route('admin.clients.index') }}"
+                                                    id="resetButton"
+                                                    class="btn btn-secondary shadow-sm flex-fill"
+                                                    style="border-radius: var(--ins-border-radius); height: 100%;">
+                                                    <i class="ti ti-refresh me-1"></i> إعادة
+                                                </a>
+                                                <button type="button"
+                                                    class="btn btn-outline-primary shadow-sm"
+                                                    style="border-radius: var(--ins-border-radius); height: 100%; aspect-ratio: 1/1;"
+                                                    data-bs-toggle="collapse" data-bs-target="#advancedFilters"
+                                                    aria-expanded="{{ $hasFilters ? 'true' : 'false' }}">
+                                                    <i class="ti {{ $hasFilters ? 'ti-eye-off' : 'ti-filter' }} fs-5"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <small class="text-muted mt-2 d-block">
                                                 <i class="ti ti-info-circle me-1"></i>
-                                                استخدم جهاز الماسح الضوئي لمسح الباركود أو أدخل رقم الباركود يدوياً ثم اضغط Enter
+                                                <span id="searchHint">استخدم جهاز الماسح الضوئي لمسح الباركود أو أدخله يدوياً</span>
                                             </small>
                                         </div>
-                                        <div class="col-md-4 text-center">
-                                            <div id="barcodeScannerStatus" class="d-flex align-items-center justify-content-center gap-2">
-                                                <span class="badge bg-success-subtle text-success fs-6 px-3 py-2">
-                                                    <i class="ti ti-device-desktop-analytics me-1"></i>
-                                                    جاهز للمسح
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Client Search & Filters Section -->
-                                <form method="GET" action="{{ route('admin.clients.index') }}">
-                                    <div class="row d-flex align-items-end justify-content-start">
-                                        <div class="col-md-6 mb-2">
-                                            <label class="form-label fw-semibold">بحث</label>
-                                            <div class="input-group shadow-sm border border-secondary border-opacity-10 overflow-hidden bg-body"
-                                                style="border-radius: var(--ins-border-radius);">
-                                                <input type="text" name="search" class="form-control border-0 bg-transparent"
-                                                    placeholder="الاسم، الرقم القومي، كود العميل، الموبايل..." value="{{ request('search') }}">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 mb-2 d-flex align-items-center gap-2">
-                                            <div class="d-flex flex-wrap gap-1">
-                                                <button type="submit" class="btn btn-primary shadow-sm px-3" style="border-radius: var(--ins-border-radius);">
-                                                    <i class="ti ti-filter me-1"></i> فلترة
-                                                </button>
-                                                <a href="{{ route('admin.clients.index') }}" style="border-radius: var(--ins-border-radius);"
-                                                    class="btn btn-secondary shadow-sm px-3">
-                                                    <i class="ti ti-refresh me-1"></i> إعادة تعيين
-                                                </a>
-                                            </div>
-
-                                            <button class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1 shadow-sm"
-                                                style="border-radius: var(--ins-border-radius);" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#advancedFilters" aria-expanded="{{ $hasFilters ? 'true' : 'false' }}">
-                                                <i class="ti {{ $hasFilters ? 'ti-eye-off' : 'ti-filter' }}"></i>
-                                                <span>{{ $hasFilters ? 'إخفاء الفلاتر' : 'فلاتر متقدمة' }}</span>
-                                            </button>
-                                        </div>
                                     </div>
 
-                                    <div class="collapse {{ $hasFilters ? 'show' : '' }} row g-3 align-items-end mt-2" id="advancedFilters">
+                                    <div class="collapse {{ $hasFilters ? 'show' : '' }} row g-3 align-items-end mt-2"
+                                        id="advancedFilters">
                                         <div class="col-md-3">
                                             <label class="form-label fw-semibold">الرقم القومي</label>
-                                            <input type="text" name="national_id" class="form-control" placeholder="الرقم القومي" value="{{ request('national_id') }}">
+                                            <input type="text" name="national_id" class="form-control"
+                                                placeholder="الرقم القومي" value="{{ request('national_id') }}">
                                         </div>
 
                                         <div class="col-md-3">
                                             <label class="form-label fw-semibold">المحافظة</label>
                                             <select name="governorate_id" class="form-select">
                                                 <option value="">جميع المحافظات</option>
-                                                @foreach($governorates as $governorate)
-                                                    <option value="{{ $governorate->id }}" {{ request('governorate_id') == $governorate->id ? 'selected' : '' }}>
+                                                @foreach ($governorates as $governorate)
+                                                    <option value="{{ $governorate->id }}"
+                                                        {{ request('governorate_id') == $governorate->id ? 'selected' : '' }}>
                                                         {{ $governorate->name }}
                                                     </option>
                                                 @endforeach
@@ -214,17 +201,24 @@
                                         <div class="col-md-3">
                                             <label class="form-label fw-semibold">عرض</label>
                                             <select name="trashed" class="form-select">
-                                                <option value="" {{ request('trashed') !== 'only' ? 'selected' : '' }}>السجلات النشطة</option>
-                                                <option value="only" {{ request('trashed') === 'only' ? 'selected' : '' }}>المحذوفات فقط</option>
+                                                <option value=""
+                                                    {{ request('trashed') !== 'only' ? 'selected' : '' }}>السجلات
+                                                    النشطة</option>
+                                                <option value="only"
+                                                    {{ request('trashed') === 'only' ? 'selected' : '' }}>المحذوفات فقط
+                                                </option>
                                             </select>
                                         </div>
 
                                         <div class="col-md-3">
                                             <label class="form-label fw-semibold">عدد النتائج</label>
                                             <select name="per_page" class="form-select">
-                                                <option value="25" {{ request('per_page', 25) == 25 ? 'selected' : '' }}>25</option>
-                                                <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                                                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                                                <option value="25"
+                                                    {{ request('per_page', 25) == 25 ? 'selected' : '' }}>25</option>
+                                                <option value="50"
+                                                    {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                                <option value="100"
+                                                    {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
                                             </select>
                                         </div>
                                     </div>
@@ -241,23 +235,31 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center gap-3">
                                     <h5 class="card-title mb-0">العملاء</h5>
-                                    <span class="badge bg-primary-subtle text-primary">{{ $clients->total() }} عميل</span>
+                                    <span class="badge bg-primary-subtle text-primary">{{ $clients->total() }}
+                                        عميل</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
                                     <!-- Bulk Actions -->
                                     <div class="bulk-actions d-none me-2" id="bulkActions">
-                                        @if(request('trashed') != 'only')
+                                        @if (request('trashed') != 'only')
+                                            <button type="button" class="btn btn-soft-dark btn-sm"
+                                                onclick="bulkPrintBarcodes()">
+                                                <i class="ti ti-printer me-1"></i> طباعة الباركودات
+                                            </button>
                                             @can('clients.delete')
-                                                <button type="button" class="btn btn-soft-danger btn-sm" onclick="bulkDelete()">
+                                                <button type="button" class="btn btn-soft-danger btn-sm"
+                                                    onclick="bulkDelete()">
                                                     <i class="ti ti-trash me-1"></i> حذف المحدد
                                                 </button>
                                             @endcan
                                         @else
                                             @can('clients.delete')
-                                                <button type="button" class="btn btn-soft-success btn-sm" onclick="bulkRestore()">
+                                                <button type="button" class="btn btn-soft-success btn-sm"
+                                                    onclick="bulkRestore()">
                                                     <i class="ti ti-refresh me-1"></i> استرجاع المحدد
                                                 </button>
-                                                <button type="button" class="btn btn-danger btn-sm" onclick="bulkForceDelete()">
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    onclick="bulkForceDelete()">
                                                     <i class="ti ti-trash-x me-1"></i> حذف نهائي
                                                 </button>
                                             @endcan
@@ -265,10 +267,12 @@
                                     </div>
                                     <!-- View Toggle -->
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary active" id="listViewBtn" onclick="toggleView('list')">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary active"
+                                            id="listViewBtn" onclick="toggleView('list')">
                                             <i class="ti ti-list"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="cardViewBtn" onclick="toggleView('card')">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                            id="cardViewBtn" onclick="toggleView('card')">
                                             <i class="ti ti-layout-grid"></i>
                                         </button>
                                     </div>
@@ -277,64 +281,209 @@
                             <div class="card-body p-0">
                                 <!-- List View -->
                                 <div id="listView" class="table-responsive">
-                                    <table class="table table-hover table-striped mb-0">
+                                    <table class="table table-hover mb-0">
                                         <thead class="bg-light-subtle">
                                             <tr>
-                                                <th width="10"><input type="checkbox" class="form-check-input" id="selectAll"></th>
-                                                <th>العميل</th>
-                                                <th>الرقم القومي</th>
-                                                <th>كود العميل</th>
-                                                <th>الموبايل</th>
-                                                <th>الأراضي</th>
-                                                <th>الملفات</th>
-                                                <th width="180" class="text-center">الإجراءات</th>
+                                                <th width="10"><input type="checkbox" class="form-check-input"
+                                                        id="selectAll"></th>
+                                                <th>بيانات العميل الكاملة</th>
+                                                <th width="150" class="text-center">الإجراءات</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @forelse($clients as $client)
-                                                <tr id="client-row-{{ $client->id }}">
-                                                    <td><input type="checkbox" class="form-check-input row-checkbox" value="{{ $client->id }}"></td>
+                                                <tr id="client-row-{{ $client->id }}" style="vertical-align: top;">
+                                                    <td><input type="checkbox" class="form-check-input row-checkbox"
+                                                            value="{{ $client->id }}"></td>
                                                     <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar avatar-sm bg-primary-subtle text-primary rounded-circle me-2 d-flex align-items-center justify-content-center">
-                                                                {{ mb_substr($client->name, 0, 1) }}
+                                                        <div class="row g-3">
+                                                            {{-- Client Basic Info --}}
+                                                            <div class="col-md-2">
+                                                                <div class="d-flex align-items-start mb-2">
+                                                                    <div
+                                                                        class="avatar avatar-md bg-primary-subtle text-primary rounded-circle me-2 d-flex align-items-center justify-content-center">
+                                                                        <strong>{{ mb_substr($client->name, 0, 1) }}</strong>
+                                                                    </div>
+                                                                    <div>
+                                                                        <h6 class="mb-1">
+                                                                            <strong>{{ $client->name }}</strong></h6>
+                                                                        {{-- <small class="text-muted d-block"><i class="ti ti-id me-1"></i>{{ $client->national_id ?? '-' }}</small> --}}
+                                                                        {{-- <small class="text-muted d-block"><i class="ti ti-phone me-1"></i>{{ $client->mobile ?? '-' }}</small> --}}
+                                                                        @if ($client->excel_row_number)
+                                                                            <span
+                                                                                class="badge bg-secondary-subtle text-secondary mt-1">
+                                                                                <i
+                                                                                    class="ti ti-file-spreadsheet me-1"></i>صف
+                                                                                #{{ $client->excel_row_number }}
+                                                                            </span>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div>
-                                                                <h6 class="mb-0">{{ $client->name }}</h6>
+
+                                                            {{-- File Numbers --}}
+                                                            <div class="col-md-1">
+                                                                <small class="text-muted d-block mb-1"><strong><i
+                                                                            class="ti ti-files me-1"></i>أرقام
+                                                                        الملفات:</strong></small>
+                                                                @if ($client->mainFiles && $client->mainFiles->count() > 0)
+                                                                    @foreach ($client->mainFiles as $file)
+                                                                        <div class="mb-1">
+                                                                            <span class="badge bg-primary-subtle text-primary">{{ $file->file_name }}</span>
+                                                                        </div>
+                                                                        @if (!$loop->last)
+                                                                            <hr class="my-1">
+                                                                        @endif
+                                                                    @endforeach
+                                                                @else
+                                                                    <small class="text-muted">-</small>
+                                                                @endif
+                                                            </div>
+
+                                                            {{-- Land Addresses --}}
+                                                            <div class="col-md-3">
+                                                                <small class="text-muted d-block mb-1"><strong><i
+                                                                            class="ti ti-map-pin me-1"></i>عناوين
+                                                                        القطع:</strong></small>
+                                                                @if ($client->lands && $client->lands->count() > 0)
+                                                                    @foreach ($client->lands as $land)
+                                                                        <div class="mb-1">
+                                                                            <small class="d-block fs-5">
+                                                                                @if ($land->district)
+                                                                                    ({{ $land->district->name }})
+                                                                                @endif
+                                                                                ->
+                                                                                @if ($land->zone)
+                                                                                    ({{ $land->zone->name }})
+                                                                                @endif
+                                                                                ->
+                                                                                @if ($land->area)
+                                                                                    ({{ $land->area->name }})
+                                                                                @endif
+-> قطعه
+                                                                                <strong>({{ $land->land_no }})</strong>
+                                                                            </small>
+                                                                        </div>
+                                                                        @if (!$loop->last)
+                                                                            <hr class="my-1">
+                                                                        @endif
+                                                                    @endforeach
+                                                                @else
+                                                                    <small class="text-muted">-</small>
+                                                                @endif
+                                                            </div>
+
+                                                            {{-- Physical Locations & Page Counts --}}
+                                                            <div class="col-md-3">
+                                                                <small class="text-muted d-block mb-1"><strong><i
+                                                                            class="ti ti-building-warehouse me-1"></i>موقع
+                                                                        التخزين:</strong></small>
+                                                                @if ($client->mainFiles && $client->mainFiles->count() > 0)
+                                                                    @foreach ($client->mainFiles as $file)
+                                                                        <div class="mb-1">
+                                                                            <small class="d-block fs-5">
+                                                                                (غرفة {{ $file->room?->name ?? '-' }})
+                                                                                @if ($file->lane)
+                                                                                    -> (ممر {{ $file->lane->name }})
+                                                                                @endif
+
+                                                                                @if ($file->stand)
+                                                                                    -> (ستاند {{ $file->stand->name }})
+                                                                                @endif
+
+                                                                                @if ($file->rack)
+                                                                                    -> (رف {{ $file->rack->name }})
+                                                                                @endif
+
+
+                                                                            </small>
+                                                                        </div>
+                                                                        @if (!$loop->last)
+                                                                            <hr class="my-1">
+                                                                        @endif
+                                                                    @endforeach
+                                                                @else
+                                                                    <small class="text-muted">-</small>
+                                                                @endif
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <small class="text-muted d-block mb-1"><strong><i
+                                                                            class="ti ti-building-warehouse me-1"></i>عدد
+                                                                        الصفحات:</strong></small>
+                                                                <span class="badge bg-info-subtle text-info mt-1">
+                                                                    <i
+                                                                        class="ti ti-file-text me-1"></i>{{ $file->items->count() > 0 ? $file->items->count() : 1 }}
+                                                                    صفحة
+                                                                </span>
+                                                            </div>
+
+
+                                                            {{-- Barcodes --}}
+                                                            <div class="col-md-2">
+                                                                <small class="text-muted d-block mb-1"><strong><i
+                                                                            class="ti ti-barcode me-1"></i>الباركود:</strong></small>
+                                                                @if ($client->mainFiles && $client->mainFiles->count() > 0)
+                                                                    @foreach ($client->mainFiles as $file)
+                                                                        <div class="mb-1">
+                                                                            <code
+                                                                                class="small">{{ $file->barcode }}</code>
+                                                                        </div>
+                                                                        @if (!$loop->last)
+                                                                            <hr class="my-1">
+                                                                        @endif
+                                                                    @endforeach
+                                                                @else
+                                                                    <small class="text-muted">-</small>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>{{ $client->national_id ?? '-' }}</td>
-                                                    <td><span class="badge bg-info-subtle text-info">{{ $client->client_code ?? '-' }}</span></td>
-                                                    <td>{{ $client->mobile ?? '-' }}</td>
-                                                    <td><span class="badge bg-success-subtle text-success">{{ $client->lands_count }}</span></td>
-                                                    <td><span class="badge bg-primary-subtle text-primary">{{ $client->files_count }}</span></td>
                                                     <td>
-                                                        <div class="d-flex justify-content-center gap-1">
-                                                            @if(request('trashed') != 'only')
-                                                                <button class="btn btn-soft-info btn-sm" onclick="showClient({{ $client->id }})" title="عرض">
+                                                        <div class="d-flex flex-column gap-1">
+                                                            @if (request('trashed') != 'only')
+                                                                {{-- Print All Barcodes --}}
+                                                                @if ($client->mainFiles && $client->mainFiles->count() > 0)
+                                                                    <button class="btn btn-soft-dark btn-sm"
+                                                                        onclick="printClientBarcodes({{ $client->id }})"
+                                                                        title="طباعة جميع الباركودات">
+                                                                        <i class="ti ti-printer"></i>
+                                                                    </button>
+                                                                @endif
+                                                                <button class="btn btn-soft-info btn-sm"
+                                                                    onclick="showClient({{ $client->id }})"
+                                                                    title="عرض">
                                                                     <i class="ti ti-eye"></i>
                                                                 </button>
-                                                                @can('files.upload')
-                                                                <button class="btn btn-soft-success btn-sm" onclick="uploadFile({{ $client->id }})" title="رفع ملف">
-                                                                    <i class="ti ti-upload"></i>
-                                                                </button>
-                                                                @endcan
                                                                 @can('clients.edit')
-                                                                    <button class="btn btn-soft-warning btn-sm" onclick="editClient({{ $client->id }})" title="تعديل">
+                                                                    <button class="btn btn-soft-warning btn-sm"
+                                                                        onclick="editClient({{ $client->id }})"
+                                                                        title="تعديل">
                                                                         <i class="ti ti-edit"></i>
                                                                     </button>
                                                                 @endcan
+                                                                @can('files.upload')
+                                                                    {{-- <button class="btn btn-soft-success btn-sm"
+                                                                        onclick="uploadFile({{ $client->id }})"
+                                                                        title="رفع ملف">
+                                                                        <i class="ti ti-upload"></i>
+                                                                    </button> --}}
+                                                                @endcan
                                                                 @can('clients.delete')
-                                                                    <button class="btn btn-soft-danger btn-sm" onclick="deleteClient({{ $client->id }}, '{{ $client->name }}')" title="حذف">
+                                                                    <button class="btn btn-soft-danger btn-sm"
+                                                                        onclick="deleteClient({{ $client->id }}, '{{ $client->name }}')"
+                                                                        title="حذف">
                                                                         <i class="ti ti-trash"></i>
                                                                     </button>
                                                                 @endcan
                                                             @else
-                                                                <button class="btn btn-soft-success btn-sm" onclick="restoreClient({{ $client->id }})" title="استرجاع">
+                                                                <button class="btn btn-soft-success btn-sm"
+                                                                    onclick="restoreClient({{ $client->id }})"
+                                                                    title="استرجاع">
                                                                     <i class="ti ti-refresh"></i>
                                                                 </button>
-                                                                <button class="btn btn-danger btn-sm" onclick="forceDeleteClient({{ $client->id }}, '{{ $client->name }}')" title="حذف نهائي">
+                                                                <button class="btn btn-danger btn-sm"
+                                                                    onclick="forceDeleteClient({{ $client->id }}, '{{ $client->name }}')"
+                                                                    title="حذف نهائي">
                                                                     <i class="ti ti-trash-x"></i>
                                                                 </button>
                                                             @endif
@@ -343,10 +492,11 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="8" class="text-center py-4">
+                                                    <td colspan="3" class="text-center py-5">
                                                         <div class="text-muted">
-                                                            <i class="ti ti-users-minus fs-1 d-block mb-2"></i>
-                                                            لا يوجد عملاء
+                                                            <i class="ti ti-search fs-1 d-block mb-3 opacity-50"></i>
+                                                            <h5 class="mb-2">لا توجد نتائج</h5>
+                                                            <p class="mb-0">لم يتم العثور على عملاء مطابقين لمعايير البحث</p>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -363,44 +513,71 @@
                                                 <div class="card border shadow-sm h-100">
                                                     <div class="card-body">
                                                         <div class="d-flex align-items-center mb-3">
-                                                            <div class="avatar avatar-md bg-primary-subtle text-primary rounded-circle me-3 d-flex align-items-center justify-content-center">
+                                                            <div
+                                                                class="avatar avatar-md bg-primary-subtle text-primary rounded-circle me-3 d-flex align-items-center justify-content-center">
                                                                 {{ mb_substr($client->name, 0, 1) }}
                                                             </div>
                                                             <div class="flex-grow-1">
                                                                 <h6 class="mb-0">{{ $client->name }}</h6>
-                                                                <small class="text-muted">{{ $client->client_code ?? 'بدون كود' }}</small>
+                                                                <small
+                                                                    class="text-muted">{{ $client->client_code ?? 'بدون كود' }}</small>
                                                             </div>
-                                                            <input type="checkbox" class="form-check-input row-checkbox" value="{{ $client->id }}">
+                                                            <input type="checkbox"
+                                                                class="form-check-input row-checkbox"
+                                                                value="{{ $client->id }}">
                                                         </div>
                                                         <div class="mb-2">
-                                                            <small class="text-muted d-block"><i class="ti ti-id me-1"></i> {{ $client->national_id ?? '-' }}</small>
-                                                            <small class="text-muted d-block"><i class="ti ti-phone me-1"></i> {{ $client->mobile ?? '-' }}</small>
+                                                            <small class="text-muted d-block"><i
+                                                                    class="ti ti-id me-1"></i>
+                                                                {{ $client->national_id ?? '-' }}</small>
+                                                            <small class="text-muted d-block"><i
+                                                                    class="ti ti-phone me-1"></i>
+                                                                {{ $client->mobile ?? '-' }}</small>
                                                         </div>
                                                         <div class="d-flex gap-2 mb-3">
-                                                            <span class="badge bg-success-subtle text-success"><i class="ti ti-map-2 me-1"></i>{{ $client->lands_count }} أرض</span>
-                                                            <span class="badge bg-primary-subtle text-primary"><i class="ti ti-files me-1"></i>{{ $client->files_count }} ملف</span>
+                                                            <span class="badge bg-success-subtle text-success"><i
+                                                                    class="ti ti-map-2 me-1"></i>{{ $client->lands_count }}
+                                                                قطعه</span>
+                                                            <span class="badge bg-primary-subtle text-primary"><i
+                                                                    class="ti ti-files me-1"></i>{{ $client->files_count }}
+                                                                ملف</span>
                                                         </div>
                                                     </div>
                                                     <div class="card-footer bg-transparent border-top-0 pt-0">
                                                         <div class="d-flex justify-content-between">
-                                                            @if(request('trashed') != 'only')
-                                                                <button class="btn btn-soft-info btn-sm" onclick="showClient({{ $client->id }})"><i class="ti ti-eye"></i></button>
-                                                                <button class="btn btn-soft-warning btn-sm" onclick="editClient({{ $client->id }})"><i class="ti ti-edit"></i></button>
-                                                                <button class="btn btn-soft-success btn-sm" onclick="uploadFile({{ $client->id }})"><i class="ti ti-upload"></i></button>
-                                                                <button class="btn btn-soft-danger btn-sm" onclick="deleteClient({{ $client->id }}, '{{ $client->name }}')"><i class="ti ti-trash"></i></button>
+                                                            @if (request('trashed') != 'only')
+                                                                <button class="btn btn-soft-info btn-sm"
+                                                                    onclick="showClient({{ $client->id }})"><i
+                                                                        class="ti ti-eye"></i></button>
+                                                                <button class="btn btn-soft-warning btn-sm"
+                                                                    onclick="editClient({{ $client->id }})"><i
+                                                                        class="ti ti-edit"></i></button>
+                                                                @can('files.upload')
+                                                                    <button class="btn btn-soft-success btn-sm"
+                                                                        onclick="uploadFile({{ $client->id }})"><i
+                                                                            class="ti ti-upload"></i></button>
+                                                                @endcan
+                                                                <button class="btn btn-soft-danger btn-sm"
+                                                                    onclick="deleteClient({{ $client->id }}, '{{ $client->name }}'"><i
+                                                                        class="ti ti-trash"></i></button>
                                                             @else
-                                                                <button class="btn btn-soft-success btn-sm" onclick="restoreClient({{ $client->id }})"><i class="ti ti-refresh"></i> استرجاع</button>
-                                                                <button class="btn btn-danger btn-sm" onclick="forceDeleteClient({{ $client->id }}, '{{ $client->name }}')"><i class="ti ti-trash-x"></i> حذف نهائي</button>
+                                                                <button class="btn btn-soft-success btn-sm"
+                                                                    onclick="restoreClient({{ $client->id }})"><i
+                                                                        class="ti ti-refresh"></i> استرجاع</button>
+                                                                <button class="btn btn-danger btn-sm"
+                                                                    onclick="forceDeleteClient({{ $client->id }}, '{{ $client->name }}')"><i
+                                                                        class="ti ti-trash-x"></i> حذف نهائي</button>
                                                             @endif
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         @empty
-                                            <div class="col-12 text-center py-4">
+                                            <div class="col-12 text-center py-5">
                                                 <div class="text-muted">
-                                                    <i class="ti ti-users-minus fs-1 d-block mb-2"></i>
-                                                    لا يوجد عملاء
+                                                    <i class="ti ti-search fs-1 d-block mb-3 opacity-50"></i>
+                                                    <h5 class="mb-2">لا توجد نتائج</h5>
+                                                    <p class="mb-0">لم يتم العثور على عملاء مطابقين لمعايير البحث</p>
                                                 </div>
                                             </div>
                                         @endforelse
@@ -408,7 +585,7 @@
                                 </div>
 
                                 <!-- Pagination -->
-                                @if($clients->hasPages())
+                                @if ($clients->hasPages())
                                     <div class="d-flex justify-content-center p-3">
                                         {{ $clients->links() }}
                                     </div>
@@ -424,7 +601,7 @@
     @include('dashboards.admin.pages.clients.partials.scripts')
     {{-- @include('dashboards.shared.scripts') --}}
 
-    {{-- <script>
+    <script>
         const ROUTES = {
             create: "{{ route('admin.clients.create') }}",
             store: "{{ route('admin.clients.store') }}",
@@ -465,7 +642,110 @@
         document.addEventListener('DOMContentLoaded', function() {
             const savedView = localStorage.getItem('clientsView') || 'list';
             toggleView(savedView);
+
+            // Auto-focus on search input
+            const searchInput = document.getElementById('unifiedSearchInput');
+            const searchTypeSelect = document.getElementById('searchType');
+
+            if (searchInput) {
+                // Clear URL and input on page load if search type is barcode
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('search_type') === 'barcode' && urlParams.has('search')) {
+                    window.history.replaceState({}, '', window.location.pathname);
+                    searchInput.value = '';
+                }
+
+                searchInput.focus();
+
+                // Barcode scanner variables
+                let lastKeyTime = 0;
+                let scannerBuffer = '';
+
+                // Detect barcode scanner input
+                searchInput.addEventListener('keydown', function(e) {
+                    const currentTime = Date.now();
+                    const timeDiff = currentTime - lastKeyTime;
+
+                    // Fast typing detected (< 50ms between keys) = barcode scanner
+                    if (timeDiff < 50 && lastKeyTime > 0) {
+                        // Scanner detected - if there's old content, clear it
+                        if (this.value.length > 0 && scannerBuffer.length === 0) {
+                            // Clear URL and input before new scan
+                            window.history.replaceState({}, '', window.location.pathname);
+                            this.value = '';
+                            searchTypeSelect.value = 'barcode';
+                        }
+                        scannerBuffer += e.key;
+                    } else if (timeDiff > 100) {
+                        // Manual typing or new scan starting
+                        scannerBuffer = '';
+                    }
+
+                    lastKeyTime = currentTime;
+                });
+
+                // Submit on Enter
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+
+                        const value = this.value.trim();
+
+                        // Auto-detect barcode pattern
+                        if (value.length >= 5 && /^[A-Z0-9-]+$/i.test(value)) {
+                            searchTypeSelect.value = 'barcode';
+                        }
+
+                        // Submit the form
+                        document.getElementById('unifiedSearchForm').submit();
+
+                        // Reset scanner buffer
+                        scannerBuffer = '';
+                    }
+                });
+
+                // Select all on focus
+                searchInput.addEventListener('focus', function() {
+                    if (this.value) {
+                        this.select();
+                    }
+                });
+            }
+
+            // Update placeholder on page load
+            updateSearchPlaceholder();
         });
+
+        // Update search placeholder based on search type
+        function updateSearchPlaceholder() {
+            const searchType = document.getElementById('searchType').value;
+            const searchInput = document.getElementById('unifiedSearchInput');
+            const searchHint = document.getElementById('searchHint');
+
+            const placeholders = {
+                'name': 'أدخل اسم العميل...',
+                'area': 'أدخل اسم المنطقة...',
+                'land_no': 'أدخل رقم القطعة...',
+                'file_no': 'أدخل رقم الملف...',
+                'barcode': 'امسح الباركود أو أدخله يدوياً...',
+                'national_id': 'أدخل الرقم القومي...'
+            };
+
+            const hints = {
+                'name': 'ابحث عن العميل باستخدام الاسم',
+                'area': 'ابحث عن العملاء في منطقة معينة',
+                'land_no': 'ابحث عن القطعة باستخدام رقم القطعة',
+                'file_no': 'ابحث عن الملف باستخدام رقم الملف',
+                'barcode': 'استخدم جهاز الماسح الضوئي لمسح الباركود أو أدخله يدوياً',
+                'national_id': 'ابحث عن العميل باستخدام الرقم القومي'
+            };
+
+            searchInput.placeholder = placeholders[searchType] || placeholders['barcode'];
+            searchHint.textContent = hints[searchType] || hints['barcode'];
+
+            // Re-focus after type change
+            searchInput.focus();
+        }
 
         // Select All Checkbox
         document.getElementById('selectAll')?.addEventListener('change', function() {
@@ -535,10 +815,6 @@
             });
         }
 
-        // Upload File
-        function uploadFile(clientId) {
-            window.location.href = ROUTES.uploadFile + '?client_id=' + clientId;
-        }
 
         // Bulk Operations
         function getSelectedIds() {
@@ -624,11 +900,11 @@
                 }
             });
         }
-    </script> --}}
+    </script>
 
 
-<!-- PDF.js Library (if not already loaded) -->
-{{-- <script>
+    <!-- PDF.js Library (if not already loaded) -->
+    {{-- <script>
     // Only load PDF.js if not already loaded
     if (typeof pdfjsLib === 'undefined') {
         const script = document.createElement('script');
@@ -739,6 +1015,37 @@
         @include('dashboards.admin.pages.clients.partials.upload-modal')
     @endcan
 
+    {{-- Bulk Barcode Print Modal --}}
+    <div class="modal fade" id="bulkBarcodePrintModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="ti ti-printer me-2"></i>
+                        <span id="barcodeModalTitle">طباعة باركودات الملفات</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="bulkBarcodeContent" style="max-height: 70vh; overflow-y: auto;">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">جاري التحميل...</span>
+                        </div>
+                        <p class="mt-3 text-muted fs-5">جاري تحميل بيانات الباركودات...</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="ti ti-x me-1"></i> إغلاق
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="printBarcodeModal()">
+                        <i class="ti ti-printer me-1"></i> طباعة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Show File Modal for viewing files from client list --}}
     <div class="modal fade" id="showFileModal" tabindex="-1" style="z-index: 1060;">
         <div class="modal-dialog modal-xl">
@@ -767,13 +1074,16 @@
         #showFileModal.show {
             z-index: 1060 !important;
         }
-        #showFileModal + .modal-backdrop {
+
+        #showFileModal+.modal-backdrop {
             z-index: 1059 !important;
         }
+
         #viewClientModal {
             z-index: 1055;
         }
-        #viewClientModal + .modal-backdrop {
+
+        #viewClientModal+.modal-backdrop {
             z-index: 1054;
         }
     </style>
@@ -781,4 +1091,5 @@
     @include('dashboards.shared.theme_settings')
     @include('dashboards.shared.scripts')
 </body>
+
 </html>

@@ -54,7 +54,7 @@
                                 <label class="form-label">التليفون</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="ti ti-phone text-primary"></i></span>
-                                    <input type="text" name="telephone" class="form-control" placeholder="رقم التليفون الأرضي">
+                                    <input type="text" name="telephone" class="form-control" placeholder="رقم التليفون القطعةي">
                                 </div>
                                 <div class="invalid-feedback"></div>
                             </div>
@@ -79,17 +79,17 @@
                     <div class="form-section">
                         <div class="form-section-header">
                             <i class="ti ti-map-2"></i>
-                            <h6>الأراضي والعقارات</h6>
+                            <h6>القطع والعقارات</h6>
                             <span class="badge bg-secondary-subtle text-secondary">اختياري</span>
                             <button type="button" class="btn btn-sm btn-primary me-auto" onclick="addLandRow()">
-                                <i class="ti ti-plus me-1"></i>إضافة أرض
+                                <i class="ti ti-plus me-1"></i>إضافة قطعه
                             </button>
                         </div>
                         <div id="landsContainer">
                             <div class="text-center text-muted py-4" id="noLandsMessage">
                                 <i class="ti ti-map-pin-off fs-1 d-block mb-2 opacity-50"></i>
-                                <p class="mb-0">لم يتم إضافة أراضي بعد</p>
-                                <small>اضغط على "إضافة أرض" لإضافة أرض جديدة للعميل</small>
+                                <p class="mb-0">لم يتم إضافة قطع بعد</p>
+                                <small>اضغط على "إضافة قطعه" لإضافة قطعه جديدة للعميل</small>
                             </div>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                         <i class="ti ti-info-circle"></i>
                         <div class="info-box-content">
                             <div class="info-box-title">معلومات</div>
-                            <div class="info-box-text">سيتم إنشاء كود العميل تلقائياً. يمكنك إضافة الأراضي الآن أو لاحقاً من صفحة تفاصيل العميل.</div>
+                            <div class="info-box-text">سيتم إنشاء كود العميل تلقائياً. يمكنك إضافة القطع الآن أو لاحقاً من صفحة تفاصيل العميل.</div>
                         </div>
                     </div>
                 </div>

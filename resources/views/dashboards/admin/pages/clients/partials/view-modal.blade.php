@@ -87,8 +87,8 @@
                                         <i class="ti ti-map-2 text-white fs-5"></i>
                                     </div>
                                     <div>
-                                        <h5 class="mb-0 fw-bold text-dark">الأراضي والملفات</h5>
-                                        <small class="text-muted">عرض تفصيلي لجميع الأراضي والملفات المرتبطة</small>
+                                        <h5 class="mb-0 fw-bold text-dark">القطع والملفات</h5>
+                                        <small class="text-muted">عرض تفصيلي لجميع القطع والملفات المرتبطة</small>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
@@ -97,7 +97,7 @@
                                             <i class="ti ti-map-pin me-1"></i>
                                             <span id="viewLandsCountStat">0</span>
                                         </div>
-                                        <small class="d-block text-muted mt-1" style="font-size: 0.7rem;">أرض</small>
+                                        <small class="d-block text-muted mt-1" style="font-size: 0.7rem;">قطعه</small>
                                     </div>
                                     <div class="text-center">
                                         <div class="badge bg-primary px-3 py-2" style="border-radius: 10px;">
@@ -137,7 +137,7 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body p-0" style="height: calc(100vh - 70px); background: #f8fafc;">
+            <div class="modal-body p-0" style="height: calc(107vh - 70px); background: #f8fafc; max-height: 107vh;">
                 <div id="fileViewerContent" class="w-100 h-100"></div>
             </div>
         </div>

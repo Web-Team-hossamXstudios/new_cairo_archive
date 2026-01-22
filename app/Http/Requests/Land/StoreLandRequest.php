@@ -33,7 +33,7 @@ class StoreLandRequest extends FormRequest
             'client_id.required' => 'العميل مطلوب',
             'client_id.exists' => 'العميل غير موجود',
             'governorate_id.required' => 'المحافظة مطلوبة',
-            'land_no.required' => 'رقم الأرض مطلوب',
+            'land_no.required' => 'رقم القطعة مطلوب',
         ];
     }
 }

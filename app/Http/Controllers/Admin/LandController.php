@@ -65,13 +65,13 @@ class LandController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'تم إضافة الأرض بنجاح',
+                'message' => 'تم إضافة القطعة بنجاح',
                 'land' => $land->load(['client', 'governorate', 'city']),
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('LandController@store: ' . $e->getMessage());
-            return response()->json(['error' => 'حدث خطأ أثناء إضافة الأرض'], 500);
+            return response()->json(['error' => 'حدث خطأ أثناء إضافة القطعة'], 500);
         }
     }
 
@@ -98,7 +98,7 @@ class LandController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'تم تحديث بيانات الأرض بنجاح',
+                'message' => 'تم تحديث بيانات القطعة بنجاح',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -116,7 +116,7 @@ class LandController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'تم حذف الأرض بنجاح',
+                'message' => 'تم حذف القطعة بنجاح',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -158,7 +158,7 @@ class LandController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'تم استرجاع الأرض بنجاح',
+                'message' => 'تم استرجاع القطعة بنجاح',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -198,7 +198,7 @@ class LandController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'تم حذف الأراضي بنجاح',
+                'message' => 'تم حذف القطع بنجاح',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -220,7 +220,7 @@ class LandController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'تم استرجاع الأراضي بنجاح',
+                'message' => 'تم استرجاع القطع بنجاح',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -242,7 +242,7 @@ class LandController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'تم الحذف النهائي للأراضي بنجاح',
+                'message' => 'تم الحذف النهائي للقطع بنجاح',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

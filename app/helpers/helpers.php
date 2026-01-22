@@ -80,3 +80,55 @@ if (! function_exists('x')) {
         return x_($param, $section);
     }
 }
+
+if (! function_exists('translate_permission')) {
+    /**
+     * Translate permission name to Arabic
+     *
+     * @param string $permission
+     * @return string
+     */
+    function translate_permission(string $permission): string
+    {
+        return \App\Helpers\PermissionHelper::translatePermission($permission);
+    }
+}
+
+if (! function_exists('translate_module')) {
+    /**
+     * Translate module name to Arabic
+     *
+     * @param string $module
+     * @return string
+     */
+    function translate_module(string $module): string
+    {
+        return \App\Helpers\PermissionHelper::translateModule($module);
+    }
+}
+
+if (! function_exists('translate_role_name')) {
+    /**
+     * Translate role name to Arabic
+     *
+     * @param string $roleName
+     * @return string
+     */
+    function translate_role_name(string $roleName): string
+    {
+        $translations = [
+            'Super Admin' => 'المدير العام',
+            'super-admin' => 'المدير العام',
+            'Admin' => 'مدير',
+            'admin' => 'مدير',
+            'Manager' => 'مدير',
+            'manager' => 'مدير',
+            'Employee' => 'موظف',
+            'employee' => 'موظف',
+            'Viewer' => 'مشاهد',
+            'viewer' => 'مشاهد',
+        ];
+
+        return $translations[$roleName] ?? ucfirst(str_replace('-', ' ', $roleName));
+    }
+}

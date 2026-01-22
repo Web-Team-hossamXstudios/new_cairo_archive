@@ -33,17 +33,7 @@
                                     <input type="text" name="last_name" class="form-control" placeholder="اسم العائلة" required>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">رقم الهاتف</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="ti ti-phone text-primary"></i></span>
-                                    <input type="text" name="phone" class="form-control" placeholder="رقم الهاتف">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">الصورة الشخصية</label>
-                                <input type="file" name="avatar" class="form-control" accept="image/*">
-                            </div>
+
                         </div>
                     </div>
 
@@ -55,10 +45,10 @@
                         </div>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">اسم المستخدم <span class="text-danger">*</span></label>
+                                <label class="form-label">الإدارة</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="ti ti-at text-primary"></i></span>
-                                    <input type="text" name="name" class="form-control" placeholder="اسم المستخدم" required>
+                                    <span class="input-group-text bg-light"><i class="ti ti-building text-primary"></i></span>
+                                    <input type="text" name="department" class="form-control" placeholder="الإدارة">
                                 </div>
                             </div>
                             <div class="col-md-6">

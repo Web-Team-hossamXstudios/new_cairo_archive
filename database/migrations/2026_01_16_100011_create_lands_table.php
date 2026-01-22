@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('district_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('zone_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('area_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('land_no');
+            $table->text('land_no');
             $table->string('unit_no')->nullable();
             $table->text('address')->nullable();
             $table->text('notes')->nullable();

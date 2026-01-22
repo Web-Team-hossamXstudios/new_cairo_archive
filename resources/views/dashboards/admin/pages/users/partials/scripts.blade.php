@@ -35,7 +35,7 @@ function updateBulkActions() {
 }
 
 function getSelectedIds() {
-    return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+    return Array.from(document.querySelectorAll('.row-checkbox:checked:not(:disabled)')).map(cb => cb.value);
 }
 
 // CRUD Operations
@@ -87,17 +87,10 @@ function editRecord(id) {
             document.getElementById('editId').value = data.id;
             document.getElementById('editFirstName').value = data.first_name || '';
             document.getElementById('editLastName').value = data.last_name || '';
-            document.getElementById('editName').value = data.name || '';
+            document.getElementById('editDepartment').value = data.department || '';
             document.getElementById('editEmail').value = data.email || '';
-            document.getElementById('editPhone').value = data.phone || '';
             document.getElementById('editRole').value = data.roles?.[0] || '';
             document.getElementById('editIsActive').checked = data.is_active;
-
-            if (data.avatar_url) {
-                document.getElementById('editAvatarPreview').innerHTML = `<img src="${data.avatar_url}" class="rounded" width="60" height="60" style="object-fit: cover;">`;
-            } else {
-                document.getElementById('editAvatarPreview').innerHTML = '';
-            }
 
             new bootstrap.Modal(document.getElementById('editModal')).show();
         })
@@ -111,6 +104,60 @@ function deleteRecord(id) {
     document.getElementById('deleteId').value = id;
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }
+
+function changePassword(userId, userName) {
+    document.getElementById('changePasswordUserId').value = userId;
+    document.getElementById('changePasswordUserName').textContent = userName;
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+    new bootstrap.Modal(document.getElementById('changePasswordModal')).show();
+}
+
+function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = event.target.closest('button').querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('ti-eye');
+        icon.classList.add('ti-eye-off');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('ti-eye-off');
+        icon.classList.add('ti-eye');
+    }
+}
+
+document.getElementById('changePasswordForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const userId = document.getElementById('changePasswordUserId').value;
+    const formData = new FormData(this);
+
+    fetch(`{{ url('admin/users') }}/${userId}/change-password`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            password: formData.get('password'),
+            password_confirmation: formData.get('password_confirmation')
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            bootstrap.Modal.getInstance(document.getElementById('changePasswordModal')).hide();
+            alert('تم تغيير كلمة المرور بنجاح');
+            location.reload();
+        } else {
+            alert(data.message || 'حدث خطأ في تغيير كلمة المرور');
+        }
+    })
+    .catch(err => {
+        console.error('Error:', err);
+        alert('حدث خطأ في تغيير كلمة المرور');
+    });
+});
 
 function confirmDelete() {
     const id = document.getElementById('deleteId').value;
@@ -165,7 +212,10 @@ function forceDeleteRecord(id) {
 // Bulk Operations
 function bulkDelete() {
     const ids = getSelectedIds();
-    if (ids.length === 0) return;
+    if (ids.length === 0) {
+        alert('الرجاء تحديد مستخدمين للحذف');
+        return;
+    }
     if (confirm(`هل تريد حذف ${ids.length} مستخدم؟`)) {
         fetch('{{ route("admin.users.bulk-delete") }}', {
             method: 'POST',
@@ -177,8 +227,15 @@ function bulkDelete() {
         })
         .then(res => res.json())
         .then(data => {
-            if (data.success) location.reload();
-            else alert(data.message || 'حدث خطأ');
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'حدث خطأ');
+            }
+        })
+        .catch(err => {
+            console.error('Bulk delete error:', err);
+            alert('حدث خطأ في عملية الحذف');
         });
     }
 }
@@ -227,6 +284,12 @@ function bulkForceDelete() {
 document.getElementById('createForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     const formData = new FormData(this);
+
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الإنشاء...';
+
     fetch('{{ route("admin.users.store") }}', {
         method: 'POST',
         body: formData,
@@ -234,8 +297,23 @@ document.getElementById('createForm')?.addEventListener('submit', function(e) {
     })
     .then(res => res.json())
     .then(data => {
-        if (data.success) location.reload();
-        else alert(data.message || 'حدث خطأ');
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.message || 'حدث خطأ');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+        }
+    })
+    .catch(err => {
+        console.error('Create user error:', err);
+        let errorMsg = 'حدث خطأ في إنشاء المستخدم';
+        if (err.errors) {
+            errorMsg += '\n' + Object.values(err.errors).flat().join('\n');
+        }
+        alert(errorMsg);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
     });
 });
 

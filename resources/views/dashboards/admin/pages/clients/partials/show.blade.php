@@ -19,7 +19,7 @@
                     <div class="col-6">
                         <div class="card bg-success-subtle border-0 text-center p-3">
                             <div class="fs-4 fw-bold text-success">{{ $client->lands->count() }}</div>
-                            <small class="text-muted">أرض</small>
+                            <small class="text-muted">قطعه</small>
                         </div>
                     </div>
                     <div class="col-6">
@@ -105,8 +105,8 @@
     <!-- Lands & Files Section -->
     <div class="col-md-8">
         <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="mb-0 fw-bold"><i class="ti ti-map-2 me-2 text-primary"></i> الأراضي المملوكة</h5>
-            <span class="badge bg-primary-subtle text-primary px-3 py-2">{{ $client->lands->count() }} أرض</span>
+            <h5 class="mb-0 fw-bold"><i class="ti ti-map-2 me-2 text-primary"></i> القطع المملوكة</h5>
+            <span class="badge bg-primary-subtle text-primary px-3 py-2">{{ $client->lands->count() }} قطعه</span>
         </div>
 
         @forelse($client->lands as $land)
@@ -199,11 +199,13 @@
                                                                 <i class="ti ti-download"></i>
                                                             </a>
                                                         @else
+                                                        @can('files.upload')
                                                             <button class="btn btn-warning"
                                                                 onclick="openUploadForFile({{ $file->id }}, '{{ $file->file_name }}')"
                                                                 title="رفع ملف">
                                                                 <i class="ti ti-upload me-1"></i> رفع
                                                             </button>
+                                                        @endcan
                                                         @endif
                                                         @if ($file->barcode)
                                                             <button class="btn btn-dark"
@@ -296,7 +298,7 @@
                         @else
                             <div class="text-center text-muted py-5">
                                 <i class="ti ti-file-off fs-1 d-block mb-3 opacity-50"></i>
-                                <p class="mb-0">لا توجد ملفات لهذه الأرض</p>
+                                <p class="mb-0">لا توجد ملفات لهذه القطعة</p>
                             </div>
                         @endif
                     </div>
@@ -306,7 +308,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center py-5">
                     <i class="ti ti-map-off fs-1 d-block mb-3 text-muted opacity-50"></i>
-                    <h6 class="text-muted">لا توجد أراضي مسجلة لهذا العميل</h6>
+                    <h6 class="text-muted">لا توجد قطع مسجلة لهذا العميل</h6>
                 </div>
             </div>
         @endforelse
@@ -435,7 +437,7 @@
                                         <div class="alert alert-info d-flex align-items-center mb-3">
                                             <i class="ti ti-info-circle fs-4 me-3"></i>
                                             <div>
-                                                <strong>اسم الملف:</strong> <span id="uploadFileName"></span>
+                                                <strong>رقم الملف:</strong> <span id="uploadFileName"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -633,10 +635,10 @@
 </div>
 
 <!-- PDF.js Library for PDF Preview -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="{{ asset('dashboard/assets/vendor/pdfjs/pdf.min.js') }}"></script>
 
 <!-- JsBarcode Library -->
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<script src="{{ asset('dashboard/assets/vendor/jsbarcode/JsBarcode.all.min.js') }}"></script>
 
 <script>
     // Configure PDF.js worker

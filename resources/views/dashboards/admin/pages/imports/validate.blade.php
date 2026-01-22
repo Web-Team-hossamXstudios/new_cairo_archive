@@ -71,7 +71,7 @@
                                         @case('archive') أرشيف @break
                                         @case('full') كامل @break
                                         @case('clients') عملاء @break
-                                        @case('lands') أراضي @break
+                                        @case('lands') قطع @break
                                         @case('geographic') جغرافي @break
                                     @endswitch
                                 </small>

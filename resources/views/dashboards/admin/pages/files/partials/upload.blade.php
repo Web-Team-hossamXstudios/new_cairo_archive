@@ -51,13 +51,13 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">الأرض <span class="text-danger">*</span></label>
+                            <label class="form-label">القطعة <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <select name="land_id" id="landSelect" class="form-select" required>
-                                    <option value="">اختر الأرض</option>
+                                    <option value="">اختر القطعة</option>
                                 </select>
                                 <button type="button" class="btn btn-outline-primary" onclick="toggleNewLandForm()">
-                                    <i class="ti ti-plus"></i> أرض جديدة
+                                    <i class="ti ti-plus"></i> قطعه جديدة
                                 </button>
                             </div>
                         </div>
@@ -67,16 +67,16 @@
                             <div class="card border-primary">
                                 <div
                                     class="card-header bg-primary-subtle d-flex justify-content-between align-items-center">
-                                    <h6 class="mb-0 text-primary"><i class="ti ti-map-pin me-2"></i>إضافة أرض جديدة</h6>
+                                    <h6 class="mb-0 text-primary"><i class="ti ti-map-pin me-2"></i>إضافة قطعه جديدة</h6>
                                     <button type="button" class="btn-close btn-sm"
                                         onclick="toggleNewLandForm()"></button>
                                 </div>
                                 <div class="card-body">
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <label class="form-label">رقم الأرض</label>
+                                            <label class="form-label">رقم القطعة</label>
                                             <input type="text" name="new_land_no" id="newLandNo" class="form-control"
-                                                placeholder="رقم الأرض">
+                                                placeholder="رقم القطعة">
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">رقم الوحدة</label>

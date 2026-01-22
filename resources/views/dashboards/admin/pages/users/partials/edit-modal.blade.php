@@ -34,18 +34,6 @@
                                     <input type="text" name="last_name" id="editLastName" class="form-control" required>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">رقم الهاتف</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="ti ti-phone text-warning"></i></span>
-                                    <input type="text" name="phone" id="editPhone" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">الصورة الشخصية</label>
-                                <input type="file" name="avatar" class="form-control" accept="image/*">
-                                <div id="editAvatarPreview" class="mt-2"></div>
-                            </div>
                         </div>
                     </div>
 
@@ -57,10 +45,10 @@
                         </div>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">اسم المستخدم <span class="text-danger">*</span></label>
+                                <label class="form-label">الإدارة</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="ti ti-at text-warning"></i></span>
-                                    <input type="text" name="name" id="editName" class="form-control" required>
+                                    <span class="input-group-text bg-light"><i class="ti ti-building text-warning"></i></span>
+                                    <input type="text" name="department" id="editDepartment" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -68,20 +56,6 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="ti ti-mail text-warning"></i></span>
                                     <input type="email" name="email" id="editEmail" class="form-control" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">كلمة المرور الجديدة</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="ti ti-key text-warning"></i></span>
-                                    <input type="password" name="password" class="form-control" minlength="8" placeholder="اتركه فارغاً للإبقاء على الحالية">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">تأكيد كلمة المرور</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="ti ti-key text-warning"></i></span>
-                                    <input type="password" name="password_confirmation" class="form-control" placeholder="تأكيد كلمة المرور">
                                 </div>
                             </div>
                         </div>

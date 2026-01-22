@@ -145,13 +145,13 @@
                                                 @case('archive') <span class="badge bg-dark">أرشيف</span> @break
                                                 @case('full') <span class="badge bg-primary">كامل</span> @break
                                                 @case('clients') <span class="badge bg-info">عملاء</span> @break
-                                                @case('lands') <span class="badge bg-success">أراضي</span> @break
+                                                @case('lands') <span class="badge bg-success">قطع</span> @break
                                                 @case('geographic') <span class="badge bg-warning">جغرافي</span> @break
                                             @endswitch
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th class="text-muted">اسم الملف</th>
+                                        <th class="text-muted">رقم الملف</th>
                                         <td>{{ $import->original_filename }}</td>
                                     </tr>
                                     <tr>

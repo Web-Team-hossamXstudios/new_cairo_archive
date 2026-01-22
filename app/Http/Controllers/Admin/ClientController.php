@@ -19,10 +19,71 @@ class ClientController extends Controller
     {
         try {
             $query = Client::query()
-                ->withCount(['lands', 'mainFiles as files_count']);
+                ->withCount(['lands', 'mainFiles as files_count'])
+                ->with([
+                    'lands.governorate',
+                    'lands.city',
+                    'lands.district',
+                    'lands.zone',
+                    'lands.area',
+                    'mainFiles.room',
+                    'mainFiles.lane',
+                    'mainFiles.stand',
+                    'mainFiles.rack',
+                    'mainFiles.items'
+                ])
+                ->orderBy('excel_row_number');
 
             if ($request->filled('search')) {
-                $query->search($request->search);
+                $searchType = $request->input('search_type', 'name');
+                $searchValue = $request->search;
+
+                switch ($searchType) {
+                    case 'name':
+                        $query->where('name', 'like', "%{$searchValue}%");
+                        break;
+
+                    case 'area':
+                        $query->whereHas('district.city.governorate', function ($q) use ($searchValue) {
+                            $q->where('name_ar', 'like', "%{$searchValue}%")
+                              ->orWhere('name_en', 'like', "%{$searchValue}%");
+                        })
+                        ->orWhereHas('district.city', function ($q) use ($searchValue) {
+                            $q->where('name_ar', 'like', "%{$searchValue}%")
+                              ->orWhere('name_en', 'like', "%{$searchValue}%");
+                        })
+                        ->orWhereHas('district', function ($q) use ($searchValue) {
+                            $q->where('name_ar', 'like', "%{$searchValue}%")
+                              ->orWhere('name_en', 'like', "%{$searchValue}%");
+                        });
+                        break;
+
+                    case 'land_no':
+                        $query->whereHas('lands', function ($q) use ($searchValue) {
+                            $q->where('land_no', 'like', "%{$searchValue}%");
+                        });
+                        break;
+
+                    case 'file_no':
+                        $query->whereHas('mainFiles', function ($q) use ($searchValue) {
+                            $q->where('file_name', 'like', "%{$searchValue}%");
+                        });
+                        break;
+
+                    case 'barcode':
+                        $query->whereHas('mainFiles', function ($q) use ($searchValue) {
+                            $q->where('barcode', 'like', "%{$searchValue}%");
+                        });
+                        break;
+
+                    case 'national_id':
+                        $query->where('national_id', 'like', "%{$searchValue}%");
+                        break;
+
+                    default:
+                        $query->search($searchValue);
+                        break;
+                }
             }
 
             if ($request->filled('national_id')) {
@@ -45,8 +106,10 @@ class ClientController extends Controller
                 $query->onlyTrashed();
             }
 
+            // Show all clients with pagination, or filtered results if search is performed
             $perPage = $request->per_page ?? 25;
             $clients = $query->latest()->paginate($perPage)->withQueryString();
+
             $governorates = Governorate::orderBy('name')->get();
 
             return view('dashboards.admin.pages.clients.index', compact('clients', 'governorates'));
@@ -122,6 +185,11 @@ class ClientController extends Controller
                 'lands.district',
                 'lands.zone',
                 'lands.area',
+                'mainFiles.items',
+                'mainFiles.room',
+                'mainFiles.lane',
+                'mainFiles.stand',
+                'mainFiles.rack',
                 'lands.mainFiles' => fn($q) => $q->with([
                     'items',
                     'room',
@@ -136,7 +204,8 @@ class ClientController extends Controller
 
             return response()->json([
                 'success' => true,
-                'client' => $client
+                'client' => $client,
+                'files' => $client->mainFiles
             ]);
         } catch (\Exception $e) {
             Log::error('ClientController@show: ' . $e->getMessage());

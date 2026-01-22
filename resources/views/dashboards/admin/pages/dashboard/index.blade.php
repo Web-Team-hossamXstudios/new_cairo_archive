@@ -58,7 +58,7 @@
                                     </div>
                                     <div>
                                         <h3 class="mb-0">{{ \App\Models\Land::count() }}</h3>
-                                        <span class="text-muted">الأراضي</span>
+                                        <span class="text-muted">القطع</span>
                                     </div>
                                 </div>
                                 <div class="mt-3 pt-2 border-top">
@@ -131,7 +131,7 @@
                                             <i class="ti ti-user-plus me-2"></i> إضافة عميل جديد
                                         </a>
                                     @endcan
-                                    @can('files.upload')
+                                    {{-- @can('files.upload')
                                         <a href="{{ route('admin.files.index') }}" class="btn btn-soft-success text-start">
                                             <i class="ti ti-upload me-2"></i> رفع ملف PDF
                                         </a>
@@ -140,10 +140,10 @@
                                         <a href="{{ route('admin.imports.create') }}" class="btn btn-soft-info text-start">
                                             <i class="ti ti-file-import me-2"></i> استيراد بيانات Excel
                                         </a>
-                                    @endcan
+                                    @endcan --}}
                                     @can('physical_locations.manage')
                                         <a href="{{ route('admin.physical-locations.index') }}" class="btn btn-soft-warning text-start">
-                                            <i class="ti ti-building-warehouse me-2"></i> إدارة المواقع
+                                            <i class="ti ti-building-warehouse me-2"></i> إدارة مواقع التخزين
                                         </a>
                                     @endcan
                                 </div>
@@ -165,7 +165,7 @@
                                             <tr>
                                                 <th>العميل</th>
                                                 <th>الرقم القومي</th>
-                                                <th>الأراضي</th>
+                                                <th>القطع</th>
                                                 <th>تاريخ الإضافة</th>
                                             </tr>
                                         </thead>
@@ -260,7 +260,7 @@
                                         <div class="flex-grow-1">
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span>{{ $gov->name }}</span>
-                                                <span class="badge bg-primary-subtle text-primary">{{ $gov->lands_count }} أرض</span>
+                                                <span class="badge bg-primary-subtle text-primary">{{ $gov->lands_count }} قطعه</span>
                                             </div>
                                             <div class="progress" style="height: 6px;">
                                                 <div class="progress-bar bg-primary" style="width: {{ ($gov->lands_count / $maxLands) * 100 }}%"></div>

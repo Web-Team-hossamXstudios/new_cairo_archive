@@ -116,7 +116,7 @@
                                     </div>
                                     <div class="ms-3">
                                         <h4 class="mb-0">{{ \App\Models\Area::count() }}</h4>
-                                        <small class="text-muted">المجاورةات</small>
+                                        <small class="text-muted">المجاورات</small>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +156,7 @@
                                                 <th>عدد المدن</th>
                                                 <th>عدد الأحياء</th>
                                                 <th>عدد المناطق</th>
-                                                <th>عدد المجاورةات</th>
+                                                <th>عدد المجاورات</th>
                                                 <th width="180" class="text-center">الإجراءات</th>
                                             </tr>
                                         </thead>

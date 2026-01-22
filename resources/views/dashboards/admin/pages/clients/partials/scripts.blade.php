@@ -1,12 +1,8 @@
-<script src="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/css/iziToast.min.css">
+<link rel="stylesheet" href="{{ asset('dashboard/assets/vendor/izitoast/iziToast.min.css') }}">
 
-<!-- PDF.js Library for PDF Preview -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-<!-- JsBarcode Library -->
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-
+<script src="{{ asset('dashboard/assets/vendor/izitoast/iziToast.min.js') }}"></script>
+<script src="{{ asset('dashboard/assets/vendor/pdfjs/pdf.min.js') }}"></script>
+<script src="{{ asset('dashboard/assets/vendor/jsbarcode/JsBarcode.all.min.js') }}"></script>
 <!-- Barcode Search Result Modal -->
 <div class="modal fade" id="barcodeResultModal" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
@@ -48,7 +44,8 @@
             <div class="modal-body text-center p-4">
                 <div class="mb-3">
                     <h6 id="barcodeFileName" class="text-muted mb-3"></h6>
-                    <div id="barcodeContainer" class="d-flex justify-content-center align-items-center" style="min-height: 150px;">
+                    <div id="barcodeContainer" class="d-flex justify-content-center align-items-center"
+                        style="min-height: 150px;">
                     </div>
                 </div>
             </div>
@@ -64,7 +61,7 @@
     </div>
 </div>
 
-<!-- File Upload Modal for Client Index -->
+<!-- File Upload Modal for existing files -->
 <div class="modal fade" id="fileUploadModal" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content" style="height: 100vh;">
@@ -91,7 +88,8 @@
                                         <i class="ti ti-upload fs-1 mb-3 d-block"></i>
                                         <p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>
                                     </div>
-                                    <canvas id="uploadPdfCanvas" class="border rounded shadow-sm" style="max-width: 100%; display: none;"></canvas>
+                                    <canvas id="uploadPdfCanvas" class="border rounded shadow-sm"
+                                        style="max-width: 100%; display: none;"></canvas>
                                     <div id="uploadPdfLoading" class="d-none">
                                         <div class="spinner-border text-primary" role="status">
                                             <span class="visually-hidden">جاري التحميل...</span>
@@ -111,9 +109,23 @@
                                         <div class="alert alert-info d-flex align-items-center mb-3">
                                             <i class="ti ti-info-circle fs-4 me-3"></i>
                                             <div>
-                                                <strong>اسم الملف:</strong> <span id="uploadFileName"></span>
+                                                <strong>رقم الملف:</strong> <span id="uploadFileName"></span>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <!-- File Name/Number -->
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">
+                                            <i class="ti ti-file-text me-2 text-primary"></i>
+                                            رقم الملف <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" name="file_name" id="uploadFileNameInput"
+                                            class="form-control form-control-lg" placeholder="أدخل رقم الملف" required>
+                                        <small class="text-muted">
+                                            <i class="ti ti-info-circle me-1"></i>
+                                            سيتم حفظ هذا الرقم كاسم للملف
+                                        </small>
                                     </div>
 
                                     <!-- PDF File Upload -->
@@ -122,7 +134,9 @@
                                             <i class="ti ti-file-upload me-2 text-primary"></i>
                                             ملف PDF <span class="text-danger">*</span>
                                         </label>
-                                        <input type="file" name="document" id="uploadPdfFileInput" class="form-control form-control-lg" accept=".pdf" required onchange="previewUploadPDF(this)">
+                                        <input type="file" name="document" id="uploadPdfFileInput"
+                                            class="form-control form-control-lg" accept=".pdf" required
+                                            onchange="previewUploadPDF(this)">
                                         <small class="text-muted">
                                             <i class="ti ti-info-circle me-1"></i>
                                             الحد الأقصى: 50 ميجابايت
@@ -145,8 +159,12 @@
                                                 <span class="input-group-text bg-light border-end-0">
                                                     <i class="ti ti-search text-muted"></i>
                                                 </span>
-                                                <input type="text" id="uploadItemSearchInput" class="form-control border-start-0 ps-0" placeholder="ابحث عن نوع المحتوى..." onkeyup="filterUploadItems()">
-                                                <button class="btn btn-outline-secondary" type="button" onclick="clearUploadItemSearch()">
+                                                <input type="text" id="uploadItemSearchInput"
+                                                    class="form-control border-start-0 ps-0"
+                                                    placeholder="ابحث عن نوع المحتوى..."
+                                                    onkeyup="filterUploadItems()">
+                                                <button class="btn btn-outline-secondary" type="button"
+                                                    onclick="clearUploadItemSearch()">
                                                     <i class="ti ti-x"></i>
                                                 </button>
                                             </div>
@@ -154,18 +172,23 @@
 
                                         <!-- Quick Actions -->
                                         <div class="mb-3 d-flex gap-2">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllUploadItems()">
+                                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                                onclick="selectAllUploadItems()">
                                                 <i class="ti ti-checkbox me-1"></i>تحديد الكل
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deselectAllUploadItems()">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                onclick="deselectAllUploadItems()">
                                                 <i class="ti ti-square me-1"></i>إلغاء الكل
                                             </button>
                                         </div>
 
                                         <!-- Items Table -->
-                                        <div class="border rounded" style="max-height: 400px; overflow-y: auto; background: white;">
-                                            <table class="table table-bordered table-hover mb-0" id="uploadItemsTable" style="direction: rtl">
-                                                <thead class="table-light" style="position: sticky; top: 0; z-index: 10;">
+                                        <div class="border rounded"
+                                            style="max-height: 400px; overflow-y: auto; background: white;">
+                                            <table class="table table-bordered table-hover mb-0" id="uploadItemsTable"
+                                                style="direction: rtl">
+                                                <thead class="table-light"
+                                                    style="position: sticky; top: 0; z-index: 10;">
                                                     <tr>
                                                         <th class="text-center" style="width: 30%;">توصيف المستند</th>
                                                         <th class="text-center" style="width: 10%;">من</th>
@@ -182,49 +205,86 @@
                                                         $leftItems = $allItems->where('order', '>', 37)->values();
                                                         $maxRows = max($rightItems->count(), $leftItems->count());
                                                     @endphp
-                                                    @for($i = 0; $i < $maxRows; $i++)
+                                                    @for ($i = 0; $i < $maxRows; $i++)
                                                         @php
                                                             $rightItem = $rightItems->get($i);
                                                             $leftItem = $leftItems->get($i);
-                                                            $searchName = strtolower(($rightItem->name ?? '') . ' ' . ($leftItem->name ?? ''));
+                                                            $searchName = strtolower(
+                                                                ($rightItem->name ?? '') .
+                                                                    ' ' .
+                                                                    ($leftItem->name ?? ''),
+                                                            );
                                                         @endphp
-                                                        <tr class="upload-item-row" data-item-name="{{ $searchName }}">
-                                                            @if($rightItem)
+                                                        <tr class="upload-item-row"
+                                                            data-item-name="{{ $searchName }}">
+                                                            @if ($rightItem)
                                                                 <td class="align-middle">
                                                                     <div class="form-check mb-0">
-                                                                        <input class="form-check-input upload-item-checkbox" type="checkbox" data-item-id="{{ $rightItem->id }}" id="uploadItem{{ $rightItem->id }}" onchange="toggleUploadPageRange({{ $rightItem->id }})">
-                                                                        <label class="form-check-label cursor-pointer" for="uploadItem{{ $rightItem->id }}">
+                                                                        <input
+                                                                            class="form-check-input upload-item-checkbox"
+                                                                            type="checkbox"
+                                                                            data-item-id="{{ $rightItem->id }}"
+                                                                            id="uploadItem{{ $rightItem->id }}"
+                                                                            onchange="toggleUploadPageRange({{ $rightItem->id }})">
+                                                                        <label class="form-check-label cursor-pointer"
+                                                                            for="uploadItem{{ $rightItem->id }}">
                                                                             {{ $rightItem->name }}
                                                                         </label>
                                                                     </div>
-                                                                    <input type="hidden" name="items[{{ $rightItem->id }}][item_id]" value="{{ $rightItem->id }}">
+                                                                    <input type="hidden"
+                                                                        name="items[{{ $rightItem->id }}][item_id]"
+                                                                        value="{{ $rightItem->id }}">
                                                                 </td>
                                                                 <td class="text-center align-middle">
-                                                                    <input type="number" name="items[{{ $rightItem->id }}][from_page]" class="form-control form-control-sm text-center d-none page-input" id="uploadFromPage{{ $rightItem->id }}" min="1" placeholder="من">
+                                                                    <select name="items[{{ $rightItem->id }}][from_page]"
+                                                                        class="form-select form-select-sm text-center d-none upload-page-select"
+                                                                        id="uploadFromPage{{ $rightItem->id }}">
+                                                                        <option value="">من</option>
+                                                                    </select>
                                                                 </td>
                                                                 <td class="text-center align-middle">
-                                                                    <input type="number" name="items[{{ $rightItem->id }}][to_page]" class="form-control form-control-sm text-center d-none page-input" id="uploadToPage{{ $rightItem->id }}" min="1" placeholder="إلى">
+                                                                    <select name="items[{{ $rightItem->id }}][to_page]"
+                                                                        class="form-select form-select-sm text-center d-none upload-page-select"
+                                                                        id="uploadToPage{{ $rightItem->id }}">
+                                                                        <option value="">إلى</option>
+                                                                    </select>
                                                                 </td>
                                                             @else
                                                                 <td class="align-middle"></td>
                                                                 <td class="text-center align-middle"></td>
                                                                 <td class="text-center align-middle"></td>
                                                             @endif
-                                                            @if($leftItem)
+                                                            @if ($leftItem)
                                                                 <td class="align-middle">
                                                                     <div class="form-check mb-0">
-                                                                        <input class="form-check-input upload-item-checkbox" type="checkbox" data-item-id="{{ $leftItem->id }}" id="uploadItem{{ $leftItem->id }}" onchange="toggleUploadPageRange({{ $leftItem->id }})">
-                                                                        <label class="form-check-label cursor-pointer" for="uploadItem{{ $leftItem->id }}">
+                                                                        <input
+                                                                            class="form-check-input upload-item-checkbox"
+                                                                            type="checkbox"
+                                                                            data-item-id="{{ $leftItem->id }}"
+                                                                            id="uploadItem{{ $leftItem->id }}"
+                                                                            onchange="toggleUploadPageRange({{ $leftItem->id }})">
+                                                                        <label class="form-check-label cursor-pointer"
+                                                                            for="uploadItem{{ $leftItem->id }}">
                                                                             {{ $leftItem->name }}
                                                                         </label>
                                                                     </div>
-                                                                    <input type="hidden" name="items[{{ $leftItem->id }}][item_id]" value="{{ $leftItem->id }}">
+                                                                    <input type="hidden"
+                                                                        name="items[{{ $leftItem->id }}][item_id]"
+                                                                        value="{{ $leftItem->id }}">
                                                                 </td>
                                                                 <td class="text-center align-middle">
-                                                                    <input type="number" name="items[{{ $leftItem->id }}][from_page]" class="form-control form-control-sm text-center d-none page-input" id="uploadFromPage{{ $leftItem->id }}" min="1" placeholder="من">
+                                                                    <select name="items[{{ $leftItem->id }}][from_page]"
+                                                                        class="form-select form-select-sm text-center d-none upload-page-select"
+                                                                        id="uploadFromPage{{ $leftItem->id }}">
+                                                                        <option value="">من</option>
+                                                                    </select>
                                                                 </td>
                                                                 <td class="text-center align-middle">
-                                                                    <input type="number" name="items[{{ $leftItem->id }}][to_page]" class="form-control form-control-sm text-center d-none page-input" id="uploadToPage{{ $leftItem->id }}" min="1" placeholder="إلى">
+                                                                    <select name="items[{{ $leftItem->id }}][to_page]"
+                                                                        class="form-select form-select-sm text-center d-none upload-page-select"
+                                                                        id="uploadToPage{{ $leftItem->id }}">
+                                                                        <option value="">إلى</option>
+                                                                    </select>
                                                                 </td>
                                                             @else
                                                                 <td class="align-middle"></td>
@@ -238,7 +298,8 @@
                                         </div>
                                         <small class="text-muted mt-2 d-block">
                                             <i class="ti ti-bulb text-warning me-1"></i>
-                                            عند تحديد نطاق الصفحات، سيتم قص الصفحات المحددة وإنشاء ملف فرعي جديد لكل نوع محتوى
+                                            عند تحديد نطاق الصفحات، سيتم قص الصفحات المحددة وإنشاء ملف فرعي جديد لكل نوع
+                                            محتوى
                                         </small>
                                     </div>
                                 </div>
@@ -260,106 +321,468 @@
 </div>
 
 <script>
-// Configure PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-// Toast Notification Helper
-const showToast = {
-    success: (message) => {
-        iziToast.success({
-            title: 'نجح',
-            message: message,
-            position: 'topRight',
-            rtl: true,
-            timeout: 3000,
-            transitionIn: 'fadeInDown',
-            transitionOut: 'fadeOutUp'
-        });
-    },
-    error: (message) => {
-        iziToast.error({
-            title: 'خطأ',
-            message: message,
-            position: 'topRight',
-            rtl: true,
-            timeout: 5000,
-            transitionIn: 'fadeInDown',
-            transitionOut: 'fadeOutUp'
-        });
-    },
-    warning: (message) => {
-        iziToast.warning({
-            title: 'تحذير',
-            message: message,
-            position: 'topRight',
-            rtl: true,
-            timeout: 4000
-        });
-    },
-    info: (message) => {
-        iziToast.info({
-            title: 'معلومة',
-            message: message,
-            position: 'topRight',
-            rtl: true,
-            timeout: 3000
-        });
-    }
-};
+    // Configure PDF.js worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-// Clear form errors
-function clearFormErrors(formId) {
-    const form = document.getElementById(formId);
-    if (form) {
-        form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
-        form.querySelectorAll('.invalid-feedback').forEach(el => el.textContent = '');
-    }
-}
+    // Permission check - passed from server
+    const hasFileUploadPermission = @json(auth()->user()->can('files.upload'));
 
-// Display form errors
-function displayFormErrors(formId, errors) {
-    clearFormErrors(formId);
-    Object.keys(errors).forEach(field => {
-        const input = document.querySelector(`#${formId} [name="${field}"]`);
-        if (input) {
-            input.classList.add('is-invalid');
-            const feedback = input.nextElementSibling;
-            if (feedback && feedback.classList.contains('invalid-feedback')) {
-                feedback.textContent = errors[field][0];
-            }
+    // Toast Notification Helper
+    const showToast = {
+        success: (message) => {
+            iziToast.success({
+                title: 'نجح',
+                message: message,
+                position: 'topRight',
+                rtl: true,
+                timeout: 3000,
+                transitionIn: 'fadeInDown',
+                transitionOut: 'fadeOutUp'
+            });
+        },
+        error: (message) => {
+            iziToast.error({
+                title: 'خطأ',
+                message: message,
+                position: 'topRight',
+                rtl: true,
+                timeout: 5000,
+                transitionIn: 'fadeInDown',
+                transitionOut: 'fadeOutUp'
+            });
+        },
+        warning: (message) => {
+            iziToast.warning({
+                title: 'تحذير',
+                message: message,
+                position: 'topRight',
+                rtl: true,
+                timeout: 4000
+            });
+        },
+        info: (message) => {
+            iziToast.info({
+                title: 'معلومة',
+                message: message,
+                position: 'topRight',
+                rtl: true,
+                timeout: 3000
+            });
         }
-    });
-}
+    };
 
-// ==================== Barcode Functions ====================
-function printBarcode(barcode, fileName) {
-    document.getElementById('barcodeFileName').textContent = fileName;
-    const container = document.getElementById('barcodeContainer');
-    container.innerHTML = '<svg id="barcodeSvg"></svg>';
-
-    try {
-        JsBarcode("#barcodeSvg", barcode, {
-            format: "CODE128",
-            width: 2,
-            height: 100,
-            displayValue: true,
-            fontSize: 20,
-            margin: 10
-        });
-
-        const modal = new bootstrap.Modal(document.getElementById('barcodePrintModal'));
-        modal.show();
-    } catch (error) {
-        console.error('Barcode generation error:', error);
-        showToast.error('فشل إنشاء الباركود');
+    // Clear form errors
+    function clearFormErrors(formId) {
+        const form = document.getElementById(formId);
+        if (form) {
+            form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+            form.querySelectorAll('.invalid-feedback').forEach(el => el.textContent = '');
+        }
     }
-}
 
-function printBarcodeContent() {
-    const printWindow = window.open('', '', 'width=600,height=400');
-    const barcodeHtml = document.getElementById('barcodeContainer').innerHTML;
-    const fileName = document.getElementById('barcodeFileName').textContent;
+    // Display form errors
+    function displayFormErrors(formId, errors) {
+        clearFormErrors(formId);
+        Object.keys(errors).forEach(field => {
+            const input = document.querySelector(`#${formId} [name="${field}"]`);
+            if (input) {
+                input.classList.add('is-invalid');
+                const feedback = input.nextElementSibling;
+                if (feedback && feedback.classList.contains('invalid-feedback')) {
+                    feedback.textContent = errors[field][0];
+                }
+            }
+        });
+    }
 
-    printWindow.document.write(`
+    // ==================== Barcode Functions ====================
+    function printBarcode(barcode, fileName) {
+        document.getElementById('barcodeFileName').textContent = fileName;
+        const container = document.getElementById('barcodeContainer');
+        container.innerHTML = '<svg id="barcodeSvg"></svg>';
+
+        try {
+            JsBarcode("#barcodeSvg", barcode, {
+                format: "CODE128",
+                width: 2,
+                height: 100,
+                displayValue: true,
+                fontSize: 20,
+                margin: 10
+            });
+
+            const modal = new bootstrap.Modal(document.getElementById('barcodePrintModal'));
+            modal.show();
+        } catch (error) {
+            console.error('Barcode generation error:', error);
+            showToast.error('فشل إنشاء الباركود');
+        }
+    }
+
+    // Print all barcodes for a client's files - one barcode per land
+    function printClientBarcodes(clientId) {
+        fetch(`{{ url('admin/clients') }}/${clientId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.client) {
+                    const client = data.client;
+                    const files = client.main_files || client.files || [];
+                    const lands = client.lands || [];
+
+                    if (files.length === 0) {
+                        alert('لا توجد ملفات لهذا العميل');
+                        return;
+                    }
+
+                    // Build barcode data - one per land
+                    let allBarcodes = [];
+                    files.forEach(file => {
+                        const pageCount = file.items ? file.items.length : 1;
+
+                        // Build storage location
+                        const storageLocationParts = [];
+                        if (file.room) storageLocationParts.push(`(غرفة ${file.room.name})`);
+                        if (file.lane) storageLocationParts.push(`(ممر ${file.lane.name})`);
+                        if (file.stand) storageLocationParts.push(`(ستاند ${file.stand.name})`);
+                        if (file.rack) storageLocationParts.push(`(رف ${file.rack.name})`);
+                        const storageLocation = storageLocationParts.join(' -> ') || 'غير محدد';
+
+                        // Create one barcode per land
+                        if (lands.length > 0) {
+                            lands.forEach(land => {
+                                let landAddress = '';
+                                if (land.district) landAddress += `(${land.district.name})`;
+                                if (land.zone) landAddress += ` -> (${land.zone.name})`;
+                                if (land.area) landAddress += ` -> (${land.area.name})`;
+                                if (land.land_no) landAddress += ` -> قطعة (${land.land_no})`;
+                                if (!landAddress) landAddress = 'غير محدد';
+
+                                allBarcodes.push({
+                                    barcode: file.barcode,
+                                    landAddress: landAddress,
+                                    storageLocation: storageLocation
+                                });
+                            });
+                        } else {
+                            allBarcodes.push({
+                                barcode: file.barcode,
+                                landAddress: 'لا توجد قطع',
+                                storageLocation: storageLocation
+                            });
+                        }
+                    });
+
+                    // Create print window
+                    const printWindow = window.open('', '', 'width=800,height=600');
+
+                    let barcodesHtml = '';
+                    allBarcodes.forEach((item, index) => {
+                        barcodesHtml += `
+                        <div class="barcode-item" style="page-break-inside: avoid; background: white; margin-bottom: 20px;">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <svg id="barcode-${index}"></svg>
+                            </div>
+                            <div style="text-align: center;">
+                                <p style="font-size: 10px; color: #333; margin: 5px 0;">${item.landAddress}</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <p style="font-size: 10px; color: #333; margin: 5px 0;">${item.storageLocation}</p>
+                            </div>
+                        </div>
+                    `;
+                    });
+
+                    printWindow.document.write(`
+                    <html dir="rtl">
+                    <head>
+                        <title>طباعة باركودات - ${client.name}</title>
+                        <script src="{{ asset('dashboard/assets/vendor/jsbarcode/JsBarcode.all.min.js') }}"><\/script>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                padding: 20px;
+                            }
+                            .barcode-item {
+                                margin-bottom: 20px;
+                            }
+                            @media print {
+                                body { margin: 0; padding: 10px; }
+                                .no-print { display: none; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        ${barcodesHtml}
+                        <div class="no-print" style="text-align: center; margin-top: 20px;">
+                            <button onclick="window.print()" style="padding: 10px 30px; font-size: 16px; cursor: pointer;">طباعة</button>
+                            <button onclick="window.close()" style="padding: 10px 30px; font-size: 16px; cursor: pointer; margin-right: 10px;">إغلاق</button>
+                        </div>
+                        <script>
+                            window.onload = function() {
+                                ${allBarcodes.map((item, index) => `
+                                    try {
+                                        JsBarcode("#barcode-${index}", "${item.barcode}", {
+                                            format: "CODE128",
+                                            width: 1.5,
+                                            height: 60,
+                                            displayValue: true,
+                                            fontSize: 12,
+                                            margin: 5
+                                        });
+                                    } catch(e) {
+                                        console.error('Barcode error:', e);
+                                    }
+                                `).join('\n')}
+                            };
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+                    printWindow.document.close();
+                } else {
+                    alert('فشل تحميل بيانات العميل');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء تحميل البيانات');
+            });
+    }
+
+    // Bulk print barcodes for selected clients
+    function bulkPrintBarcodes() {
+        const selectedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
+        const clientIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+
+        if (clientIds.length === 0) {
+            alert('الرجاء تحديد عملاء لطباعة باركوداتهم');
+            return;
+        }
+
+        // Show modal with loading state
+        const modal = new bootstrap.Modal(document.getElementById('bulkBarcodePrintModal'));
+        modal.show();
+
+        document.getElementById('barcodeModalTitle').textContent = `طباعة باركودات - ${clientIds.length} عميل`;
+        document.getElementById('bulkBarcodeContent').innerHTML = `
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">جاري التحميل...</span>
+            </div>
+            <p class="mt-3 text-muted fs-5">جاري تحميل بيانات ${clientIds.length} عميل...</p>
+        </div>
+    `;
+
+        // Fetch all clients data
+        const fetchPromises = clientIds.map(id =>
+            fetch(`{{ url('admin/clients') }}/${id}`)
+            .then(response => response.json())
+            .then(data => data.success ? data.client : null)
+        );
+
+        Promise.all(fetchPromises)
+            .then(clients => {
+                // Filter out any failed requests
+                const validClients = clients.filter(c => c !== null);
+
+                if (validClients.length === 0) {
+                    alert('فشل تحميل بيانات العملاء');
+                    return;
+                }
+
+                // Collect all files from all clients - one barcode per land
+                let allBarcodes = [];
+                validClients.forEach(client => {
+                    const files = client.main_files || client.files || [];
+                    const lands = client.lands || [];
+
+                    // If client has files, add them
+                    if (files.length > 0) {
+                        files.forEach(file => {
+                            const pageCount = file.items ? file.items.length : 1;
+
+                            // Build storage location string
+                            let storageLocation = '';
+                            const storageLocationParts = [];
+                            if (file.room) storageLocationParts.push(`(غرفة ${file.room.name})`);
+                            if (file.lane) storageLocationParts.push(`(ممر ${file.lane.name})`);
+                            if (file.stand) storageLocationParts.push(`(ستاند ${file.stand.name})`);
+                            if (file.rack) storageLocationParts.push(`(رف ${file.rack.name})`);
+                            storageLocation = storageLocationParts.join(' -> ');
+                            if (!storageLocation) storageLocation = 'غير محدد';
+
+                            // If file has lands, create one barcode entry per land
+                            if (lands.length > 0) {
+                                lands.forEach(land => {
+                                    // Build single land address
+                                    let landAddress = '';
+                                    if (land.district) landAddress +=
+                                        `(${land.district.name})`;
+                                    if (land.zone) landAddress += ` -> (${land.zone.name})`;
+                                    if (land.area) landAddress += ` -> (${land.area.name})`;
+                                    if (land.land_no) landAddress +=
+                                        ` -> قطعة (${land.land_no})`;
+                                    if (!landAddress) landAddress = 'غير محدد';
+
+                                    allBarcodes.push({
+                                        clientName: client.name,
+                                        excelRowNumber: client.excel_row_number ||
+                                            '-',
+                                        fileName: file.file_name,
+                                        barcode: file.barcode,
+                                        pageCount: pageCount,
+                                        storageLocation: storageLocation,
+                                        landAddress: landAddress
+                                    });
+                                });
+                            } else {
+                                // No lands for this file
+                                allBarcodes.push({
+                                    clientName: client.name,
+                                    excelRowNumber: client.excel_row_number || '-',
+                                    fileName: file.file_name,
+                                    barcode: file.barcode,
+                                    pageCount: pageCount,
+                                    storageLocation: storageLocation,
+                                    landAddress: 'لا توجد قطع'
+                                });
+                            }
+                        });
+                    } else {
+                        // If client has no files, still show client name with "لا يوجد ملف"
+                        allBarcodes.push({
+                            clientName: client.name,
+                            excelRowNumber: client.excel_row_number || '-',
+                            fileName: 'لا يوجد ملف',
+                            barcode: null,
+                            pageCount: 0,
+                            storageLocation: 'غير محدد',
+                            landAddress: 'لا توجد قطع'
+                        });
+                    }
+                });
+
+                // Display in modal instead of new window
+                let barcodesHtml = '';
+                allBarcodes.forEach((item, index) => {
+                    const barcodeSection = item.barcode ?
+                        `<div style="text-align: center; margin-bottom: 10px; fs-4">
+                         <svg id="barcode-${index}"></svg>
+                       </div>` :
+                        `<div style="text-align: center; padding: 20px; background: #f8d7da; color: #721c24; border-radius: 6px; margin-bottom: 15px;">
+                         <p style="margin: 0; font-size: 16px;">لا يوجد باركود لهذا الملف</p>
+                       </div>`;
+
+                    barcodesHtml += `
+                    <div class="barcode-item" style="page-break-inside: avoid;   background: white;">
+                        <!-- Barcode Section -->
+                        ${barcodeSection}
+
+                        <!-- Land Address -->
+                        <div style="background: #fff;  text-align: center;">
+                            <p style="font-size: 10px; color: #333;">${item.landAddress}</p>
+                        </div>
+
+                        <!-- Storage Location -->
+                        <div style="background: #fff;  text-align: center;">
+                            <p style="font-size: 10px; color: #333;">${item.storageLocation}</p>
+                        </div>
+                    </div>
+                `;
+                });
+
+                // Update modal content with barcodes
+                document.getElementById('bulkBarcodeContent').innerHTML = barcodesHtml;
+                document.getElementById('barcodeModalTitle').textContent =
+                    `باركودات الملفات - ${validClients.length} عميل (${allBarcodes.length} ملف)`;
+
+                // Generate barcodes after content is loaded
+                setTimeout(() => {
+                    allBarcodes.forEach((item, index) => {
+                        if (item.barcode) {
+                            try {
+                                JsBarcode(`#barcode-${index}`, item.barcode, {
+                                    format: "CODE128",
+                                    width: 1.5,
+                                    height: 60,
+                                    displayValue: true,
+                                    fontSize: 12,
+                                    margin: 5
+                                });
+                            } catch (e) {
+                                console.error('Barcode generation error for ' + item.barcode + ':',
+                                    e);
+                            }
+                        }
+                    });
+                }, 100);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('bulkBarcodeContent').innerHTML = `
+                <div class="alert alert-danger text-center">
+                    <i class="ti ti-alert-circle fs-1"></i>
+                    <p class="mt-3">حدث خطأ أثناء تحميل بيانات العملاء</p>
+                </div>
+            `;
+            });
+    }
+
+    // Print barcode modal content
+    function printBarcodeModal() {
+        const modalContent = document.getElementById('bulkBarcodeContent').innerHTML;
+        const modalTitle = document.getElementById('barcodeModalTitle').textContent;
+
+        const printWindow = window.open('', '', 'width=900,height=700');
+        printWindow.document.write(`
+        <!DOCTYPE html>
+        <html dir="rtl">
+        <head>
+            <meta charset="UTF-8">
+            <title>${modalTitle}</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 20px;
+                    background-color: #f5f5f5;
+                }
+                .barcode-item {
+                    background: white;
+                    margin-bottom: 30px;
+                    page-break-inside: avoid;
+                }
+                @media print {
+                    body {
+                        margin: 0;
+                        padding: 10px;
+                        background-color: white;
+                    }
+                    .barcode-item {
+                        page-break-inside: avoid;
+                        border: 1px solid #333;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            ${modalContent}
+            <script>
+                window.onload = function() {
+                    window.print();
+                };
+            <\/script>
+        </body>
+        </html>
+    `);
+        printWindow.document.close();
+    }
+
+    function printBarcodeContent() {
+        const printWindow = window.open('', '', 'width=600,height=400');
+        const barcodeHtml = document.getElementById('barcodeContainer').innerHTML;
+        const fileName = document.getElementById('barcodeFileName').textContent;
+
+        printWindow.document.write(`
         <html dir="rtl">
         <head>
             <title>طباعة الباركود</title>
@@ -395,243 +818,290 @@ function printBarcodeContent() {
                 };
             <\/script>
     `);
-    printWindow.document.close();
-}
-
-// ==================== Upload Functions ====================
-function openUploadForFile(fileId, fileName) {
-    document.getElementById('uploadFileId').value = fileId;
-    document.getElementById('uploadFileName').textContent = fileName;
-    document.getElementById('fileUploadForm').reset();
-    document.getElementById('uploadFileId').value = fileId;
-
-    // Reset all checkboxes and page inputs
-    document.querySelectorAll('.upload-item-checkbox').forEach(cb => {
-        cb.checked = false;
-    });
-    document.querySelectorAll('#uploadItemsTable .page-input').forEach(input => {
-        input.classList.add('d-none');
-        input.value = '';
-    });
-    updateUploadItemsCount();
-
-    // Reset PDF preview
-    const placeholder = document.getElementById('uploadPdfPlaceholder');
-    const canvas = document.getElementById('uploadPdfCanvas');
-    const loading = document.getElementById('uploadPdfLoading');
-    if (canvas) canvas.style.display = 'none';
-    if (loading) loading.classList.add('d-none');
-    if (placeholder) {
-        placeholder.classList.remove('d-none');
-        placeholder.innerHTML = '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
+        printWindow.document.close();
     }
 
-    const modal = new bootstrap.Modal(document.getElementById('fileUploadModal'));
-    modal.show();
-}
+    // ==================== Upload Functions ====================
+    function openUploadForFile(fileId, fileName) {
+        // Close any open modals first (like viewClientModal)
+        const openModals = document.querySelectorAll('.modal.show');
+        openModals.forEach(modal => {
+            const bsModal = bootstrap.Modal.getInstance(modal);
+            if (bsModal) bsModal.hide();
+        });
 
-function toggleUploadPageRange(itemId) {
-    const checkbox = document.getElementById(`uploadItem${itemId}`);
-    const fromPage = document.getElementById(`uploadFromPage${itemId}`);
-    const toPage = document.getElementById(`uploadToPage${itemId}`);
+        // Wait for modals to close, then open file upload modal
+        setTimeout(() => {
+            const uploadFileIdEl = document.getElementById('uploadFileId');
+            const uploadFileNameEl = document.getElementById('uploadFileName');
+            const fileUploadForm = document.getElementById('fileUploadForm');
 
-    if (checkbox && checkbox.checked) {
-        if (fromPage) fromPage.classList.remove('d-none');
-        if (toPage) toPage.classList.remove('d-none');
-    } else {
-        if (fromPage) {
-            fromPage.classList.add('d-none');
-            fromPage.value = '';
-        }
-        if (toPage) {
-            toPage.classList.add('d-none');
-            toPage.value = '';
-        }
-    }
-    updateUploadItemsCount();
-}
+            if (uploadFileIdEl) uploadFileIdEl.value = fileId;
+            if (uploadFileNameEl) uploadFileNameEl.textContent = fileName;
+            if (fileUploadForm) {
+                fileUploadForm.reset();
+                if (uploadFileIdEl) uploadFileIdEl.value = fileId;
+            }
 
-function updateUploadItemsCount() {
-    const count = document.querySelectorAll('.upload-item-checkbox:checked').length;
-    const countEl = document.getElementById('uploadSelectedItemsCount');
-    if (countEl) countEl.textContent = count + ' محدد';
-}
-
-function filterUploadItems() {
-    const searchInput = document.getElementById('uploadItemSearchInput');
-    if (!searchInput) return;
-
-    const searchValue = searchInput.value.toLowerCase();
-    const rows = document.querySelectorAll('.upload-item-row');
-
-    rows.forEach(row => {
-        const itemName = row.getAttribute('data-item-name');
-        if (itemName && itemName.includes(searchValue)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-}
-
-function clearUploadItemSearch() {
-    const searchInput = document.getElementById('uploadItemSearchInput');
-    if (searchInput) searchInput.value = '';
-    filterUploadItems();
-}
-
-function selectAllUploadItems() {
-    document.querySelectorAll('.upload-item-checkbox').forEach(checkbox => {
-        if (!checkbox.checked) {
-            checkbox.checked = true;
-            toggleUploadPageRange(checkbox.getAttribute('data-item-id'));
-        }
-    });
-}
-
-function deselectAllUploadItems() {
-    document.querySelectorAll('.upload-item-checkbox').forEach(checkbox => {
-        if (checkbox.checked) {
-            checkbox.checked = false;
-            toggleUploadPageRange(checkbox.getAttribute('data-item-id'));
-        }
-    });
-}
-
-function previewUploadPDF(input) {
-    const file = input.files[0];
-    if (!file || file.type !== 'application/pdf') {
-        return;
-    }
-
-    const fileSize = file.size / 1024 / 1024;
-    if (fileSize > 50) {
-        showToast.error('حجم الملف يتجاوز 50 ميجابايت');
-        input.value = '';
-        return;
-    }
-
-    const placeholder = document.getElementById('uploadPdfPlaceholder');
-    const canvas = document.getElementById('uploadPdfCanvas');
-    const loading = document.getElementById('uploadPdfLoading');
-
-    // Show loading
-    if (placeholder) placeholder.classList.add('d-none');
-    if (canvas) canvas.style.display = 'none';
-    if (loading) loading.classList.remove('d-none');
-
-    const fileReader = new FileReader();
-    fileReader.onload = function() {
-        const typedarray = new Uint8Array(this.result);
-
-        // Load PDF
-        pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
-            pdf.getPage(1).then(function(page) {
-                const viewport = page.getViewport({ scale: 1.5 });
-                const context = canvas.getContext('2d');
-
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                const renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-
-                page.render(renderContext).promise.then(function() {
-                    if (loading) loading.classList.add('d-none');
-                    if (canvas) canvas.style.display = 'block';
-                });
+            // Reset all checkboxes and page inputs
+            document.querySelectorAll('.upload-item-checkbox').forEach(cb => {
+                cb.checked = false;
             });
-        }).catch(function(error) {
-            console.error('Error loading PDF:', error);
+            document.querySelectorAll('#uploadItemsTable .page-input').forEach(input => {
+                input.classList.add('d-none');
+                input.value = '';
+            });
+            updateUploadItemsCount();
+
+            // Reset PDF preview
+            const placeholder = document.getElementById('uploadPdfPlaceholder');
+            const canvas = document.getElementById('uploadPdfCanvas');
+            const loading = document.getElementById('uploadPdfLoading');
+            if (canvas) canvas.style.display = 'none';
             if (loading) loading.classList.add('d-none');
             if (placeholder) {
                 placeholder.classList.remove('d-none');
-                placeholder.innerHTML = '<i class="ti ti-alert-circle fs-1 mb-3 d-block text-danger"></i><p class="mb-0 text-danger">خطأ في تحميل الملف</p>';
+                placeholder.innerHTML =
+                    '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
+            }
+
+            const fileUploadModalEl = document.getElementById('fileUploadModal');
+            if (fileUploadModalEl) {
+                const modal = new bootstrap.Modal(fileUploadModalEl);
+                modal.show();
+            } else {
+                console.error('fileUploadModal not found');
+                showToast.error('خطأ: لم يتم العثور على نافذة رفع الملف');
+            }
+        }, 300);
+    }
+
+    function toggleUploadPageRange(itemId) {
+        const checkbox = document.getElementById(`uploadItem${itemId}`);
+        const fromPage = document.getElementById(`uploadFromPage${itemId}`);
+        const toPage = document.getElementById(`uploadToPage${itemId}`);
+
+        if (checkbox && checkbox.checked) {
+            if (fromPage) fromPage.classList.remove('d-none');
+            if (toPage) toPage.classList.remove('d-none');
+        } else {
+            if (fromPage) {
+                fromPage.classList.add('d-none');
+                fromPage.value = '';
+            }
+            if (toPage) {
+                toPage.classList.add('d-none');
+                toPage.value = '';
+            }
+        }
+        updateUploadItemsCount();
+    }
+
+    function updateUploadItemsCount() {
+        const count = document.querySelectorAll('.upload-item-checkbox:checked').length;
+        const countEl = document.getElementById('uploadSelectedItemsCount');
+        if (countEl) countEl.textContent = count + ' محدد';
+    }
+
+    function filterUploadItems() {
+        const searchInput = document.getElementById('uploadItemSearchInput');
+        if (!searchInput) return;
+
+        const searchValue = searchInput.value.toLowerCase();
+        const rows = document.querySelectorAll('.upload-item-row');
+
+        rows.forEach(row => {
+            const itemName = row.getAttribute('data-item-name');
+            if (itemName && itemName.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
             }
         });
-    };
-
-    fileReader.readAsArrayBuffer(file);
-}
-
-// Reset preview when upload modal is closed
-document.getElementById('fileUploadModal')?.addEventListener('hidden.bs.modal', function() {
-    const placeholder = document.getElementById('uploadPdfPlaceholder');
-    const canvas = document.getElementById('uploadPdfCanvas');
-    const loading = document.getElementById('uploadPdfLoading');
-    const fileInput = document.getElementById('uploadPdfFileInput');
-
-    if (canvas) canvas.style.display = 'none';
-    if (loading) loading.classList.add('d-none');
-    if (placeholder) {
-        placeholder.classList.remove('d-none');
-        placeholder.innerHTML = '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
     }
-    if (fileInput) fileInput.value = '';
-});
 
-// Handle Upload Form Submission
-document.getElementById('fileUploadForm')?.addEventListener('submit', function(e) {
-    e.preventDefault();
+    function clearUploadItemSearch() {
+        const searchInput = document.getElementById('uploadItemSearchInput');
+        if (searchInput) searchInput.value = '';
+        filterUploadItems();
+    }
 
-    const formData = new FormData(this);
-    const fileId = document.getElementById('uploadFileId').value;
-    const submitBtn = this.querySelector('button[type="submit"]');
+    function selectAllUploadItems() {
+        document.querySelectorAll('.upload-item-checkbox').forEach(checkbox => {
+            if (!checkbox.checked) {
+                checkbox.checked = true;
+                toggleUploadPageRange(checkbox.getAttribute('data-item-id'));
+            }
+        });
+    }
 
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الرفع...';
+    function deselectAllUploadItems() {
+        document.querySelectorAll('.upload-item-checkbox').forEach(checkbox => {
+            if (checkbox.checked) {
+                checkbox.checked = false;
+                toggleUploadPageRange(checkbox.getAttribute('data-item-id'));
+            }
+        });
+    }
 
-    fetch(`/admin/files/${fileId}/upload-document`, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Accept': 'application/json'
+    function previewUploadPDF(input) {
+        const file = input.files[0];
+        if (!file || file.type !== 'application/pdf') {
+            return;
         }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast.success(data.message || 'تم رفع الملف بنجاح');
-            bootstrap.Modal.getInstance(document.getElementById('fileUploadModal')).hide();
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            showToast.error(data.message || 'حدث خطأ أثناء رفع الملف');
+
+        const fileSize = file.size / 1024 / 1024;
+        if (fileSize > 50) {
+            showToast.error('حجم الملف يتجاوز 50 ميجابايت');
+            input.value = '';
+            return;
         }
-    })
-    .catch(error => {
-        console.error('Upload error:', error);
-        showToast.error('حدث خطأ في الاتصال بالخادم');
-    })
-    .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="ti ti-upload me-1"></i>رفع ومعالجة';
+
+        const placeholder = document.getElementById('uploadPdfPlaceholder');
+        const canvas = document.getElementById('uploadPdfCanvas');
+        const loading = document.getElementById('uploadPdfLoading');
+
+        // Show loading
+        if (placeholder) placeholder.classList.add('d-none');
+        if (canvas) canvas.style.display = 'none';
+        if (loading) loading.classList.remove('d-none');
+
+        const fileReader = new FileReader();
+        fileReader.onload = function() {
+            const typedarray = new Uint8Array(this.result);
+
+            // Load PDF
+            pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
+                const totalPages = pdf.numPages;
+
+                // Populate page select dropdowns with page numbers
+                populateUploadPageSelects(totalPages);
+
+                pdf.getPage(1).then(function(page) {
+                    const viewport = page.getViewport({
+                        scale: 1.5
+                    });
+                    const context = canvas.getContext('2d');
+
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+
+                    page.render(renderContext).promise.then(function() {
+                        if (loading) loading.classList.add('d-none');
+                        if (canvas) canvas.style.display = 'block';
+                    });
+                });
+            }).catch(function(error) {
+                console.error('Error loading PDF:', error);
+                if (loading) loading.classList.add('d-none');
+                if (placeholder) {
+                    placeholder.classList.remove('d-none');
+                    placeholder.innerHTML =
+                        '<i class="ti ti-alert-circle fs-1 mb-3 d-block text-danger"></i><p class="mb-0 text-danger">خطأ في تحميل الملف</p>';
+                }
+            });
+        };
+
+        fileReader.readAsArrayBuffer(file);
+    }
+
+    // Populate page select dropdowns for fileUploadModal
+    function populateUploadPageSelects(totalPages) {
+        const pageSelects = document.querySelectorAll('.upload-page-select');
+        pageSelects.forEach(select => {
+            const placeholder = select.options[0]?.text || '';
+            select.innerHTML = `<option value="">${placeholder}</option>`;
+            for (let i = 1; i <= totalPages; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                select.appendChild(option);
+            }
+        });
+    }
+
+    // Reset preview when upload modal is closed
+    document.getElementById('fileUploadModal')?.addEventListener('hidden.bs.modal', function() {
+        const placeholder = document.getElementById('uploadPdfPlaceholder');
+        const canvas = document.getElementById('uploadPdfCanvas');
+        const loading = document.getElementById('uploadPdfLoading');
+        const fileInput = document.getElementById('uploadPdfFileInput');
+
+        if (canvas) canvas.style.display = 'none';
+        if (loading) loading.classList.add('d-none');
+        if (placeholder) {
+            placeholder.classList.remove('d-none');
+            placeholder.innerHTML =
+                '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
+        }
+        if (fileInput) fileInput.value = '';
     });
-});
 
-// Generate Client Code
-let landRowIndex = 0;
-let governoratesData = @json($governorates ?? []);
+    // Handle Upload Form Submission
+    document.getElementById('fileUploadForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-function generateClientCode() {
-    fetch('{{ route("admin.clients.generate-code") }}')
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('clientCode').value = data.code;
-        })
-        .catch(() => showToast.error('فشل توليد الكود'));
-}
+        const formData = new FormData(this);
+        const fileId = document.getElementById('uploadFileId').value;
+        const submitBtn = this.querySelector('button[type="submit"]');
 
-// Add Land Row
-function addLandRow() {
-    const container = document.getElementById('landsContainer');
-    const row = document.createElement('div');
-    row.className = 'card mb-2 border-primary';
-    row.innerHTML = `
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الرفع...';
+
+        fetch(`/admin/files/${fileId}/upload-document`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast.success(data.message || 'تم رفع الملف بنجاح');
+                    bootstrap.Modal.getInstance(document.getElementById('fileUploadModal')).hide();
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showToast.error(data.message || 'حدث خطأ أثناء رفع الملف');
+                }
+            })
+            .catch(error => {
+                console.error('Upload error:', error);
+                showToast.error('حدث خطأ في الاتصال بالخادم');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="ti ti-upload me-1"></i>رفع ومعالجة';
+            });
+    });
+
+    // Generate Client Code
+    let landRowIndex = 0;
+    let governoratesData = @json($governorates ?? []);
+
+    function generateClientCode() {
+        fetch('{{ route('admin.clients.generate-code') }}')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('clientCode').value = data.code;
+            })
+            .catch(() => showToast.error('فشل توليد الكود'));
+    }
+
+    // Add Land Row
+    function addLandRow() {
+        const container = document.getElementById('landsContainer');
+        const row = document.createElement('div');
+        row.className = 'card mb-2 border-primary';
+        row.innerHTML = `
         <div class="card-header bg-primary-subtle d-flex justify-content-between align-items-center py-2">
-            <h6 class="mb-0 text-primary small"><i class="ti ti-map-pin me-1"></i>أرض #${landRowIndex + 1}</h6>
+            <h6 class="mb-0 text-primary small"><i class="ti ti-map-pin me-1"></i>قطعه #${landRowIndex + 1}</h6>
             <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.card').remove()">
                 <i class="ti ti-trash"></i> حذف
             </button>
@@ -670,8 +1140,8 @@ function addLandRow() {
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small">رقم الأرض <span class="text-danger">*</span></label>
-                    <input type="text" name="lands[${landRowIndex}][land_no]" class="form-control form-control-sm" placeholder="رقم الأرض" required>
+                    <label class="form-label small">رقم القطعة <span class="text-danger">*</span></label>
+                    <input type="text" name="lands[${landRowIndex}][land_no]" class="form-control form-control-sm" placeholder="رقم القطعة" required>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label small">رقم الوحدة</label>
@@ -694,543 +1164,517 @@ function addLandRow() {
             </div>
         </div>
     `;
-    container.appendChild(row);
-    landRowIndex++;
-}
-
-// Load Cities for Client Lands
-function loadClientLandCities(governorateId, index) {
-    const citySelect = document.querySelector(`.city-select-${index}`);
-    const districtSelect = document.querySelector(`.district-select-${index}`);
-    const zoneSelect = document.querySelector(`.zone-select-${index}`);
-    const areaSelect = document.querySelector(`.area-select-${index}`);
-
-    if (!citySelect) return;
-
-    citySelect.innerHTML = '<option value="">جاري التحميل...</option>';
-    if (districtSelect) districtSelect.innerHTML = '<option value="">اختر الحي</option>';
-    if (zoneSelect) zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-    if (areaSelect) areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
-
-    if (!governorateId) {
-        citySelect.innerHTML = '<option value="">اختر المدينة</option>';
-        return;
+        container.appendChild(row);
+        landRowIndex++;
     }
 
-    fetch(`{{ url('admin/geographic-areas/cities/by-governorate') }}/${governorateId}`)
-        .then(res => res.json())
-        .then(data => {
+    // Load Cities for Client Lands
+    function loadClientLandCities(governorateId, index) {
+        const citySelect = document.querySelector(`.city-select-${index}`);
+        const districtSelect = document.querySelector(`.district-select-${index}`);
+        const zoneSelect = document.querySelector(`.zone-select-${index}`);
+        const areaSelect = document.querySelector(`.area-select-${index}`);
+
+        if (!citySelect) return;
+
+        citySelect.innerHTML = '<option value="">جاري التحميل...</option>';
+        if (districtSelect) districtSelect.innerHTML = '<option value="">اختر الحي</option>';
+        if (zoneSelect) zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+        if (areaSelect) areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
+
+        if (!governorateId) {
             citySelect.innerHTML = '<option value="">اختر المدينة</option>';
-            data.forEach(city => {
-                citySelect.innerHTML += `<option value="${city.id}">${city.name}</option>`;
-            });
-        })
-        .catch(() => {
-            citySelect.innerHTML = '<option value="">اختر المدينة</option>';
-        });
-}
-
-function loadClientLandDistricts(cityId, index) {
-    const districtSelect = document.querySelector(`.district-select-${index}`);
-    const zoneSelect = document.querySelector(`.zone-select-${index}`);
-    const areaSelect = document.querySelector(`.area-select-${index}`);
-
-    if (!districtSelect) return;
-
-    districtSelect.innerHTML = '<option value="">جاري التحميل...</option>';
-    if (zoneSelect) zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-    if (areaSelect) areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
-
-    if (!cityId) {
-        districtSelect.innerHTML = '<option value="">اختر الحي</option>';
-        return;
-    }
-
-    fetch(`{{ url('admin/geographic-areas/districts/by-city') }}/${cityId}`)
-        .then(res => res.json())
-        .then(data => {
-            districtSelect.innerHTML = '<option value="">اختر الحي</option>';
-            data.forEach(district => {
-                districtSelect.innerHTML += `<option value="${district.id}">${district.name}</option>`;
-            });
-        })
-        .catch(() => {
-            districtSelect.innerHTML = '<option value="">اختر الحي</option>';
-        });
-}
-
-function loadClientLandZones(districtId, index) {
-    const zoneSelect = document.querySelector(`.zone-select-${index}`);
-    const areaSelect = document.querySelector(`.area-select-${index}`);
-
-    if (!zoneSelect) return;
-
-    zoneSelect.innerHTML = '<option value="">جاري التحميل...</option>';
-    if (areaSelect) areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
-
-    if (!districtId) {
-        zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-        return;
-    }
-
-    fetch(`{{ url('admin/geographic-areas/zones/by-district') }}/${districtId}`)
-        .then(res => res.json())
-        .then(data => {
-            zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-            data.forEach(zone => {
-                zoneSelect.innerHTML += `<option value="${zone.id}">${zone.name}</option>`;
-            });
-        })
-        .catch(() => {
-            zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-        });
-}
-
-function loadClientLandAreas(zoneId, index) {
-    const areaSelect = document.querySelector(`.area-select-${index}`);
-
-    if (!areaSelect) return;
-
-    areaSelect.innerHTML = '<option value="">جاري التحميل...</option>';
-
-    if (!zoneId) {
-        areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
-        return;
-    }
-
-    fetch(`{{ url('admin/geographic-areas/areas/by-zone') }}/${zoneId}`)
-        .then(res => res.json())
-        .then(data => {
-            areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
-            data.forEach(area => {
-                areaSelect.innerHTML += `<option value="${area.id}">${area.name}</option>`;
-            });
-        })
-        .catch(() => {
-            areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
-        });
-}
-
-// Open Create Modal
-function openCreateModal() {
-    clearFormErrors('createClientForm');
-    document.getElementById('createClientForm').reset();
-    document.getElementById('landsContainer').innerHTML = '';
-    landRowIndex = 0;
-    generateClientCode();
-    new bootstrap.Modal(document.getElementById('createClientModal')).show();
-}
-
-// Create Client Form Submit
-document.getElementById('createClientForm')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-    clearFormErrors('createClientForm');
-
-    const formData = new FormData(this);
-    const submitBtn = this.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الحفظ...';
-
-    fetch('{{ route("admin.clients.store") }}', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Accept': 'application/json'
+            return;
         }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast.success(data.message);
-            bootstrap.Modal.getInstance(document.getElementById('createClientModal')).hide();
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            if (data.errors) {
-                displayFormErrors('createClientForm', data.errors);
-                showToast.error('يرجى تصحيح الأخطاء في النموذج');
-            } else {
-                showToast.error(data.message || 'حدث خطأ');
-            }
+
+        fetch(`{{ url('admin/geographic-areas/cities/by-governorate') }}/${governorateId}`)
+            .then(res => res.json())
+            .then(data => {
+                citySelect.innerHTML = '<option value="">اختر المدينة</option>';
+                data.forEach(city => {
+                    citySelect.innerHTML += `<option value="${city.id}">${city.name}</option>`;
+                });
+            })
+            .catch(() => {
+                citySelect.innerHTML = '<option value="">اختر المدينة</option>';
+            });
+    }
+
+    function loadClientLandDistricts(cityId, index) {
+        const districtSelect = document.querySelector(`.district-select-${index}`);
+        const zoneSelect = document.querySelector(`.zone-select-${index}`);
+        const areaSelect = document.querySelector(`.area-select-${index}`);
+
+        if (!districtSelect) return;
+
+        districtSelect.innerHTML = '<option value="">جاري التحميل...</option>';
+        if (zoneSelect) zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+        if (areaSelect) areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
+
+        if (!cityId) {
+            districtSelect.innerHTML = '<option value="">اختر الحي</option>';
+            return;
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showToast.error('حدث خطأ في الاتصال بالخادم');
-    })
-    .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="ti ti-check me-1"></i>حفظ';
-    });
-});
 
-// Edit Client
-function editClient(id) {
-    console.log('[EditClient] Loading client:', id);
+        fetch(`{{ url('admin/geographic-areas/districts/by-city') }}/${cityId}`)
+            .then(res => res.json())
+            .then(data => {
+                districtSelect.innerHTML = '<option value="">اختر الحي</option>';
+                data.forEach(district => {
+                    districtSelect.innerHTML += `<option value="${district.id}">${district.name}</option>`;
+                });
+            })
+            .catch(() => {
+                districtSelect.innerHTML = '<option value="">اختر الحي</option>';
+            });
+    }
 
-    fetch(`/admin/clients/${id}/edit`)
-        .then(res => {
-            console.log('[EditClient] Response status:', res.status);
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            return res.json();
-        })
-        .then(data => {
-            console.log('[EditClient] Response data:', data);
+    function loadClientLandZones(districtId, index) {
+        const zoneSelect = document.querySelector(`.zone-select-${index}`);
+        const areaSelect = document.querySelector(`.area-select-${index}`);
 
-            if (data.success && data.html) {
-                const modalBody = document.querySelector('#editClientModal .modal-body');
-                if (modalBody) {
-                    modalBody.innerHTML = data.html;
-                    console.log('[EditClient] Modal body updated with HTML');
+        if (!zoneSelect) return;
 
-                    // Attach submit event listener to the dynamically loaded form
-                    const form = document.getElementById('editClientForm');
-                    if (form) {
-                        console.log('[EditClient] Form found, attaching submit handler');
+        zoneSelect.innerHTML = '<option value="">جاري التحميل...</option>';
+        if (areaSelect) areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
 
-                        form.onsubmit = function(e) {
-                            e.preventDefault();
-                            console.log('[EditClient] Form submitted');
-                            clearFormErrors('editClientForm');
+        if (!districtId) {
+            zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+            return;
+        }
 
-                            const clientId = document.getElementById('editClientId').value;
-                            console.log('[EditClient] Updating client:', clientId);
+        fetch(`{{ url('admin/geographic-areas/zones/by-district') }}/${districtId}`)
+            .then(res => res.json())
+            .then(data => {
+                zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+                data.forEach(zone => {
+                    zoneSelect.innerHTML += `<option value="${zone.id}">${zone.name}</option>`;
+                });
+            })
+            .catch(() => {
+                zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+            });
+    }
 
-                            const formData = new FormData(form);
-                            const submitBtn = form.querySelector('button[type="submit"]');
+    function loadClientLandAreas(zoneId, index) {
+        const areaSelect = document.querySelector(`.area-select-${index}`);
 
-                            if (submitBtn) {
-                                submitBtn.disabled = true;
-                                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري التحديث...';
-                            }
+        if (!areaSelect) return;
 
-                            fetch(`/admin/clients/${clientId}`, {
-                                method: 'POST',
-                                body: formData,
-                                headers: {
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Accept': 'application/json'
-                                }
-                            })
-                            .then(res => {
-                                console.log('[EditClient] Update response status:', res.status);
-                                return res.json();
-                            })
-                            .then(data => {
-                                console.log('[EditClient] Update response data:', data);
-                                if (data.success) {
-                                    showToast.success(data.message);
-                                    bootstrap.Modal.getInstance(document.getElementById('editClientModal')).hide();
-                                    setTimeout(() => location.reload(), 1000);
-                                } else {
-                                    if (data.errors) {
-                                        displayFormErrors('editClientForm', data.errors);
-                                        showToast.error('يرجى تصحيح الأخطاء');
-                                    } else {
-                                        showToast.error(data.message || 'حدث خطأ');
-                                    }
-                                }
-                            })
-                            .catch(error => {
-                                console.error('[EditClient] Update error:', error);
-                                showToast.error('حدث خطأ في الاتصال');
-                            })
-                            .finally(() => {
-                                if (submitBtn) {
-                                    submitBtn.disabled = false;
-                                    submitBtn.innerHTML = '<i class="ti ti-check me-1"></i>حفظ التعديلات';
-                                }
-                            });
-                        };
+        areaSelect.innerHTML = '<option value="">جاري التحميل...</option>';
+
+        if (!zoneId) {
+            areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
+            return;
+        }
+
+        fetch(`{{ url('admin/geographic-areas/areas/by-zone') }}/${zoneId}`)
+            .then(res => res.json())
+            .then(data => {
+                areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
+                data.forEach(area => {
+                    areaSelect.innerHTML += `<option value="${area.id}">${area.name}</option>`;
+                });
+            })
+            .catch(() => {
+                areaSelect.innerHTML = '<option value="">اختر القطاع</option>';
+            });
+    }
+
+    // Open Create Modal
+    function openCreateModal() {
+        clearFormErrors('createClientForm');
+        document.getElementById('createClientForm').reset();
+        document.getElementById('landsContainer').innerHTML = '';
+        landRowIndex = 0;
+        generateClientCode();
+        new bootstrap.Modal(document.getElementById('createClientModal')).show();
+    }
+
+    // Create Client Form Submit
+    document.getElementById('createClientForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        clearFormErrors('createClientForm');
+
+        const formData = new FormData(this);
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الحفظ...';
+
+        fetch('{{ route('admin.clients.store') }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast.success(data.message);
+                    bootstrap.Modal.getInstance(document.getElementById('createClientModal')).hide();
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    if (data.errors) {
+                        displayFormErrors('createClientForm', data.errors);
+                        showToast.error('يرجى تصحيح الأخطاء في النموذج');
                     } else {
-                        console.error('[EditClient] Form not found in modal');
+                        showToast.error(data.message || 'حدث خطأ');
                     }
-                } else {
-                    console.error('[EditClient] Modal body not found');
                 }
-                clearFormErrors('editClientForm');
-                new bootstrap.Modal(document.getElementById('editClientModal')).show();
-            } else {
-                console.error('[EditClient] Invalid response:', data);
-                showToast.error(data.message || 'فشل تحميل البيانات');
-            }
-        })
-        .catch(error => {
-            console.error('[EditClient] Fetch error:', error);
-            showToast.error('فشل تحميل البيانات');
-        });
-}
-
-// Delete Client
-function deleteClient(id, name) {
-    document.getElementById('deleteClientId').value = id;
-    document.getElementById('deleteClientName').textContent = name;
-    new bootstrap.Modal(document.getElementById('deleteClientModal')).show();
-}
-
-function confirmDelete() {
-    const id = document.getElementById('deleteClientId').value;
-    const deleteBtn = event.target;
-    deleteBtn.disabled = true;
-    deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الحذف...';
-
-    fetch(`/admin/clients/${id}/delete`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast.success(data.message);
-            bootstrap.Modal.getInstance(document.getElementById('deleteClientModal')).hide();
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            showToast.error(data.message);
-            deleteBtn.disabled = false;
-            deleteBtn.innerHTML = '<i class="ti ti-trash me-1"></i>حذف';
-        }
-    })
-    .catch(() => {
-        showToast.error('حدث خطأ');
-        deleteBtn.disabled = false;
-        deleteBtn.innerHTML = '<i class="ti ti-trash me-1"></i>حذف';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast.error('حدث خطأ في الاتصال بالخادم');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="ti ti-check me-1"></i>حفظ';
+            });
     });
-}
 
-// Show Client Details
-function showClient(id) {
-    fetch(`/admin/clients/${id}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                const client = data.client;
+    // Edit Client
+    function editClient(id) {
+        console.log('[EditClient] Loading client:', id);
 
-                // Client Info
-                document.getElementById('viewClientInitial').textContent = client.name.charAt(0);
-                document.getElementById('viewClientName').textContent = client.name;
-                document.getElementById('viewClientCode').textContent = client.client_code || '-';
-                document.getElementById('viewNationalId').textContent = client.national_id || '-';
-                document.getElementById('viewTelephone').textContent = client.telephone || '-';
-                document.getElementById('viewMobile').textContent = client.mobile || '-';
-                document.getElementById('viewNotes').textContent = client.notes || '-';
-
-                // Stats
-                const landsCount = client.lands?.length || 0;
-                const filesCount = client.lands?.reduce((total, land) => total + (land.main_files?.length || 0), 0) || 0;
-                document.getElementById('viewLandsCountStat').textContent = landsCount;
-                document.getElementById('viewFilesCountStat').textContent = filesCount;
-                const landsContent = document.getElementById('landsContent');
-                landsContent.innerHTML = '';
-
-                if (client.lands && client.lands.length > 0) {
-                    client.lands.forEach(land => {
-                        const landCard = createLandCard(land);
-                        landsContent.appendChild(landCard);
-                    });
-                } else {
-                    landsContent.innerHTML = '<div class="col-12 text-center text-muted py-4">لا توجد أراضي مسجلة</div>';
+        fetch(`/admin/clients/${id}/edit`)
+            .then(res => {
+                console.log('[EditClient] Response status:', res.status);
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
                 }
+                return res.json();
+            })
+            .then(data => {
+                console.log('[EditClient] Response data:', data);
 
-                new bootstrap.Modal(document.getElementById('viewClientModal')).show();
-            } else {
-                showToast.error(data.message);
-            }
-        })
-        .catch(() => showToast.error('فشل تحميل البيانات'));
-}
+                if (data.success && data.html) {
+                    const modalBody = document.querySelector('#editClientModal .modal-body');
+                    if (modalBody) {
+                        modalBody.innerHTML = data.html;
+                        console.log('[EditClient] Modal body updated with HTML');
 
-// Create Land Card with Files
-function createLandCard(land) {
-    const div = document.createElement('div');
-    div.className = 'col-12';
+                        // Attach submit event listener to the dynamically loaded form
+                        const form = document.getElementById('editClientForm');
+                        if (form) {
+                            console.log('[EditClient] Form found, attaching submit handler');
 
-    // Build files HTML - each file takes full row with subfiles in columns (5 per row)
-    const filesHtml = land.main_files && land.main_files.length > 0
-        ? land.main_files.map(file => {
-            // Build subfiles HTML as cards (6 per row)
-            let subFilesHtml = '';
-            if (file.sub_files && file.sub_files.length > 0) {
-                const subFileCards = file.sub_files.map((subFile, index) => {
-                    const item = subFile.items && subFile.items[0];
-                    const fileItem = subFile.file_items && subFile.file_items[0];
-                    const itemName = item?.name || fileItem?.item?.name || 'غير محدد';
-                    const fromPage = fileItem?.from_page || '-';
-                    const toPage = fileItem?.to_page || '-';
-                    const pagesCount = subFile.pages_count || 0;
-                    const subPdfUrl = subFile.media && subFile.media[0] ? subFile.media[0].original_url : null;
+                            form.onsubmit = function(e) {
+                                e.preventDefault();
+                                console.log('[EditClient] Form submitted');
+                                clearFormErrors('editClientForm');
 
-                    return `
+                                const clientId = document.getElementById('editClientId').value;
+                                console.log('[EditClient] Updating client:', clientId);
+
+                                const formData = new FormData(form);
+                                const submitBtn = form.querySelector('button[type="submit"]');
+
+                                if (submitBtn) {
+                                    submitBtn.disabled = true;
+                                    submitBtn.innerHTML =
+                                        '<span class="spinner-border spinner-border-sm me-1"></span>جاري التحديث...';
+                                }
+
+                                fetch(`/admin/clients/${clientId}`, {
+                                        method: 'POST',
+                                        body: formData,
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json'
+                                        }
+                                    })
+                                    .then(res => {
+                                        console.log('[EditClient] Update response status:', res.status);
+                                        return res.json();
+                                    })
+                                    .then(data => {
+                                        console.log('[EditClient] Update response data:', data);
+                                        if (data.success) {
+                                            showToast.success(data.message);
+                                            bootstrap.Modal.getInstance(document.getElementById(
+                                                'editClientModal')).hide();
+                                            setTimeout(() => location.reload(), 1000);
+                                        } else {
+                                            if (data.errors) {
+                                                displayFormErrors('editClientForm', data.errors);
+                                                showToast.error('يرجى تصحيح الأخطاء');
+                                            } else {
+                                                showToast.error(data.message || 'حدث خطأ');
+                                            }
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('[EditClient] Update error:', error);
+                                        showToast.error('حدث خطأ في الاتصال');
+                                    })
+                                    .finally(() => {
+                                        if (submitBtn) {
+                                            submitBtn.disabled = false;
+                                            submitBtn.innerHTML =
+                                                '<i class="ti ti-check me-1"></i>حفظ التعديلات';
+                                        }
+                                    });
+                            };
+                        } else {
+                            console.error('[EditClient] Form not found in modal');
+                        }
+                    } else {
+                        console.error('[EditClient] Modal body not found');
+                    }
+                    clearFormErrors('editClientForm');
+                    new bootstrap.Modal(document.getElementById('editClientModal')).show();
+                } else {
+                    console.error('[EditClient] Invalid response:', data);
+                    showToast.error(data.message || 'فشل تحميل البيانات');
+                }
+            })
+            .catch(error => {
+                console.error('[EditClient] Fetch error:', error);
+                showToast.error('فشل تحميل البيانات');
+            });
+    }
+
+    // Delete Client
+    function deleteClient(id, name) {
+        document.getElementById('deleteClientId').value = id;
+        document.getElementById('deleteClientName').textContent = name;
+        new bootstrap.Modal(document.getElementById('deleteClientModal')).show();
+    }
+
+    function confirmDelete() {
+        const id = document.getElementById('deleteClientId').value;
+        const deleteBtn = event.target;
+        deleteBtn.disabled = true;
+        deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الحذف...';
+
+        fetch(`/admin/clients/${id}/delete`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast.success(data.message);
+                    bootstrap.Modal.getInstance(document.getElementById('deleteClientModal')).hide();
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showToast.error(data.message);
+                    deleteBtn.disabled = false;
+                    deleteBtn.innerHTML = '<i class="ti ti-trash me-1"></i>حذف';
+                }
+            })
+            .catch(() => {
+                showToast.error('حدث خطأ');
+                deleteBtn.disabled = false;
+                deleteBtn.innerHTML = '<i class="ti ti-trash me-1"></i>حذف';
+            });
+    }
+
+    // Show Client Details
+    function showClient(id) {
+        fetch(`/admin/clients/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const client = data.client;
+
+                    // Client Info
+                    document.getElementById('viewClientInitial').textContent = client.name.charAt(0);
+                    document.getElementById('viewClientName').textContent = client.name;
+                    document.getElementById('viewClientCode').textContent = client.client_code || '-';
+                    document.getElementById('viewNationalId').textContent = client.national_id || '-';
+                    document.getElementById('viewTelephone').textContent = client.telephone || '-';
+                    document.getElementById('viewMobile').textContent = client.mobile || '-';
+                    document.getElementById('viewNotes').textContent = client.notes || '-';
+
+                    // Stats
+                    const landsCount = client.lands?.length || 0;
+                    const filesCount = client.lands?.reduce((total, land) => total + (land.main_files?.length || 0),
+                        0) || 0;
+                    document.getElementById('viewLandsCountStat').textContent = landsCount;
+                    document.getElementById('viewFilesCountStat').textContent = filesCount;
+                    const landsContent = document.getElementById('landsContent');
+                    landsContent.innerHTML = '';
+
+                    if (client.lands && client.lands.length > 0) {
+                        client.lands.forEach(land => {
+                            const landCard = createLandCard(land);
+                            landsContent.appendChild(landCard);
+                        });
+                    } else {
+                        landsContent.innerHTML =
+                            '<div class="col-12 text-center text-muted py-4">لا توجد قطع مسجلة</div>';
+                    }
+
+                    new bootstrap.Modal(document.getElementById('viewClientModal')).show();
+                } else {
+                    showToast.error(data.message);
+                }
+            })
+            .catch(() => showToast.error('فشل تحميل البيانات'));
+    }
+
+    // Create Land Card with Files
+    function createLandCard(land) {
+        const div = document.createElement('div');
+        div.className = 'col-12 mb-3';
+
+        // Build location string
+        const locationParts = [];
+        if (land.governorate?.name) locationParts.push(land.governorate.name);
+        if (land.city?.name) locationParts.push(land.city.name);
+        if (land.district?.name) locationParts.push(land.district.name);
+        if (land.zone?.name) locationParts.push(land.zone.name);
+        if (land.area?.name) locationParts.push(land.area.name);
+        if (land.land_no) locationParts.push(`قطعة ${land.land_no}`);
+        const locationString = locationParts.join(' - ') || 'غير محدد';
+
+        // Build files HTML
+        const filesHtml = land.main_files && land.main_files.length > 0 ?
+            land.main_files.map((file, fileIndex) => {
+                // Build subfiles HTML as cards
+                let subFilesHtml = '';
+                if (file.sub_files && file.sub_files.length > 0) {
+                    const subFileCards = file.sub_files.map((subFile, index) => {
+                        const item = subFile.items && subFile.items[0];
+                        const fileItem = subFile.file_items && subFile.file_items[0];
+                        const itemName = item?.name || fileItem?.item?.name || 'غير محدد';
+                        const fromPage = fileItem?.from_page || '-';
+                        const toPage = fileItem?.to_page || '-';
+                        const pagesCount = subFile.pages_count || 0;
+                        const subPdfUrl = subFile.media && subFile.media[0] ? subFile.media[0].original_url : null;
+
+                        return `
                         <div class="col-md-2 col-sm-4 col-6">
-                            <div class="card border h-100 shadow-sm hover-shadow" style="transition: all 0.3s;">
-                                <div class="card-body p-3">
+                            <div class="card border h-100 shadow-sm hover-shadow" style="transition: all 0.3s; border-radius: 12px;">
+                                <div class="card-body p-2">
                                     <div class="d-flex align-items-start mb-2">
-                                        <div class="avatar avatar-sm bg-primary-subtle text-primary rounded me-2 flex-shrink-0">
+                                        <div class="bg-primary-subtle text-primary rounded me-2 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                             <i class="ti ti-file-text"></i>
                                         </div>
                                         <div class="flex-grow-1 min-w-0">
                                             <h6 class="mb-0 text-truncate small fw-bold" title="${itemName}">${itemName}</h6>
-                                            ${item?.description ? `<small class="text-muted d-block text-truncate" title="${item.description}">${item.description}</small>` : ''}
                                         </div>
                                     </div>
                                     <div class="mb-2">
                                         <div class="d-flex align-items-center justify-content-between mb-1">
-                                            <small class="text-muted">الصفحات:</small>
-                                            <span class="badge bg-info-subtle text-info small">${fromPage} - ${toPage}</span>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <small class="text-muted">العدد:</small>
-                                            <span class="badge bg-success-subtle text-success small">${pagesCount}</span>
+                                            <small class="text-muted" style="font-size: 0.7rem;">الصفحات:</small>
+                                            <span class="badge bg-info-subtle text-info" style="font-size: 0.65rem;">${fromPage} - ${toPage}</span>
                                         </div>
                                     </div>
                                     ${subPdfUrl ? `
                                         <div class="d-flex gap-1 justify-content-center">
-                                            <button type="button" class="btn btn-sm btn-info flex-fill" title="عرض" onclick="openSubFileIframe('${subPdfUrl}', '${itemName}')">
-                                                <i class="ti ti-eye"></i>
+                                            <button type="button" class="btn btn-sm btn-info flex-fill py-1" title="عرض" onclick="openSubFileIframe('${subPdfUrl}', '${itemName}')">
+                                                <i class="ti ti-eye" style="font-size: 0.8rem;"></i>
                                             </button>
-                                            <a href="${subPdfUrl}" target="_blank" class="btn btn-sm btn-secondary" title="فتح">
-                                                <i class="ti ti-external-link"></i>
-                                            </a>
-                                            <a href="${subPdfUrl}" download class="btn btn-sm btn-primary" title="تحميل">
-                                                <i class="ti ti-download"></i>
+                                            <a href="${subPdfUrl}" download class="btn btn-sm btn-primary py-1" title="تحميل">
+                                                <i class="ti ti-download" style="font-size: 0.8rem;"></i>
                                             </a>
                                         </div>
-                                    ` : '<div class="text-center"><small class="text-muted">غير متوفر</small></div>'}
+                                    ` : '<div class="text-center"><small class="text-muted" style="font-size: 0.65rem;">غير متوفر</small></div>'}
                                 </div>
                             </div>
                         </div>
                     `;
-                }).join('');
+                    }).join('');
 
-                subFilesHtml = `
-                    <div class="card border-0 shadow-sm mt-3">
-                        <div class="card-header bg-gradient " style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <h6 class="mb-0 text-dark">
-                                <i class="ti ti-folders me-2"></i>
-                                الملفات الفرعية المستخرجة (${file.sub_files.length})
-                            </h6>
-                            <small class="text-dark-50">الملفات التي تم إنشاؤها بناءً على أنواع المحتوى المحددة</small>
+                    subFilesHtml = `
+                        <div class="row g-2 mt-2">
+                            ${subFileCards}
                         </div>
-                        <div class="card-body p-3">
-                            <div class="row g-3">
-                                ${subFileCards}
+                    `;
+                }
+
+                // Check if file has document
+                const hasDocument = file.media && file.media.length > 0;
+                const pagesCount = file.items ? file.items.length : (file.pages_count || 0);
+                const createdAt = file.created_at ? new Date(file.created_at).toLocaleDateString('ar-EG') : '-';
+
+                return `
+                <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px; overflow: hidden;">
+                    <!-- File Header -->
+                    <div class="card-header p-3" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%);">
+                        <div class="d-flex align-items-start">
+                            <div class="bg-white bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 45px; height: 45px;">
+                                <i class="ti ti-file-text text-white fs-5"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <h6 class="mb-0 fw-bold text-white">${file.file_name || 'ملف رقم ' + (fileIndex + 1)}</h6>
+                                    <span class="badge bg-success" style="font-size: 0.7rem;">${pagesCount} صفحات</span>
+                                </div>
+                                <small class="text-white-50 d-block" style="font-size: 0.75rem;">${locationString}</small>
+                                <div class="d-flex align-items-center gap-2 mt-2 flex-wrap">
+                                    ${hasFileUploadPermission ? `
+                                        <button class="btn btn-dark btn-sm px-3" onclick="openUploadForFile(${file.id}, '${file.file_name || 'ملف'}')" style="border-radius: 6px;">
+                                            <i class="ti ti-upload me-1"></i>رفع ملف
+                                        </button>
+                                    ` : ''}
+                                    ${file.barcode ? `
+                                        <span class="badge bg-dark text-white px-2 py-1" style="border-radius: 6px; font-size: 0.7rem; cursor: pointer;" onclick="printBarcode('${file.barcode}', '${file.file_name || 'ملف'}')">
+                                            <i class="ti ti-barcode me-1"></i>${file.barcode}
+                                        </span>
+                                    ` : ''}
+                                    ${pagesCount > 0 ? `
+                                        <span class="badge bg-info-subtle text-info px-2 py-1" style="border-radius: 6px; font-size: 0.7rem;">
+                                            <i class="ti ti-file-text me-1"></i>${pagesCount} صفحات
+                                        </span>
+                                    ` : ''}
+                                </div>
                             </div>
                         </div>
                     </div>
-                `;
-            }
-
-            // Check if file has document
-            const hasDocument = file.media && file.media.length > 0;
-            const pdfUrl = hasDocument ? file.media[0].original_url : null;
-
-            // Build action buttons
-            let actionButtons = '';
-            const hasSubFiles = file.sub_files && file.sub_files.length > 0;
-
-            if (hasDocument) {
-                actionButtons = `
-                    <button class="btn btn-info btn-sm" onclick="showFile(${file.id})" title="عرض">
-                        <i class="ti ti-eye"></i>
-                    </button>
-                    <a href="${pdfUrl}" download class="btn btn-success btn-sm" title="تحميل">
-                        <i class="ti ti-download"></i>
-                    </a>
-                `;
-
-                // Don't show upload button in file header if subfiles exist
-            }
-            // Add barcode button if barcode exists
-            if (file.barcode) {
-                actionButtons += `
-                    <button class="btn btn-warning btn-sm" onclick="printBarcode('${file.barcode}', '${file.file_name || 'ملف'}')" title="طباعة الباركود">
-                        <i class="ti ti-barcode"></i>
-                    </button>
-                `;
-            }
-
-            return `
-                <div class="col-12 mb-3">
-                    <div class="card border-0 shadow" style="border-radius: 16px; overflow: hidden;">
-                        <div class="card-header py-3 px-4" style="background: #000;">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center flex-grow-1">
-                                    <div class="bg-white bg-opacity-25 rounded-circle me-3" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
-                                        <i class="ti ti-file-type-pdf text-white fs-4"></i>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-0 fw-bold text-white">${file.file_name || 'ملف'}</h5>
-                                        <div class="d-flex align-items-center gap-2 mt-1">
-                                            <span class="badge bg-white bg-opacity-25 text-white">
-                                                <i class="ti ti-files me-1"></i>${file.pages_count || 0} صفحة
-                                            </span>
-                                            ${file.sub_files && file.sub_files.length > 0 ? `
-                                                <span class="badge bg-warning text-dark">
-                                                    <i class="ti ti-folder me-1"></i>${file.sub_files.length} مستند
-                                                </span>
-                                            ` : ''}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="btn-group ms-3">
-                                    ${actionButtons.replace(/btn-sm/g, '')}
-                                </div>
+                    <!-- File Content -->
+                    <div class="card-body p-3" style="background: #f8fafc; min-height: 120px;">
+                        ${file.sub_files && file.sub_files.length > 0 ? subFilesHtml : `
+                            <div class="text-center text-muted py-4">
+                                <i class="ti ti-file-off fs-1 d-block mb-2 opacity-50"></i>
+                                <p class="mb-0" style="font-size: 0.85rem;">لا توجد مستندات مسندة لهذا الملف</p>
                             </div>
-                        </div>
-                        <div class="card-body p-4" style="background: #fafbfc;">
-                            ${subFilesHtml || '<div class="text-center text-muted py-3"><i class="ti ti-folder-off fs-3 d-block mb-2 opacity-50"></i><small>لا توجد مستندات مستخرجة</small></div>'}
+                        `}
+                    </div>
+                    <!-- File Footer -->
+                    <div class="card-footer bg-white border-top d-flex justify-content-between align-items-center py-2 px-3">
+                        <small class="text-muted">
+                            <i class="ti ti-user me-1"></i>المستخدم: ${file.created_by?.name || 'غير محدد'}
+                        </small>
+                        <small class="text-muted">
+                            <i class="ti ti-calendar me-1"></i>تاريخ الرفع: ${createdAt}
+                        </small>
+                        <div class="d-flex gap-1">
+                            ${hasDocument ? `
+                                <button class="btn btn-sm btn-outline-info" onclick="showFile(${file.id})" title="عرض الملف">
+                                    <i class="ti ti-eye"></i>
+                                </button>
+                            ` : ''}
                         </div>
                     </div>
                 </div>
             `;
-        }).join('')
-        : '<div class="col-12 text-center text-muted py-4"><i class="ti ti-folder-off fs-1 d-block mb-2"></i>لا توجد ملفات</div>';
+            }).join('') :
+            `<div class="text-center text-muted py-5">
+                <i class="ti ti-folder-off fs-1 d-block mb-2 opacity-50"></i>
+                <p class="mb-0">لا توجد ملفات مرتبطة بهذه القطعة</p>
+            </div>`;
 
-    div.innerHTML = `
-        <div class="card mb-3 border-0 shadow-sm">
-            <div class="card-header bg-light">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-bold mx-3">
-                        <i class="ti ti-map-pin text-success me-2"></i>
-                        ${land.governorate?.name || ''} - ${land.city?.name || ''} - رقم الأرض: ${land.land_no}
-                    </h6>
-                    <div class="d-flex align-items-center gap-2">
-                        ${land.main_files && land.main_files.length > 0 && land.main_files[0].id ? `
-                            <button class="btn btn-sm btn-info" onclick="showFile(${land.main_files[0].id})" title="عرض تفاصيل الملف">
-                                <i class="ti ti-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-primary" onclick="openUploadForFile(${land.main_files[0].id}, 'ملف جديد')" title="رفع ملف جديد">
-                                <i class="ti ti-upload"></i>
-                            </button>
-                        ` : ''}
-                        <span class="badge bg-primary">${land.main_files?.length || 0} ملف</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body p-3">
-                <div class="row g-0">
-                    ${filesHtml}
-                </div>
-            </div>
-        </div>
-    `;
+        div.innerHTML = filesHtml;
+        return div;
+    }
 
-    return div;
-}
+    // Show File Details in Client Modal
+    function showFileInClient(fileId) {
+        const modal = new bootstrap.Modal(document.getElementById('fileViewerModal'));
+        modal.show();
 
-// Show File Details in Client Modal
-function showFileInClient(fileId) {
-    const modal = new bootstrap.Modal(document.getElementById('fileViewerModal'));
-    modal.show();
-
-    // Show loading state
-    document.getElementById('fileViewerTitle').textContent = 'جاري التحميل...';
-    document.getElementById('fileViewerContent').innerHTML = `
+        // Show loading state
+        document.getElementById('fileViewerTitle').textContent = 'جاري التحميل...';
+        document.getElementById('fileViewerContent').innerHTML = `
         <div class="d-flex justify-content-center align-items-center h-100">
             <div class="text-center">
                 <div class="spinner-border text-primary" role="status">
@@ -1241,40 +1685,40 @@ function showFileInClient(fileId) {
         </div>
     `;
 
-    fetch(`{{ url('admin/files') }}/${fileId}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                renderClientFileDetails(data.file, data.pdf_url);
-            } else {
-                document.getElementById('fileViewerContent').innerHTML = `
+        fetch(`{{ url('admin/files') }}/${fileId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    renderClientFileDetails(data.file, data.pdf_url);
+                } else {
+                    document.getElementById('fileViewerContent').innerHTML = `
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="alert alert-danger">
                             <i class="ti ti-alert-circle me-2"></i>فشل تحميل بيانات الملف
                         </div>
                     </div>
                 `;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('fileViewerContent').innerHTML = `
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('fileViewerContent').innerHTML = `
                 <div class="d-flex justify-content-center align-items-center h-100">
                     <div class="alert alert-danger">
                         <i class="ti ti-alert-circle me-2"></i>حدث خطأ في الاتصال
                     </div>
                 </div>
             `;
-        });
-}
+            });
+    }
 
-// Render File Details in Client Modal
-function renderClientFileDetails(file, pdfUrl) {
-    document.getElementById('fileViewerTitle').textContent = file.file_name;
+    // Render File Details in Client Modal
+    function renderClientFileDetails(file, pdfUrl) {
+        document.getElementById('fileViewerTitle').textContent = file.file_name;
 
-    const viewerContent = document.getElementById('fileViewerContent');
+        const viewerContent = document.getElementById('fileViewerContent');
 
-    let html = `
+        let html = `
         <div style="height: 100%; overflow-y: auto; padding: 1.5rem;">
             <!-- PDF Viewer Section (Hidden by default) -->
             <div id="clientPdfViewerSection" class="d-none mb-4">
@@ -1335,7 +1779,7 @@ function renderClientFileDetails(file, pdfUrl) {
                                                 <i class="ti ti-map-pin"></i>
                                             </div>
                                             <div>
-                                                <small class="text-muted d-block">الأرض</small>
+                                                <small class="text-muted d-block">القطعة</small>
                                                 <strong>${file.land?.land_no || 'غير محدد'}</strong>
                                             </div>
                                         </div>
@@ -1346,7 +1790,7 @@ function renderClientFileDetails(file, pdfUrl) {
                                                 <i class="ti ti-building"></i>
                                             </div>
                                             <div>
-                                                <small class="text-muted d-block">الموقع الفيزيائي</small>
+                                                <small class="text-muted d-block">موقع التخزين</small>
                                                 <strong>${file.room?.name || 'غير محدد'} - ${file.rack?.name || ''}</strong>
                                             </div>
                                         </div>
@@ -1444,48 +1888,48 @@ function renderClientFileDetails(file, pdfUrl) {
         </div>
     `;
 
-    viewerContent.innerHTML = html;
-}
+        viewerContent.innerHTML = html;
+    }
 
-// View PDF in Modal for Client
-function viewClientPdfInModal(pdfUrl, title) {
-    document.getElementById('clientPdfViewerSection').classList.remove('d-none');
-    document.getElementById('clientFileInfoSection').classList.add('d-none');
-    document.getElementById('clientCurrentPdfTitle').textContent = title;
-    document.getElementById('clientPdfIframe').src = pdfUrl;
-}
+    // View PDF in Modal for Client
+    function viewClientPdfInModal(pdfUrl, title) {
+        document.getElementById('clientPdfViewerSection').classList.remove('d-none');
+        document.getElementById('clientFileInfoSection').classList.add('d-none');
+        document.getElementById('clientCurrentPdfTitle').textContent = title;
+        document.getElementById('clientPdfIframe').src = pdfUrl;
+    }
 
-// Close Client PDF Viewer
-function closeClientPdfViewer() {
-    document.getElementById('clientPdfViewerSection').classList.add('d-none');
-    document.getElementById('clientFileInfoSection').classList.remove('d-none');
-    document.getElementById('clientPdfIframe').src = '';
-}
+    // Close Client PDF Viewer
+    function closeClientPdfViewer() {
+        document.getElementById('clientPdfViewerSection').classList.add('d-none');
+        document.getElementById('clientFileInfoSection').classList.remove('d-none');
+        document.getElementById('clientPdfIframe').src = '';
+    }
 
-// Copy Barcode to clipboard
-function copyBarcode(barcode) {
-    navigator.clipboard.writeText(barcode).then(() => {
-        showToast.success('تم نسخ الباركود');
-    }).catch(() => {
-        showToast.error('فشل نسخ الباركود');
-    });
-}
+    // Copy Barcode to clipboard
+    function copyBarcode(barcode) {
+        navigator.clipboard.writeText(barcode).then(() => {
+            showToast.success('تم نسخ الباركود');
+        }).catch(() => {
+            showToast.error('فشل نسخ الباركود');
+        });
+    }
 
-// View SubFile PDF in iframe
-function viewSubFilePdf(pdfUrl, title) {
-    document.getElementById('clientPdfViewerSection').classList.remove('d-none');
-    document.getElementById('clientFileInfoSection').classList.add('d-none');
-    document.getElementById('clientCurrentPdfTitle').textContent = title;
-    document.getElementById('clientPdfIframe').src = pdfUrl;
-}
+    // View SubFile PDF in iframe
+    function viewSubFilePdf(pdfUrl, title) {
+        document.getElementById('clientPdfViewerSection').classList.remove('d-none');
+        document.getElementById('clientFileInfoSection').classList.add('d-none');
+        document.getElementById('clientCurrentPdfTitle').textContent = title;
+        document.getElementById('clientPdfIframe').src = pdfUrl;
+    }
 
-// Open SubFile in iframe modal (from lands card view)
-function openSubFileIframe(pdfUrl, title) {
-    // Set the title and show modal
-    document.getElementById('fileViewerTitle').textContent = title;
+    // Open SubFile in iframe modal (from lands card view)
+    function openSubFileIframe(pdfUrl, title) {
+        // Set the title and show modal
+        document.getElementById('fileViewerTitle').textContent = title;
 
-    // Set content to iframe with PDF
-    document.getElementById('fileViewerContent').innerHTML = `
+        // Set content to iframe with PDF
+        document.getElementById('fileViewerContent').innerHTML = `
         <div class="h-100 d-flex flex-column">
             <div class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
@@ -1507,914 +1951,985 @@ function openSubFileIframe(pdfUrl, title) {
         </div>
     `;
 
-    // Show the modal
-    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('fileViewerModal'));
-    modal.show();
-}
-
-// Upload File
-function uploadFile(clientId) {
-    // Load client details and lands
-    fetch(`/admin/clients/${clientId}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.success && data.client) {
-                // Set client name
-                document.getElementById('uploadClientName').textContent = data.client.name;
-                document.getElementById('uploadClientId').value = clientId;
-
-                // Load client lands
-                const landSelect = document.getElementById('uploadLandId');
-                landSelect.innerHTML = '<option value="">اختر الأرض</option>';
-                if (data.client.lands && data.client.lands.length > 0) {
-                    data.client.lands.forEach(land => {
-                        const govName = land.governorate?.name || '';
-                        const landNo = land.land_no || '';
-                        landSelect.innerHTML += `<option value="${land.id}">${govName} - ${landNo}</option>`;
-                    });
-                }
-
-                // Show modal
-                new bootstrap.Modal(document.getElementById('uploadFileModal')).show();
-            } else {
-                showToast.error('فشل تحميل بيانات العميل');
-            }
-        })
-        .catch(error => {
-            console.error('Error loading client:', error);
-            showToast.error('حدث خطأ في تحميل بيانات العميل');
-        });
-}
-
-// Toggle View
-function toggleView(view) {
-    if (view === 'list') {
-        document.getElementById('listView').classList.remove('d-none');
-        document.getElementById('cardView').classList.add('d-none');
-        document.getElementById('listViewBtn').classList.add('active');
-        document.getElementById('cardViewBtn').classList.remove('active');
-    } else {
-        document.getElementById('listView').classList.add('d-none');
-        document.getElementById('cardView').classList.remove('d-none');
-        document.getElementById('listViewBtn').classList.remove('active');
-        document.getElementById('cardViewBtn').classList.add('active');
-    }
-}
-
-// Select All Checkboxes
-document.getElementById('selectAll')?.addEventListener('change', function() {
-    document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = this.checked);
-    updateBulkActions();
-});
-
-document.querySelectorAll('.row-checkbox').forEach(cb => {
-    cb.addEventListener('change', updateBulkActions);
-});
-
-function updateBulkActions() {
-    const checked = document.querySelectorAll('.row-checkbox:checked').length;
-    const bulkActions = document.getElementById('bulkActions');
-    if (checked > 0) {
-        bulkActions.classList.remove('d-none');
-    } else {
-        bulkActions.classList.add('d-none');
-    }
-}
-
-function getSelectedIds() {
-    return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
-}
-
-// Bulk Delete
-function bulkDelete() {
-    const ids = getSelectedIds();
-    if (ids.length === 0) {
-        showToast.error('الرجاء تحديد عملاء للحذف');
-        return;
+        // Show the modal
+        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('fileViewerModal'));
+        modal.show();
     }
 
-    document.getElementById('bulkDeleteCount').textContent = ids.length;
-    new bootstrap.Modal(document.getElementById('bulkDeleteModal')).show();
-}
-
-function confirmBulkDelete() {
-    const ids = getSelectedIds();
-    const deleteBtn = event.target;
-    deleteBtn.disabled = true;
-    deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الحذف...';
-
-    fetch('{{ route("admin.clients.bulk-delete") }}', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ids })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast.success(data.message);
-            bootstrap.Modal.getInstance(document.getElementById('bulkDeleteModal')).hide();
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            showToast.error(data.message);
-            deleteBtn.disabled = false;
-            deleteBtn.innerHTML = '<i class="ti ti-trash me-1"></i>حذف الكل';
-        }
-    })
-    .catch(() => {
-        showToast.error('حدث خطأ');
-        deleteBtn.disabled = false;
-        deleteBtn.innerHTML = '<i class="ti ti-trash me-1"></i>حذف الكل';
-    });
-}
-
-// Bulk Restore
-function bulkRestore() {
-    const ids = getSelectedIds();
-    if (ids.length === 0) {
-        showToast.error('الرجاء تحديد عملاء للاسترجاع');
-        return;
-    }
-
-    document.getElementById('bulkRestoreCount').textContent = ids.length;
-    new bootstrap.Modal(document.getElementById('bulkRestoreModal')).show();
-}
-
-function confirmBulkRestore() {
-    const ids = getSelectedIds();
-    const restoreBtn = event.target;
-    restoreBtn.disabled = true;
-    restoreBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الاسترجاع...';
-
-    fetch('{{ route("admin.clients.bulk-restore") }}', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ids })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast.success(data.message);
-            bootstrap.Modal.getInstance(document.getElementById('bulkRestoreModal')).hide();
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            showToast.error(data.message);
-            restoreBtn.disabled = false;
-            restoreBtn.innerHTML = '<i class="ti ti-refresh me-1"></i>استرجاع الكل';
-        }
-    })
-    .catch(() => {
-        showToast.error('حدث خطأ');
-        restoreBtn.disabled = false;
-        restoreBtn.innerHTML = '<i class="ti ti-refresh me-1"></i>استرجاع الكل';
-    });
-}
-
-// Bulk Force Delete
-function bulkForceDelete() {
-    const ids = getSelectedIds();
-    if (ids.length === 0) {
-        showToast.error('الرجاء تحديد عملاء للحذف');
-        return;
-    }
-
-    document.getElementById('bulkForceDeleteCount').textContent = ids.length;
-    new bootstrap.Modal(document.getElementById('bulkForceDeleteModal')).show();
-}
-
-function confirmBulkForceDelete() {
-    const ids = getSelectedIds();
-    const deleteBtn = event.target;
-    deleteBtn.disabled = true;
-    deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الحذف...';
-
-    fetch('{{ route("admin.clients.bulk-force-delete") }}', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ids })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast.success(data.message);
-            bootstrap.Modal.getInstance(document.getElementById('bulkForceDeleteModal')).hide();
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            showToast.error(data.message);
-            deleteBtn.disabled = false;
-            deleteBtn.innerHTML = '<i class="ti ti-trash-x me-1"></i>حذف نهائي';
-        }
-    })
-    .catch(() => {
-        showToast.error('حدث خطأ');
-        deleteBtn.disabled = false;
-        deleteBtn.innerHTML = '<i class="ti ti-trash-x me-1"></i>حذف نهائي';
-    });
-}
-
-// Restore Client
-function restoreClient(id) {
-    if (confirm('هل تريد استرجاع هذا العميل؟')) {
-        fetch(`/admin/clients/${id}/restore`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                showToast.success(data.message);
-                setTimeout(() => location.reload(), 1000);
-            } else {
-                showToast.error(data.message);
-            }
-        })
-        .catch(() => showToast.error('حدث خطأ'));
-    }
-}
-
-// Force Delete Client
-function forceDeleteClient(id) {
-    if (confirm('هل أنت متأكد من الحذف النهائي؟ لا يمكن التراجع!')) {
-        fetch(`/admin/clients/${id}/force-delete`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                showToast.success(data.message);
-                setTimeout(() => location.reload(), 1000);
-            } else {
-                showToast.error(data.message);
-            }
-        })
-        .catch(() => showToast.error('حدث خطأ'));
-    }
-}
-
-// =====================================================
-// Client Upload Modal Functions
-// =====================================================
-
-// PDF.js Configuration for Client Upload
-if (typeof pdfjsLib !== 'undefined') {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-}
-
-// Preview Client PDF
-function previewClientPDF(input) {
-    const file = input.files[0];
-    if (!file || file.type !== 'application/pdf') {
-        return;
-    }
-
-    const placeholder = document.getElementById('clientPdfPlaceholder');
-    const canvas = document.getElementById('clientPdfCanvas');
-    const loading = document.getElementById('clientPdfLoading');
-
-    // Show loading
-    placeholder.classList.add('d-none');
-    canvas.style.display = 'none';
-    loading.classList.remove('d-none');
-
-    const fileReader = new FileReader();
-    fileReader.onload = function() {
-        const typedarray = new Uint8Array(this.result);
-
-        // Load PDF
-        pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
-            // Get first page
-            pdf.getPage(1).then(function(page) {
-                const viewport = page.getViewport({ scale: 1.5 });
-                const context = canvas.getContext('2d');
-
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                // Render PDF page
-                const renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-
-                page.render(renderContext).promise.then(function() {
-                    loading.classList.add('d-none');
-                    canvas.style.display = 'block';
-                });
-            });
-        }).catch(function(error) {
-            console.error('Error loading PDF:', error);
-            loading.classList.add('d-none');
-            placeholder.classList.remove('d-none');
-            placeholder.innerHTML = '<i class="ti ti-alert-circle fs-1 mb-3 d-block text-danger"></i><p class="mb-0 text-danger">خطأ في تحميل الملف</p>';
-        });
-    };
-
-    fileReader.readAsArrayBuffer(file);
-}
-
-// Reset client PDF preview when modal is closed
-document.getElementById('uploadFileModal')?.addEventListener('hidden.bs.modal', function() {
-    const placeholder = document.getElementById('clientPdfPlaceholder');
-    const canvas = document.getElementById('clientPdfCanvas');
-    const loading = document.getElementById('clientPdfLoading');
-    const fileInput = document.getElementById('clientPdfFileInput');
-
-    if (canvas) canvas.style.display = 'none';
-    if (loading) loading.classList.add('d-none');
-    if (placeholder) {
-        placeholder.classList.remove('d-none');
-        placeholder.innerHTML = '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
-    }
-    if (fileInput) fileInput.value = '';
-});
-
-// Toggle New Land Form
-function toggleClientNewLandForm() {
-    const form = document.getElementById('clientNewLandForm');
-    const landSelect = document.getElementById('uploadLandId');
-
-    if (form.classList.contains('d-none')) {
-        form.classList.remove('d-none');
-        landSelect.removeAttribute('required');
-        landSelect.value = '';
-    } else {
-        form.classList.add('d-none');
-        landSelect.setAttribute('required', 'required');
-    }
-}
-
-// Toggle Page Range for Client Items
-function toggleClientPageRange(itemId) {
-    const checkbox = document.getElementById('clientItem' + itemId);
-    const fromPageInput = document.getElementById('clientFromPage' + itemId);
-    const toPageInput = document.getElementById('clientToPage' + itemId);
-
-    if (checkbox.checked) {
-        fromPageInput.classList.remove('d-none');
-        toPageInput.classList.remove('d-none');
-        fromPageInput.focus();
-    } else {
-        fromPageInput.classList.add('d-none');
-        toPageInput.classList.add('d-none');
-        fromPageInput.value = '';
-        toPageInput.value = '';
-    }
-    updateClientSelectedItemsCount();
-}
-
-// Update selected items count
-function updateClientSelectedItemsCount() {
-    const count = document.querySelectorAll('.client-item-checkbox:checked').length;
-    document.getElementById('clientSelectedItemsCount').textContent = count + ' محدد';
-}
-
-// Filter Client Items
-function filterClientItems() {
-    const searchValue = document.getElementById('clientItemSearchInput').value.toLowerCase();
-    const rows = document.querySelectorAll('.client-item-row');
-
-    rows.forEach(row => {
-        const itemName = row.getAttribute('data-item-name') || '';
-        if (itemName.includes(searchValue)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-}
-
-// Clear Client Item Search
-function clearClientItemSearch() {
-    document.getElementById('clientItemSearchInput').value = '';
-    filterClientItems();
-}
-
-// Select All Client Items
-function selectAllClientItems() {
-    document.querySelectorAll('.client-item-checkbox').forEach(cb => {
-        if (!cb.checked) {
-            cb.checked = true;
-            const itemId = cb.getAttribute('data-item-id');
-            document.getElementById('clientFromPage' + itemId)?.classList.remove('d-none');
-            document.getElementById('clientToPage' + itemId)?.classList.remove('d-none');
-        }
-    });
-    updateClientSelectedItemsCount();
-}
-
-// Deselect All Client Items
-function deselectAllClientItems() {
-    document.querySelectorAll('.client-item-checkbox').forEach(cb => {
-        cb.checked = false;
-        const itemId = cb.getAttribute('data-item-id');
-        const fromInput = document.getElementById('clientFromPage' + itemId);
-        const toInput = document.getElementById('clientToPage' + itemId);
-        if (fromInput) {
-            fromInput.classList.add('d-none');
-            fromInput.value = '';
-        }
-        if (toInput) {
-            toInput.classList.add('d-none');
-            toInput.value = '';
-        }
-    });
-    updateClientSelectedItemsCount();
-}
-
-// Load Cities for New Land in Client Upload
-function loadClientNewLandCities(governorateId) {
-    const citySelect = document.getElementById('clientNewCityId');
-    const cityHiddenInput = document.getElementById('clientNewCityIdHidden');
-    const districtSelect = document.getElementById('clientNewDistrictId');
-    const zoneSelect = document.getElementById('clientNewZoneId');
-    const areaSelect = document.getElementById('clientNewAreaId');
-
-    citySelect.innerHTML = '<option value="">جاري التحميل...</option>';
-    districtSelect.innerHTML = '<option value="">اختر الحي</option>';
-    zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-    areaSelect.innerHTML = '<option value="">اختر المجاورة</option>';
-
-    if (!governorateId) {
-        citySelect.innerHTML = '<option value="">اختر المدينة</option>';
-        if (cityHiddenInput) cityHiddenInput.value = '';
-        return;
-    }
-
-    fetch(`{{ url('admin/geographic-areas/cities/by-governorate') }}/${governorateId}`)
-        .then(res => res.json())
-        .then(data => {
-            citySelect.innerHTML = '';
-            if (data && data.length > 0) {
-                data.forEach((city, index) => {
-                    const option = document.createElement('option');
-                    option.value = city.id;
-                    option.textContent = city.name;
-                    if (index === 0) option.selected = true;
-                    citySelect.appendChild(option);
-                });
-
-                // Update hidden input with first city
-                if (cityHiddenInput) {
-                    cityHiddenInput.value = data[0].id;
-                }
-
-                // Auto-trigger loading districts for first city
-                loadClientNewLandDistricts(data[0].id);
-            } else {
-                citySelect.innerHTML = '<option value="">لا توجد مدن</option>';
-                if (cityHiddenInput) cityHiddenInput.value = '';
-            }
-
-            // Update address
-            updateClientNewLandAddress();
-        })
-        .catch(() => {
-            citySelect.innerHTML = '<option value="">اختر المدينة</option>';
-            if (cityHiddenInput) cityHiddenInput.value = '';
-        });
-}
-
-// Load Districts for New Land in Client Upload
-function loadClientNewLandDistricts(cityId) {
-    const districtSelect = document.getElementById('clientNewDistrictId');
-    const zoneSelect = document.getElementById('clientNewZoneId');
-    const areaSelect = document.getElementById('clientNewAreaId');
-
-    districtSelect.innerHTML = '<option value="">جاري التحميل...</option>';
-    zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-    areaSelect.innerHTML = '<option value="">اختر المجاورة</option>';
-
-    if (!cityId) {
-        districtSelect.innerHTML = '<option value="">اختر الحي</option>';
-        return;
-    }
-
-    fetch(`{{ url('admin/geographic-areas/districts/by-city') }}/${cityId}`)
-        .then(res => res.json())
-        .then(data => {
-            districtSelect.innerHTML = '';
-            if (data && data.length > 0) {
-                data.forEach((district, index) => {
-                    const option = document.createElement('option');
-                    option.value = district.id;
-                    option.textContent = district.name;
-                    if (index === 0) option.selected = true;
-                    districtSelect.appendChild(option);
-                });
-
-                // Auto-trigger loading zones for first district
-                loadClientNewLandZones(data[0].id);
-            } else {
-                districtSelect.innerHTML = '<option value="">لا توجد أحياء</option>';
-            }
-
-            // Update address
-            updateClientNewLandAddress();
-        })
-        .catch(() => {
-            districtSelect.innerHTML = '<option value="">اختر الحي</option>';
-        });
-}
-
-// Load Zones for New Land in Client Upload
-function loadClientNewLandZones(districtId) {
-    const zoneSelect = document.getElementById('clientNewZoneId');
-    const areaSelect = document.getElementById('clientNewAreaId');
-
-    zoneSelect.innerHTML = '<option value="">جاري التحميل...</option>';
-    areaSelect.innerHTML = '<option value="">اختر المجاورة</option>';
-
-    if (!districtId) {
-        zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-        return;
-    }
-
-    fetch(`{{ url('admin/geographic-areas/zones/by-district') }}/${districtId}`)
-        .then(res => res.json())
-        .then(data => {
-            zoneSelect.innerHTML = '';
-            if (data && data.length > 0) {
-                data.forEach((zone, index) => {
-                    const option = document.createElement('option');
-                    option.value = zone.id;
-                    option.textContent = zone.name;
-                    if (index === 0) option.selected = true;
-                    zoneSelect.appendChild(option);
-                });
-
-                // Auto-trigger loading areas for first zone
-                loadClientNewLandAreas(data[0].id);
-            } else {
-                zoneSelect.innerHTML = '<option value="">لا توجد مناطق</option>';
-            }
-
-            // Update address
-            updateClientNewLandAddress();
-        })
-        .catch(() => {
-            zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-        });
-}
-
-// Load Areas for New Land in Client Upload
-function loadClientNewLandAreas(zoneId) {
-    const areaSelect = document.getElementById('clientNewAreaId');
-
-    areaSelect.innerHTML = '<option value="">جاري التحميل...</option>';
-
-    if (!zoneId) {
-        areaSelect.innerHTML = '<option value="">اختر المجاورة</option>';
-        return;
-    }
-
-    fetch(`{{ url('admin/geographic-areas/areas/by-zone') }}/${zoneId}`)
-        .then(res => res.json())
-        .then(data => {
-            areaSelect.innerHTML = '';
-            if (data && data.length > 0) {
-                data.forEach((area, index) => {
-                    const option = document.createElement('option');
-                    option.value = area.id;
-                    option.textContent = area.name;
-                    if (index === 0) option.selected = true;
-                    areaSelect.appendChild(option);
-                });
-            } else {
-                areaSelect.innerHTML = '<option value="">لا توجد مجاورات</option>';
-            }
-
-            // Update address
-            updateClientNewLandAddress();
-        })
-        .catch(() => {
-            areaSelect.innerHTML = '<option value="">اختر المجاورة</option>';
-        });
-}
-
-// Load Lanes for Client Upload
-function loadClientLanes(roomId) {
-    const laneSelect = document.getElementById('clientLaneSelect');
-    const standSelect = document.getElementById('clientStandSelect');
-    const rackSelect = document.getElementById('clientRackSelect');
-
-    laneSelect.innerHTML = '<option value="">جاري التحميل...</option>';
-    standSelect.innerHTML = '<option value="">اختر الستاند</option>';
-    rackSelect.innerHTML = '<option value="">اختر الرف</option>';
-
-    if (!roomId) {
-        laneSelect.innerHTML = '<option value="">اختر الممر</option>';
-        return;
-    }
-
-    fetch(`{{ url('admin/physical-locations/rooms') }}/${roomId}/lanes`)
-        .then(res => res.json())
-        .then(data => {
-            laneSelect.innerHTML = '<option value="">اختر الممر</option>';
-            (data.lanes || data).forEach(lane => {
-                laneSelect.innerHTML += `<option value="${lane.id}">${lane.name}</option>`;
-            });
-        })
-        .catch(() => {
-            laneSelect.innerHTML = '<option value="">اختر الممر</option>';
-        });
-}
-
-// Load Stands for Client Upload
-function loadClientStands(laneId) {
-    const standSelect = document.getElementById('clientStandSelect');
-    const rackSelect = document.getElementById('clientRackSelect');
-
-    standSelect.innerHTML = '<option value="">جاري التحميل...</option>';
-    rackSelect.innerHTML = '<option value="">اختر الرف</option>';
-
-    if (!laneId) {
-        standSelect.innerHTML = '<option value="">اختر الستاند</option>';
-        return;
-    }
-
-    fetch(`{{ url('admin/physical-locations/lanes') }}/${laneId}/stands`)
-        .then(res => res.json())
-        .then(data => {
-            standSelect.innerHTML = '<option value="">اختر الستاند</option>';
-            (data.stands || data).forEach(stand => {
-                standSelect.innerHTML += `<option value="${stand.id}">${stand.name}</option>`;
-            });
-        })
-        .catch(() => {
-            standSelect.innerHTML = '<option value="">اختر الستاند</option>';
-        });
-}
-
-// Load Racks for Client Upload
-function loadClientRacks(standId) {
-    const rackSelect = document.getElementById('clientRackSelect');
-
-    rackSelect.innerHTML = '<option value="">جاري التحميل...</option>';
-
-    if (!standId) {
-        rackSelect.innerHTML = '<option value="">اختر الرف</option>';
-        return;
-    }
-
-    fetch(`{{ url('admin/physical-locations/stands') }}/${standId}/racks`)
-        .then(res => res.json())
-        .then(data => {
-            rackSelect.innerHTML = '<option value="">اختر الرف</option>';
-            (data.racks || data).forEach(rack => {
-                rackSelect.innerHTML += `<option value="${rack.id}">${rack.name}</option>`;
-            });
-        })
-        .catch(() => {
-            rackSelect.innerHTML = '<option value="">اختر الرف</option>';
-        });
-}
-
-// Toggle Client Storage Location Collapse
-function toggleClientStorageLocation(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const collapseElement = document.getElementById('clientStorageLocationCollapse');
-    const chevron = document.getElementById('clientStorageChevron');
-
-    if (collapseElement.classList.contains('show')) {
-        collapseElement.classList.remove('show');
-        chevron.classList.remove('ti-chevron-up');
-        chevron.classList.add('ti-chevron-down');
-    } else {
-        collapseElement.classList.add('show');
-        chevron.classList.remove('ti-chevron-down');
-        chevron.classList.add('ti-chevron-up');
-    }
-}
-
-// Client Upload Form Submit
-document.getElementById('uploadClientFileForm')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-
-    // Collect selected items with page ranges (same as files upload)
-    const selectedItems = [];
-    document.querySelectorAll('.client-item-checkbox:checked').forEach(checkbox => {
-        const itemId = checkbox.dataset.itemId;
-        const fromPageInput = document.getElementById('clientFromPage' + itemId);
-        const toPageInput = document.getElementById('clientToPage' + itemId);
-        const fromPage = fromPageInput ? fromPageInput.value : '';
-        const toPage = toPageInput ? toPageInput.value : '';
-
-        selectedItems.push({
-            item_id: itemId,
-            from_page: fromPage || null,
-            to_page: toPage || null
-        });
-    });
-
-    // Add items as JSON
-    formData.delete('items'); // Remove old format
-    formData.append('items_json', JSON.stringify(selectedItems));
-
-    const submitBtn = this.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الرفع...';
-
-    fetch('{{ route("admin.files.store") }}', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Accept': 'application/json'
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast.success(data.message || 'تم رفع الملف بنجاح');
-            bootstrap.Modal.getInstance(document.getElementById('uploadFileModal')).hide();
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            showToast.error(data.error || data.message || 'حدث خطأ');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showToast.error('حدث خطأ في رفع الملف');
-    })
-    .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="ti ti-upload me-2"></i>رفع ومعالجة';
-    });
-});
-
-// ============================================
-// BARCODE SCANNER SEARCH FUNCTIONALITY
-// ============================================
-
-/**
- * Barcode Scanner Search
- * Supports both external barcode scanner devices and manual input
- * External scanners typically send characters followed by Enter key
- */
-(function() {
-    const barcodeInput = document.getElementById('barcodeSearchInput');
-    const statusBadge = document.getElementById('barcodeScannerStatus');
-    let lastKeyTime = 0;
-    let barcodeBuffer = '';
-    const SCANNER_THRESHOLD = 50; // Max ms between keystrokes for scanner detection
-
-    if (!barcodeInput) return;
-
-    // Focus on barcode input when page loads
-    setTimeout(() => barcodeInput.focus(), 500);
-
-    // Handle keydown events for barcode scanner detection
-    barcodeInput.addEventListener('keydown', function(e) {
-        const currentTime = Date.now();
-
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            searchByBarcode();
+    // Upload File
+    function uploadFile(clientId) {
+        console.log('uploadFile called with clientId:', clientId);
+
+        // Get modal element first
+        const modalEl = document.getElementById('uploadFileModal');
+        if (!modalEl) {
+            console.error('uploadFileModal not found in DOM');
+            showToast.error('خطأ: لم يتم العثور على نافذة الرفع');
             return;
         }
 
-        // Detect rapid input (barcode scanner behavior)
-        if (currentTime - lastKeyTime < SCANNER_THRESHOLD && barcodeBuffer.length > 3) {
-            updateScannerStatus('scanning');
+        // Reset form FIRST before loading data
+        const form = document.getElementById('uploadClientFileForm');
+        if (form) form.reset();
+
+        // Reset page selects and checkboxes
+        document.querySelectorAll('.client-item-checkbox').forEach(cb => cb.checked = false);
+        document.querySelectorAll('.page-select').forEach(select => {
+            select.classList.add('d-none');
+            select.innerHTML = '<option value=""></option>';
+        });
+        updateClientSelectedItemsCount();
+
+        // Reset PDF preview
+        const placeholder = document.getElementById('clientPdfPlaceholder');
+        const canvas = document.getElementById('clientPdfCanvas');
+        const loading = document.getElementById('clientPdfLoading');
+        if (canvas) canvas.style.display = 'none';
+        if (loading) loading.classList.add('d-none');
+        if (placeholder) {
+            placeholder.classList.remove('d-none');
+            placeholder.innerHTML = '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
         }
 
-        lastKeyTime = currentTime;
+        // Hide new land form if visible
+        const newLandForm = document.getElementById('clientNewLandForm');
+        if (newLandForm) newLandForm.classList.add('d-none');
+
+        // Load client details and lands
+        fetch(`/admin/clients/${clientId}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log('Client data loaded:', data);
+
+                if (data.success && data.client) {
+                    // Set client name
+                    const clientNameEl = document.getElementById('uploadClientName');
+                    if (clientNameEl) {
+                        clientNameEl.textContent = data.client.name;
+                        console.log('Set client name to:', data.client.name);
+                    } else {
+                        console.error('uploadClientName element not found');
+                    }
+
+                    // Set client ID
+                    const clientIdEl = document.getElementById('uploadClientId');
+                    if (clientIdEl) {
+                        clientIdEl.value = clientId;
+                        console.log('Set client ID to:', clientId);
+                    } else {
+                        console.error('uploadClientId element not found');
+                    }
+
+                    // Load client lands
+                    const landSelect = document.getElementById('uploadLandId');
+                    if (landSelect) {
+                        landSelect.innerHTML = '<option value="">اختر القطعة</option>';
+                        if (data.client.lands && data.client.lands.length > 0) {
+                            console.log('Loading', data.client.lands.length, 'lands');
+                            data.client.lands.forEach(land => {
+                                const govName = land.governorate?.name || '';
+                                const cityName = land.city?.name || '';
+                                const landNo = land.land_no || '';
+                                const locationText = [govName, cityName, landNo].filter(x => x).join(' - ');
+                                const option = document.createElement('option');
+                                option.value = land.id;
+                                option.textContent = locationText || 'قطعة ' + land.id;
+                                landSelect.appendChild(option);
+                            });
+                        } else {
+                            console.log('No lands found for client');
+                        }
+                    } else {
+                        console.error('uploadLandId element not found');
+                    }
+
+                    // Show modal using getOrCreateInstance to avoid duplicate instances
+                    const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                    bsModal.show();
+                    console.log('Modal shown');
+                } else {
+                    console.error('API returned success=false or no client data');
+                    showToast.error(data.message || 'فشل تحميل بيانات العميل');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading client:', error);
+                showToast.error('حدث خطأ في تحميل بيانات العميل');
+            });
+    }
+
+    // Toggle View
+    function toggleView(view) {
+        if (view === 'list') {
+            document.getElementById('listView').classList.remove('d-none');
+            document.getElementById('cardView').classList.add('d-none');
+            document.getElementById('listViewBtn').classList.add('active');
+            document.getElementById('cardViewBtn').classList.remove('active');
+        } else {
+            document.getElementById('listView').classList.add('d-none');
+            document.getElementById('cardView').classList.remove('d-none');
+            document.getElementById('listViewBtn').classList.remove('active');
+            document.getElementById('cardViewBtn').classList.add('active');
+        }
+    }
+
+    // Select All Checkboxes
+    document.getElementById('selectAll')?.addEventListener('change', function() {
+        document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = this.checked);
+        updateBulkActions();
     });
 
-    // Update scanner status indicator
-    function updateScannerStatus(status) {
-        if (!statusBadge) return;
+    document.querySelectorAll('.row-checkbox').forEach(cb => {
+        cb.addEventListener('change', updateBulkActions);
+    });
 
-        const statuses = {
-            ready: `<span class="badge bg-success-subtle text-success fs-6 px-3 py-2">
-                        <i class="ti ti-device-desktop-analytics me-1"></i>جاهز للمسح
-                    </span>`,
-            scanning: `<span class="badge bg-warning-subtle text-warning fs-6 px-3 py-2">
-                        <i class="ti ti-loader me-1 spinner-border spinner-border-sm"></i>جاري المسح...
-                    </span>`,
-            success: `<span class="badge bg-success-subtle text-success fs-6 px-3 py-2">
-                        <i class="ti ti-check me-1"></i>تم العثور على الملف
-                    </span>`,
-            error: `<span class="badge bg-danger-subtle text-danger fs-6 px-3 py-2">
-                        <i class="ti ti-x me-1"></i>لم يتم العثور
-                    </span>`
+    function updateBulkActions() {
+        const checked = document.querySelectorAll('.row-checkbox:checked').length;
+        const bulkActions = document.getElementById('bulkActions');
+        if (checked > 0) {
+            bulkActions.classList.remove('d-none');
+        } else {
+            bulkActions.classList.add('d-none');
+        }
+    }
+
+    function getSelectedIds() {
+        return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+    }
+
+    // Bulk Delete
+    function bulkDelete() {
+        const ids = getSelectedIds();
+        if (ids.length === 0) {
+            showToast.error('الرجاء تحديد عملاء للحذف');
+            return;
+        }
+
+        document.getElementById('bulkDeleteCount').textContent = ids.length;
+        new bootstrap.Modal(document.getElementById('bulkDeleteModal')).show();
+    }
+
+    function confirmBulkDelete() {
+        const ids = getSelectedIds();
+        const deleteBtn = event.target;
+        deleteBtn.disabled = true;
+        deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الحذف...';
+
+        fetch('{{ route('admin.clients.bulk-delete') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ids
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast.success(data.message);
+                    bootstrap.Modal.getInstance(document.getElementById('bulkDeleteModal')).hide();
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showToast.error(data.message);
+                    deleteBtn.disabled = false;
+                    deleteBtn.innerHTML = '<i class="ti ti-trash me-1"></i>حذف الكل';
+                }
+            })
+            .catch(() => {
+                showToast.error('حدث خطأ');
+                deleteBtn.disabled = false;
+                deleteBtn.innerHTML = '<i class="ti ti-trash me-1"></i>حذف الكل';
+            });
+    }
+
+    // Bulk Restore
+    function bulkRestore() {
+        const ids = getSelectedIds();
+        if (ids.length === 0) {
+            showToast.error('الرجاء تحديد عملاء للاسترجاع');
+            return;
+        }
+
+        document.getElementById('bulkRestoreCount').textContent = ids.length;
+        new bootstrap.Modal(document.getElementById('bulkRestoreModal')).show();
+    }
+
+    function confirmBulkRestore() {
+        const ids = getSelectedIds();
+        const restoreBtn = event.target;
+        restoreBtn.disabled = true;
+        restoreBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الاسترجاع...';
+
+        fetch('{{ route('admin.clients.bulk-restore') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ids
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast.success(data.message);
+                    bootstrap.Modal.getInstance(document.getElementById('bulkRestoreModal')).hide();
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showToast.error(data.message);
+                    restoreBtn.disabled = false;
+                    restoreBtn.innerHTML = '<i class="ti ti-refresh me-1"></i>استرجاع الكل';
+                }
+            })
+            .catch(() => {
+                showToast.error('حدث خطأ');
+                restoreBtn.disabled = false;
+                restoreBtn.innerHTML = '<i class="ti ti-refresh me-1"></i>استرجاع الكل';
+            });
+    }
+
+    // Bulk Force Delete
+    function bulkForceDelete() {
+        const ids = getSelectedIds();
+        if (ids.length === 0) {
+            showToast.error('الرجاء تحديد عملاء للحذف');
+            return;
+        }
+
+        document.getElementById('bulkForceDeleteCount').textContent = ids.length;
+        new bootstrap.Modal(document.getElementById('bulkForceDeleteModal')).show();
+    }
+
+    function confirmBulkForceDelete() {
+        const ids = getSelectedIds();
+        const deleteBtn = event.target;
+        deleteBtn.disabled = true;
+        deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الحذف...';
+
+        fetch('{{ route('admin.clients.bulk-force-delete') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ids
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast.success(data.message);
+                    bootstrap.Modal.getInstance(document.getElementById('bulkForceDeleteModal')).hide();
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showToast.error(data.message);
+                    deleteBtn.disabled = false;
+                    deleteBtn.innerHTML = '<i class="ti ti-trash-x me-1"></i>حذف نهائي';
+                }
+            })
+            .catch(() => {
+                showToast.error('حدث خطأ');
+                deleteBtn.disabled = false;
+                deleteBtn.innerHTML = '<i class="ti ti-trash-x me-1"></i>حذف نهائي';
+            });
+    }
+
+    // Restore Client
+    function restoreClient(id) {
+        if (confirm('هل تريد استرجاع هذا العميل؟')) {
+            fetch(`/admin/clients/${id}/restore`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast.success(data.message);
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        showToast.error(data.message);
+                    }
+                })
+                .catch(() => showToast.error('حدث خطأ'));
+        }
+    }
+
+    // Force Delete Client
+    function forceDeleteClient(id) {
+        if (confirm('هل أنت متأكد من الحذف النهائي؟ لا يمكن التراجع!')) {
+            fetch(`/admin/clients/${id}/force-delete`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast.success(data.message);
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        showToast.error(data.message);
+                    }
+                })
+                .catch(() => showToast.error('حدث خطأ'));
+        }
+    }
+
+    // =====================================================
+    // Client Upload Modal Functions
+    // =====================================================
+
+    // PDF.js Configuration for Client Upload
+    if (typeof pdfjsLib !== 'undefined') {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    // Preview Client PDF
+    function previewClientPDF(input) {
+        const file = input.files[0];
+        if (!file || file.type !== 'application/pdf') {
+            return;
+        }
+
+        const placeholder = document.getElementById('clientPdfPlaceholder');
+        const canvas = document.getElementById('clientPdfCanvas');
+        const loading = document.getElementById('clientPdfLoading');
+
+        // Show loading
+        placeholder.classList.add('d-none');
+        canvas.style.display = 'none';
+        loading.classList.remove('d-none');
+
+        const fileReader = new FileReader();
+        fileReader.onload = function() {
+            const typedarray = new Uint8Array(this.result);
+
+            // Load PDF
+            pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
+                const totalPages = pdf.numPages;
+
+                // Populate all page select dropdowns
+                populateClientPageSelects(totalPages);
+
+                // Get first page for preview
+                pdf.getPage(1).then(function(page) {
+                    const viewport = page.getViewport({
+                        scale: 1.5
+                    });
+                    const context = canvas.getContext('2d');
+
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    // Render PDF page
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+
+                    page.render(renderContext).promise.then(function() {
+                        loading.classList.add('d-none');
+                        canvas.style.display = 'block';
+                    });
+                });
+            }).catch(function(error) {
+                console.error('Error loading PDF:', error);
+                loading.classList.add('d-none');
+                placeholder.classList.remove('d-none');
+                placeholder.innerHTML =
+                    '<i class="ti ti-alert-circle fs-1 mb-3 d-block text-danger"></i><p class="mb-0 text-danger">خطأ في تحميل الملف</p>';
+            });
         };
 
-        statusBadge.innerHTML = statuses[status] || statuses.ready;
-
-        // Reset to ready after 3 seconds
-        if (status !== 'ready' && status !== 'scanning') {
-            setTimeout(() => updateScannerStatus('ready'), 3000);
-        }
+        fileReader.readAsArrayBuffer(file);
     }
 
-    // Make updateScannerStatus globally accessible
-    window.updateScannerStatus = updateScannerStatus;
+    // Populate page select dropdowns with page numbers
+    function populateClientPageSelects(totalPages) {
+        const pageSelects = document.querySelectorAll('.page-select');
 
-    // Global keyboard shortcut: Press F2 to focus barcode input
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'F2') {
-            e.preventDefault();
-            barcodeInput.focus();
-            barcodeInput.select();
+        pageSelects.forEach(select => {
+            // Clear existing options except the first placeholder
+            const placeholder = select.options[0].text;
+            select.innerHTML = `<option value="">${placeholder}</option>`;
+
+            // Add page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                select.appendChild(option);
+            }
+        });
+    }
+
+    // Reset client PDF preview when modal is closed
+    document.getElementById('uploadFileModal')?.addEventListener('hidden.bs.modal', function() {
+        const placeholder = document.getElementById('clientPdfPlaceholder');
+        const canvas = document.getElementById('clientPdfCanvas');
+        const loading = document.getElementById('clientPdfLoading');
+        const fileInput = document.getElementById('clientPdfFileInput');
+
+        if (canvas) canvas.style.display = 'none';
+        if (loading) loading.classList.add('d-none');
+        if (placeholder) {
+            placeholder.classList.remove('d-none');
+            placeholder.innerHTML =
+                '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
         }
+        if (fileInput) fileInput.value = '';
     });
-})();
 
-/**
- * Search by barcode - main function
- */
-function searchByBarcode() {
-    const barcodeInput = document.getElementById('barcodeSearchInput');
-    const barcode = barcodeInput.value.trim();
+    // Toggle New Land Form
+    function toggleClientNewLandForm() {
+        const form = document.getElementById('clientNewLandForm');
+        const landSelect = document.getElementById('uploadLandId');
 
-    if (!barcode) {
-        showToast.warning('الرجاء إدخال الباركود أو استخدام الماسح الضوئي');
-        barcodeInput.focus();
-        return;
+        if (form.classList.contains('d-none')) {
+            form.classList.remove('d-none');
+            landSelect.removeAttribute('required');
+            landSelect.value = '';
+        } else {
+            form.classList.add('d-none');
+            landSelect.setAttribute('required', 'required');
+        }
     }
 
-    // Update status
-    if (window.updateScannerStatus) {
-        window.updateScannerStatus('scanning');
+    // Toggle Page Range for Client Items
+    function toggleClientPageRange(itemId) {
+        const checkbox = document.getElementById('clientItem' + itemId);
+        const fromPageInput = document.getElementById('clientFromPage' + itemId);
+        const toPageInput = document.getElementById('clientToPage' + itemId);
+
+        if (checkbox.checked) {
+            fromPageInput.classList.remove('d-none');
+            toPageInput.classList.remove('d-none');
+            fromPageInput.focus();
+        } else {
+            fromPageInput.classList.add('d-none');
+            toPageInput.classList.add('d-none');
+            fromPageInput.value = '';
+            toPageInput.value = '';
+        }
+        updateClientSelectedItemsCount();
     }
 
-    // Show modal with loading state
-    const modal = new bootstrap.Modal(document.getElementById('barcodeResultModal'));
-    document.getElementById('barcodeResultBody').innerHTML = `
+    // Update selected items count
+    function updateClientSelectedItemsCount() {
+        const count = document.querySelectorAll('.client-item-checkbox:checked').length;
+        const countEl = document.getElementById('clientSelectedItemsCount');
+        if (countEl) countEl.textContent = count + ' محدد';
+    }
+
+    // Filter Client Items
+    function filterClientItems() {
+        const searchValue = document.getElementById('clientItemSearchInput').value.toLowerCase();
+        const rows = document.querySelectorAll('.client-item-row');
+
+        rows.forEach(row => {
+            const itemName = row.getAttribute('data-item-name') || '';
+            if (itemName.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // Clear Client Item Search
+    function clearClientItemSearch() {
+        document.getElementById('clientItemSearchInput').value = '';
+        filterClientItems();
+    }
+
+    // Select All Client Items
+    function selectAllClientItems() {
+        document.querySelectorAll('.client-item-checkbox').forEach(cb => {
+            if (!cb.checked) {
+                cb.checked = true;
+                const itemId = cb.getAttribute('data-item-id');
+                document.getElementById('clientFromPage' + itemId)?.classList.remove('d-none');
+                document.getElementById('clientToPage' + itemId)?.classList.remove('d-none');
+            }
+        });
+        updateClientSelectedItemsCount();
+    }
+
+    // Deselect All Client Items
+    function deselectAllClientItems() {
+        document.querySelectorAll('.client-item-checkbox').forEach(cb => {
+            cb.checked = false;
+            const itemId = cb.getAttribute('data-item-id');
+            const fromInput = document.getElementById('clientFromPage' + itemId);
+            const toInput = document.getElementById('clientToPage' + itemId);
+            if (fromInput) {
+                fromInput.classList.add('d-none');
+                fromInput.value = '';
+            }
+            if (toInput) {
+                toInput.classList.add('d-none');
+                toInput.value = '';
+            }
+        });
+        updateClientSelectedItemsCount();
+    }
+
+    // Load Cities for New Land in Client Upload
+    function loadClientNewLandCities(governorateId) {
+        const citySelect = document.getElementById('clientNewCityId');
+        const cityHiddenInput = document.getElementById('clientNewCityIdHidden');
+        const districtSelect = document.getElementById('clientNewDistrictId');
+        const zoneSelect = document.getElementById('clientNewZoneId');
+        const areaSelect = document.getElementById('clientNewAreaId');
+
+        citySelect.innerHTML = '<option value="">جاري التحميل...</option>';
+        districtSelect.innerHTML = '<option value="">اختر الحي</option>';
+        zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+        areaSelect.innerHTML = '<option value="">اختر المجاورة</option>';
+
+        if (!governorateId) {
+            citySelect.innerHTML = '<option value="">اختر المدينة</option>';
+            if (cityHiddenInput) cityHiddenInput.value = '';
+            return;
+        }
+
+        fetch(`{{ url('admin/geographic-areas/cities/by-governorate') }}/${governorateId}`)
+            .then(res => res.json())
+            .then(data => {
+                citySelect.innerHTML = '';
+                if (data && data.length > 0) {
+                    data.forEach((city, index) => {
+                        const option = document.createElement('option');
+                        option.value = city.id;
+                        option.textContent = city.name;
+                        if (index === 0) option.selected = true;
+                        citySelect.appendChild(option);
+                    });
+
+                    // Update hidden input with first city
+                    if (cityHiddenInput) {
+                        cityHiddenInput.value = data[0].id;
+                    }
+
+                    // Auto-trigger loading districts for first city
+                    loadClientNewLandDistricts(data[0].id);
+                } else {
+                    citySelect.innerHTML = '<option value="">لا توجد مدن</option>';
+                    if (cityHiddenInput) cityHiddenInput.value = '';
+                }
+
+                // Update address
+                updateClientNewLandAddress();
+            })
+            .catch(() => {
+                citySelect.innerHTML = '<option value="">اختر المدينة</option>';
+                if (cityHiddenInput) cityHiddenInput.value = '';
+            });
+    }
+
+    // Load Districts for New Land in Client Upload
+    function loadClientNewLandDistricts(cityId) {
+        const districtSelect = document.getElementById('clientNewDistrictId');
+        const zoneSelect = document.getElementById('clientNewZoneId');
+        const areaSelect = document.getElementById('clientNewAreaId');
+
+        districtSelect.innerHTML = '<option value="">جاري التحميل...</option>';
+        zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+        areaSelect.innerHTML = '<option value="">اختر المجاورة</option>';
+
+        if (!cityId) {
+            districtSelect.innerHTML = '<option value="">اختر الحي</option>';
+            return;
+        }
+
+        fetch(`{{ url('admin/geographic-areas/districts/by-city') }}/${cityId}`)
+            .then(res => res.json())
+            .then(data => {
+                districtSelect.innerHTML = '';
+                if (data && data.length > 0) {
+                    data.forEach((district, index) => {
+                        const option = document.createElement('option');
+                        option.value = district.id;
+                        option.textContent = district.name;
+                        if (index === 0) option.selected = true;
+                        districtSelect.appendChild(option);
+                    });
+
+                    // Auto-trigger loading zones for first district
+                    loadClientNewLandZones(data[0].id);
+                } else {
+                    districtSelect.innerHTML = '<option value="">لا توجد أحياء</option>';
+                }
+
+                // Update address
+                updateClientNewLandAddress();
+            })
+            .catch(() => {
+                districtSelect.innerHTML = '<option value="">اختر الحي</option>';
+            });
+    }
+
+    // Load Zones for New Land in Client Upload
+    function loadClientNewLandZones(districtId) {
+        const zoneSelect = document.getElementById('clientNewZoneId');
+        const areaSelect = document.getElementById('clientNewAreaId');
+
+        zoneSelect.innerHTML = '<option value="">جاري التحميل...</option>';
+        areaSelect.innerHTML = '<option value="">اختر المجاورة</option>';
+
+        if (!districtId) {
+            zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+            return;
+        }
+
+        fetch(`{{ url('admin/geographic-areas/zones/by-district') }}/${districtId}`)
+            .then(res => res.json())
+            .then(data => {
+                zoneSelect.innerHTML = '';
+                if (data && data.length > 0) {
+                    data.forEach((zone, index) => {
+                        const option = document.createElement('option');
+                        option.value = zone.id;
+                        option.textContent = zone.name;
+                        if (index === 0) option.selected = true;
+                        zoneSelect.appendChild(option);
+                    });
+
+                    // Auto-trigger loading areas for first zone
+                    loadClientNewLandAreas(data[0].id);
+                } else {
+                    zoneSelect.innerHTML = '<option value="">لا توجد مناطق</option>';
+                }
+
+                // Update address
+                updateClientNewLandAddress();
+            })
+            .catch(() => {
+                zoneSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+            });
+    }
+
+    // Load Areas for New Land in Client Upload
+    function loadClientNewLandAreas(zoneId) {
+        const areaSelect = document.getElementById('clientNewAreaId');
+
+        areaSelect.innerHTML = '<option value="">جاري التحميل...</option>';
+
+        if (!zoneId) {
+            areaSelect.innerHTML = '<option value="">اختر المجاورة</option>';
+            return;
+        }
+
+        fetch(`{{ url('admin/geographic-areas/areas/by-zone') }}/${zoneId}`)
+            .then(res => res.json())
+            .then(data => {
+                areaSelect.innerHTML = '';
+                if (data && data.length > 0) {
+                    data.forEach((area, index) => {
+                        const option = document.createElement('option');
+                        option.value = area.id;
+                        option.textContent = area.name;
+                        if (index === 0) option.selected = true;
+                        areaSelect.appendChild(option);
+                    });
+                } else {
+                    areaSelect.innerHTML = '<option value="">لا توجد مجاورات</option>';
+                }
+
+                // Update address
+                updateClientNewLandAddress();
+            })
+            .catch(() => {
+                areaSelect.innerHTML = '<option value="">اختر المجاورة</option>';
+            });
+    }
+
+    // Load Lanes for Client Upload
+    function loadClientLanes(roomId) {
+        const laneSelect = document.getElementById('clientLaneSelect');
+        const standSelect = document.getElementById('clientStandSelect');
+        const rackSelect = document.getElementById('clientRackSelect');
+
+        laneSelect.innerHTML = '<option value="">جاري التحميل...</option>';
+        standSelect.innerHTML = '<option value="">اختر الستاند</option>';
+        rackSelect.innerHTML = '<option value="">اختر الرف</option>';
+
+        if (!roomId) {
+            laneSelect.innerHTML = '<option value="">اختر الممر</option>';
+            return;
+        }
+
+        fetch(`{{ url('admin/physical-locations/rooms') }}/${roomId}/lanes`)
+            .then(res => res.json())
+            .then(data => {
+                laneSelect.innerHTML = '<option value="">اختر الممر</option>';
+                (data.lanes || data).forEach(lane => {
+                    laneSelect.innerHTML += `<option value="${lane.id}">${lane.name}</option>`;
+                });
+            })
+            .catch(() => {
+                laneSelect.innerHTML = '<option value="">اختر الممر</option>';
+            });
+    }
+
+    // Load Stands for Client Upload
+    function loadClientStands(laneId) {
+        const standSelect = document.getElementById('clientStandSelect');
+        const rackSelect = document.getElementById('clientRackSelect');
+
+        standSelect.innerHTML = '<option value="">جاري التحميل...</option>';
+        rackSelect.innerHTML = '<option value="">اختر الرف</option>';
+
+        if (!laneId) {
+            standSelect.innerHTML = '<option value="">اختر الستاند</option>';
+            return;
+        }
+
+        fetch(`{{ url('admin/physical-locations/lanes') }}/${laneId}/stands`)
+            .then(res => res.json())
+            .then(data => {
+                standSelect.innerHTML = '<option value="">اختر الستاند</option>';
+                (data.stands || data).forEach(stand => {
+                    standSelect.innerHTML += `<option value="${stand.id}">${stand.name}</option>`;
+                });
+            })
+            .catch(() => {
+                standSelect.innerHTML = '<option value="">اختر الستاند</option>';
+            });
+    }
+
+    // Load Racks for Client Upload
+    function loadClientRacks(standId) {
+        const rackSelect = document.getElementById('clientRackSelect');
+
+        rackSelect.innerHTML = '<option value="">جاري التحميل...</option>';
+
+        if (!standId) {
+            rackSelect.innerHTML = '<option value="">اختر الرف</option>';
+            return;
+        }
+
+        fetch(`{{ url('admin/physical-locations/stands') }}/${standId}/racks`)
+            .then(res => res.json())
+            .then(data => {
+                rackSelect.innerHTML = '<option value="">اختر الرف</option>';
+                (data.racks || data).forEach(rack => {
+                    rackSelect.innerHTML += `<option value="${rack.id}">${rack.name}</option>`;
+                });
+            })
+            .catch(() => {
+                rackSelect.innerHTML = '<option value="">اختر الرف</option>';
+            });
+    }
+
+    // Toggle Client Storage Location Collapse
+    function toggleClientStorageLocation(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const collapseElement = document.getElementById('clientStorageLocationCollapse');
+        const chevron = document.getElementById('clientStorageChevron');
+
+        if (collapseElement.classList.contains('show')) {
+            collapseElement.classList.remove('show');
+            chevron.classList.remove('ti-chevron-up');
+            chevron.classList.add('ti-chevron-down');
+        } else {
+            collapseElement.classList.add('show');
+            chevron.classList.remove('ti-chevron-down');
+            chevron.classList.add('ti-chevron-up');
+        }
+    }
+
+    // NOTE: Form submission for uploadClientFileForm is handled in upload-modal.blade.php
+    // via onsubmit="return handleClientFileUpload(event)" - do not add duplicate handler here
+
+    // ============================================
+    // BARCODE SCANNER SEARCH FUNCTIONALITY
+    // ============================================
+
+    /**
+     * Barcode Scanner Search
+     * Supports both external barcode scanner devices and manual input
+     * External scanners typically send characters followed by Enter key
+     */
+    (function() {
+        const barcodeInput = document.getElementById('barcodeSearchInput');
+        const statusBadge = document.getElementById('barcodeScannerStatus');
+        let lastKeyTime = 0;
+        let barcodeBuffer = '';
+        const SCANNER_THRESHOLD = 50; // Max ms between keystrokes for scanner detection
+
+        if (!barcodeInput) return;
+
+        // Focus on barcode input when page loads
+        setTimeout(() => barcodeInput.focus(), 500);
+
+        // Handle input event for automatic search
+        barcodeInput.addEventListener('input', function(e) {
+            const currentTime = Date.now();
+            const value = e.target.value.trim();
+
+            // Clear any existing timeout
+            if (window.barcodeSearchTimeout) {
+                clearTimeout(window.barcodeSearchTimeout);
+            }
+
+            // Detect rapid input (barcode scanner behavior)
+            if (currentTime - lastKeyTime < SCANNER_THRESHOLD && value.length > 3) {
+                updateScannerStatus('scanning');
+
+                // Auto-search after scanner completes (100ms delay)
+                window.barcodeSearchTimeout = setTimeout(() => {
+                    if (value.length >= 5) { // Minimum barcode length
+                        searchByBarcode();
+                    }
+                }, 100);
+            }
+
+            lastKeyTime = currentTime;
+        });
+
+        // Handle keydown events for Enter key
+        barcodeInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+
+                // Clear any pending timeout
+                if (window.barcodeSearchTimeout) {
+                    clearTimeout(window.barcodeSearchTimeout);
+                }
+
+                searchByBarcode();
+                return;
+            }
+        });
+
+        // Update scanner status indicator
+        function updateScannerStatus(status) {
+            if (!statusBadge) return;
+
+            const statuses = {
+                ready: `<span class="badge bg-success-subtle text-success fs-6 px-3 py-2">
+                        <i class="ti ti-device-desktop-analytics me-1"></i>جاهز للمسح
+                    </span>`,
+                scanning: `<span class="badge bg-warning-subtle text-warning fs-6 px-3 py-2">
+                        <i class="ti ti-loader me-1 spinner-border spinner-border-sm"></i>جاري المسح...
+                    </span>`,
+                success: `<span class="badge bg-success-subtle text-success fs-6 px-3 py-2">
+                        <i class="ti ti-check me-1"></i>تم العثور على الملف
+                    </span>`,
+                error: `<span class="badge bg-danger-subtle text-danger fs-6 px-3 py-2">
+                        <i class="ti ti-x me-1"></i>لم يتم العثور
+                    </span>`
+            };
+
+            statusBadge.innerHTML = statuses[status] || statuses.ready;
+
+            // Reset to ready after 3 seconds
+            if (status !== 'ready' && status !== 'scanning') {
+                setTimeout(() => updateScannerStatus('ready'), 3000);
+            }
+        }
+
+        // Make updateScannerStatus globally accessible
+        window.updateScannerStatus = updateScannerStatus;
+
+        // Global keyboard shortcut: Press F2 to focus barcode input
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F2') {
+                e.preventDefault();
+                barcodeInput.focus();
+                barcodeInput.select();
+            }
+        });
+    })();
+
+    /**
+     * Search by barcode - main function
+     */
+    function searchByBarcode() {
+        const barcodeInput = document.getElementById('barcodeSearchInput');
+        const barcode = barcodeInput.value.trim();
+
+        if (!barcode) {
+            showToast.warning('الرجاء إدخال الباركود أو استخدام الماسح الضوئي');
+            barcodeInput.focus();
+            return;
+        }
+
+        // Update status
+        if (window.updateScannerStatus) {
+            window.updateScannerStatus('scanning');
+        }
+
+        // Show modal with loading state
+        const modal = new bootstrap.Modal(document.getElementById('barcodeResultModal'));
+        document.getElementById('barcodeResultBody').innerHTML = `
         <div class="text-center py-5">
             <div class="spinner-border text-dark" role="status"></div>
             <p class="mt-3 text-muted">جاري البحث عن الباركود: <strong>${barcode}</strong></p>
         </div>
     `;
-    document.getElementById('viewClientFromBarcodeBtn').style.display = 'none';
-    modal.show();
+        document.getElementById('viewClientFromBarcodeBtn').style.display = 'none';
+        modal.show();
 
-    // Make API request
-    fetch(`{{ route('admin.clients.search-barcode') }}?barcode=${encodeURIComponent(barcode)}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            if (window.updateScannerStatus) {
-                window.updateScannerStatus('success');
-            }
-            renderBarcodeSearchResult(data);
-            showToast.success(data.message || 'تم العثور على الملف');
-        } else {
-            if (window.updateScannerStatus) {
-                window.updateScannerStatus('error');
-            }
-            renderBarcodeNotFound(barcode, data.message);
-            showToast.error(data.message || 'لم يتم العثور على الملف');
-        }
-    })
-    .catch(error => {
-        console.error('Barcode search error:', error);
-        if (window.updateScannerStatus) {
-            window.updateScannerStatus('error');
-        }
-        renderBarcodeNotFound(barcode, 'حدث خطأ أثناء البحث');
-        showToast.error('حدث خطأ أثناء البحث');
-    })
-    .finally(() => {
-        // Clear input and refocus for next scan
-        barcodeInput.value = '';
-        barcodeInput.focus();
-    });
-}
+        // Make API request
+        fetch(`{{ route('admin.clients.search-barcode') }}?barcode=${encodeURIComponent(barcode)}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    if (window.updateScannerStatus) {
+                        window.updateScannerStatus('success');
+                    }
+                    renderBarcodeSearchResult(data);
+                    showToast.success(data.message || 'تم العثور على الملف');
+                } else {
+                    if (window.updateScannerStatus) {
+                        window.updateScannerStatus('error');
+                    }
+                    renderBarcodeNotFound(barcode, data.message);
+                    showToast.error(data.message || 'لم يتم العثور على الملف');
+                }
+            })
+            .catch(error => {
+                console.error('Barcode search error:', error);
+                if (window.updateScannerStatus) {
+                    window.updateScannerStatus('error');
+                }
+                renderBarcodeNotFound(barcode, 'حدث خطأ أثناء البحث');
+                showToast.error('حدث خطأ أثناء البحث');
+            })
+            .finally(() => {
+                // Clear input and refocus for next scan
+                barcodeInput.value = '';
+                barcodeInput.focus();
+            });
+    }
 
-/**
- * Render successful barcode search result
- */
-function renderBarcodeSearchResult(data) {
-    const file = data.file;
-    const client = data.client;
-    const land = data.land;
+    /**
+     * Render successful barcode search result
+     */
+    function renderBarcodeSearchResult(data) {
+        const file = data.file;
+        const client = data.client;
+        const land = data.land;
 
-    let html = `
+        let html = `
         <div class="row g-4">
             <!-- File Information -->
             <div class="col-md-6">
@@ -2429,7 +2944,7 @@ function renderBarcodeSearchResult(data) {
                                 <td><strong class="text-dark">${file.barcode || '-'}</strong></td>
                             </tr>
                             <tr>
-                                <td class="text-muted">اسم الملف:</td>
+                                <td class="text-muted">رقم الملف:</td>
                                 <td>${file.file_name || '-'}</td>
                             </tr>
                             <tr>
@@ -2457,7 +2972,7 @@ function renderBarcodeSearchResult(data) {
             <div class="col-md-6">
                 <div class="card border-success h-100">
                     <div class="card-header bg-success text-white">
-                        <h6 class="mb-0"><i class="ti ti-building-warehouse me-2"></i>الموقع الفيزيائي</h6>
+                        <h6 class="mb-0"><i class="ti ti-building-warehouse me-2"></i>موقع التخزين</h6>
                     </div>
                     <div class="card-body">
                         <table class="table table-sm table-borderless mb-0">
@@ -2483,9 +2998,9 @@ function renderBarcodeSearchResult(data) {
             </div>
     `;
 
-    // Client Information
-    if (client) {
-        html += `
+        // Client Information
+        if (client) {
+            html += `
             <div class="col-md-6">
                 <div class="card border-primary h-100">
                     <div class="card-header bg-primary text-white">
@@ -2519,21 +3034,21 @@ function renderBarcodeSearchResult(data) {
             </div>
         `;
 
-        // Show view client button
-        document.getElementById('viewClientFromBarcodeBtn').style.display = 'inline-block';
-        document.getElementById('viewClientFromBarcodeBtn').onclick = function() {
-            bootstrap.Modal.getInstance(document.getElementById('barcodeResultModal')).hide();
-            showClient(client.id);
-        };
-    }
+            // Show view client button
+            document.getElementById('viewClientFromBarcodeBtn').style.display = 'inline-block';
+            document.getElementById('viewClientFromBarcodeBtn').onclick = function() {
+                bootstrap.Modal.getInstance(document.getElementById('barcodeResultModal')).hide();
+                showClient(client.id);
+            };
+        }
 
-    // Land Information
-    if (land) {
-        html += `
+        // Land Information
+        if (land) {
+            html += `
             <div class="col-md-6">
                 <div class="card border-warning h-100">
                     <div class="card-header bg-warning text-dark">
-                        <h6 class="mb-0"><i class="ti ti-map-pin me-2"></i>معلومات الأرض</h6>
+                        <h6 class="mb-0"><i class="ti ti-map-pin me-2"></i>معلومات القطعة</h6>
                     </div>
                     <div class="card-body">
                         <table class="table table-sm table-borderless mb-0">
@@ -2566,18 +3081,18 @@ function renderBarcodeSearchResult(data) {
                 </div>
             </div>
         `;
+        }
+
+        html += '</div>';
+
+        document.getElementById('barcodeResultBody').innerHTML = html;
     }
 
-    html += '</div>';
-
-    document.getElementById('barcodeResultBody').innerHTML = html;
-}
-
-/**
- * Render not found result
- */
-function renderBarcodeNotFound(barcode, message) {
-    document.getElementById('barcodeResultBody').innerHTML = `
+    /**
+     * Render not found result
+     */
+    function renderBarcodeNotFound(barcode, message) {
+        document.getElementById('barcodeResultBody').innerHTML = `
         <div class="text-center py-5">
             <div class="avatar avatar-lg bg-danger-subtle text-danger rounded-circle mx-auto mb-3">
                 <i class="ti ti-barcode-off fs-1"></i>
@@ -2592,25 +3107,25 @@ function renderBarcodeNotFound(barcode, message) {
             </div>
         </div>
     `;
-    document.getElementById('viewClientFromBarcodeBtn').style.display = 'none';
-}
-
-// ==================== Show File Functions ====================
-function showFile(id) {
-    console.log('showFile called with id:', id);
-
-    const modalElement = document.getElementById('showFileModal');
-    if (!modalElement) {
-        console.error('Modal element #showFileModal not found');
-        showToast.error('خطأ: لم يتم العثور على نافذة العرض');
-        return;
+        document.getElementById('viewClientFromBarcodeBtn').style.display = 'none';
     }
 
-    const modal = new bootstrap.Modal(modalElement);
-    modal.show();
+    // ==================== Show File Functions ====================
+    function showFile(id) {
+        console.log('showFile called with id:', id);
 
-    // Reset modal body to loading state
-    document.getElementById('fileModalBody').innerHTML = `
+        const modalElement = document.getElementById('showFileModal');
+        if (!modalElement) {
+            console.error('Modal element #showFileModal not found');
+            showToast.error('خطأ: لم يتم العثور على نافذة العرض');
+            return;
+        }
+
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+
+        // Reset modal body to loading state
+        document.getElementById('fileModalBody').innerHTML = `
         <div class="text-center py-5">
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">جاري التحميل...</span>
@@ -2619,73 +3134,76 @@ function showFile(id) {
         </div>
     `;
 
-    fetch(`{{ url('admin/files') }}/${id}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-        .then(res => {
-            console.log('Response status:', res.status);
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            return res.json();
-        })
-        .then(data => {
-            console.log('File data received:', data);
-            if (data.success) {
-                try {
-                    renderFileDetails(data.file, data.pdf_url);
-                    console.log('renderFileDetails completed successfully');
-                } catch (error) {
-                    console.error('Error in renderFileDetails:', error);
-                    document.getElementById('fileModalBody').innerHTML = `
+        fetch(`{{ url('admin/files') }}/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => {
+                console.log('Response status:', res.status);
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log('File data received:', data);
+                if (data.success) {
+                    try {
+                        renderFileDetails(data.file, data.pdf_url);
+                        console.log('renderFileDetails completed successfully');
+                    } catch (error) {
+                        console.error('Error in renderFileDetails:', error);
+                        document.getElementById('fileModalBody').innerHTML = `
                         <div class="alert alert-danger">
                             <i class="ti ti-alert-circle me-2"></i>
                             خطأ في عرض التفاصيل: ${error.message}
                         </div>
                     `;
-                }
-            } else {
-                document.getElementById('fileModalBody').innerHTML = `
+                    }
+                } else {
+                    document.getElementById('fileModalBody').innerHTML = `
                     <div class="alert alert-danger">
                         <i class="ti ti-alert-circle me-2"></i>
                         ${data.message || data.error || 'حدث خطأ أثناء تحميل البيانات'}
                     </div>
                 `;
-            }
-        })
-        .catch(err => {
-            console.error('Error fetching file:', err);
-            document.getElementById('fileModalBody').innerHTML = `
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching file:', err);
+                document.getElementById('fileModalBody').innerHTML = `
                 <div class="alert alert-danger">
                     <i class="ti ti-alert-circle me-2"></i>
                     حدث خطأ في الاتصال: ${err.message}
                 </div>
             `;
+            });
+    }
+
+    function renderFileDetails(file, pdfUrl) {
+        console.log('renderFileDetails called', {
+            file,
+            pdfUrl
         });
-}
 
-function renderFileDetails(file, pdfUrl) {
-    console.log('renderFileDetails called', { file, pdfUrl });
+        const titleElement = document.getElementById('fileModalTitle');
+        const modalBody = document.getElementById('fileModalBody');
 
-    const titleElement = document.getElementById('fileModalTitle');
-    const modalBody = document.getElementById('fileModalBody');
+        if (!titleElement) {
+            console.error('fileModalTitle element not found');
+            return;
+        }
+        if (!modalBody) {
+            console.error('fileModalBody element not found');
+            return;
+        }
 
-    if (!titleElement) {
-        console.error('fileModalTitle element not found');
-        return;
-    }
-    if (!modalBody) {
-        console.error('fileModalBody element not found');
-        return;
-    }
+        titleElement.textContent = file.file_name;
 
-    titleElement.textContent = file.file_name;
-
-    let html = `
+        let html = `
         <!-- PDF Viewer Section (Hidden by default) -->
         <div id="pdfViewerSection" class="d-none mb-4">
             <div class="card border-0 shadow-sm">
@@ -2745,7 +3263,7 @@ function renderFileDetails(file, pdfUrl) {
                                         <i class="ti ti-map-pin"></i>
                                     </div>
                                     <div>
-                                        <small class="text-muted d-block">الأرض</small>
+                                        <small class="text-muted d-block">القطعة</small>
                                         <strong>${file.land?.land_no || 'غير محدد'}</strong>
                                     </div>
                                 </div>
@@ -2756,7 +3274,7 @@ function renderFileDetails(file, pdfUrl) {
                                         <i class="ti ti-building"></i>
                                     </div>
                                     <div>
-                                        <small class="text-muted d-block">الموقع الفيزيائي</small>
+                                        <small class="text-muted d-block">موقع التخزين</small>
                                         <strong>${file.room?.name || 'غير محدد'} - ${file.rack?.name || ''}</strong>
                                     </div>
                                 </div>
@@ -2907,41 +3425,41 @@ function renderFileDetails(file, pdfUrl) {
         </div>
     `;
 
-    modalBody.innerHTML = html;
-}
+        modalBody.innerHTML = html;
+    }
 
-function viewPdfInModal(pdfUrl, title) {
-    // Hide file info section
-    document.getElementById('fileInfoSection').classList.add('d-none');
+    function viewPdfInModal(pdfUrl, title) {
+        // Hide file info section
+        document.getElementById('fileInfoSection').classList.add('d-none');
 
-    // Show PDF viewer section
-    const pdfViewerSection = document.getElementById('pdfViewerSection');
-    pdfViewerSection.classList.remove('d-none');
+        // Show PDF viewer section
+        const pdfViewerSection = document.getElementById('pdfViewerSection');
+        pdfViewerSection.classList.remove('d-none');
 
-    // Update title and load PDF
-    document.getElementById('currentPdfTitle').textContent = title;
-    document.getElementById('pdfIframe').src = pdfUrl;
+        // Update title and load PDF
+        document.getElementById('currentPdfTitle').textContent = title;
+        document.getElementById('pdfIframe').src = pdfUrl;
 
-    // Scroll to top of modal
-    document.getElementById('fileModalBody').scrollTop = 0;
-}
+        // Scroll to top of modal
+        document.getElementById('fileModalBody').scrollTop = 0;
+    }
 
-function closePdfViewer() {
-    // Hide PDF viewer section
-    document.getElementById('pdfViewerSection').classList.add('d-none');
+    function closePdfViewer() {
+        // Hide PDF viewer section
+        document.getElementById('pdfViewerSection').classList.add('d-none');
 
-    // Show file info section
-    document.getElementById('fileInfoSection').classList.remove('d-none');
+        // Show file info section
+        document.getElementById('fileInfoSection').classList.remove('d-none');
 
-    // Clear iframe
-    document.getElementById('pdfIframe').src = '';
-}
+        // Clear iframe
+        document.getElementById('pdfIframe').src = '';
+    }
 
-function copyFileBarcode(barcode) {
-    navigator.clipboard.writeText(barcode).then(() => {
-        showToast.success('تم نسخ الباركود');
-    }).catch(() => {
-        showToast.error('فشل نسخ الباركود');
-    });
-}
+    function copyFileBarcode(barcode) {
+        navigator.clipboard.writeText(barcode).then(() => {
+            showToast.success('تم نسخ الباركود');
+        }).catch(() => {
+            showToast.error('فشل نسخ الباركود');
+        });
+    }
 </script>

@@ -220,6 +220,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
                 Route::post('/{id}/force-delete', [UserController::class, 'forceDelete'])->name('force-delete');
                 Route::post('/{id}/toggle-status', [UserController::class, 'toggleStatus'])->name('toggle-status');
                 Route::post('/{id}/assign-role', [UserController::class, 'assignRole'])->name('assign-role');
+                Route::post('/{id}/change-password', [UserController::class, 'changePassword'])->name('change-password');
             });
 
             // Roles Management
