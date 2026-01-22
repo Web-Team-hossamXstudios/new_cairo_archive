@@ -131,7 +131,7 @@
                                             <i class="ti ti-user-plus me-2"></i> إضافة عميل جديد
                                         </a>
                                     @endcan
-                                    @can('files.upload')
+                                    {{-- @can('files.upload')
                                         <a href="{{ route('admin.files.index') }}" class="btn btn-soft-success text-start">
                                             <i class="ti ti-upload me-2"></i> رفع ملف PDF
                                         </a>
@@ -140,10 +140,10 @@
                                         <a href="{{ route('admin.imports.create') }}" class="btn btn-soft-info text-start">
                                             <i class="ti ti-file-import me-2"></i> استيراد بيانات Excel
                                         </a>
-                                    @endcan
+                                    @endcan --}}
                                     @can('physical_locations.manage')
                                         <a href="{{ route('admin.physical-locations.index') }}" class="btn btn-soft-warning text-start">
-                                            <i class="ti ti-building-warehouse me-2"></i> إدارة المواقع
+                                            <i class="ti ti-building-warehouse me-2"></i> إدارة مواقع التخزين
                                         </a>
                                     @endcan
                                 </div>

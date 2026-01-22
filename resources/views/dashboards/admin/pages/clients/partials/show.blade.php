@@ -199,11 +199,13 @@
                                                                 <i class="ti ti-download"></i>
                                                             </a>
                                                         @else
+                                                        @can('files.upload')
                                                             <button class="btn btn-warning"
                                                                 onclick="openUploadForFile({{ $file->id }}, '{{ $file->file_name }}')"
                                                                 title="رفع ملف">
                                                                 <i class="ti ti-upload me-1"></i> رفع
                                                             </button>
+                                                        @endcan
                                                         @endif
                                                         @if ($file->barcode)
                                                             <button class="btn btn-dark"
@@ -435,7 +437,7 @@
                                         <div class="alert alert-info d-flex align-items-center mb-3">
                                             <i class="ti ti-info-circle fs-4 me-3"></i>
                                             <div>
-                                                <strong>اسم الملف:</strong> <span id="uploadFileName"></span>
+                                                <strong>رقم الملف:</strong> <span id="uploadFileName"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -633,10 +635,10 @@
 </div>
 
 <!-- PDF.js Library for PDF Preview -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="{{ asset('dashboard/assets/vendor/pdfjs/pdf.min.js') }}"></script>
 
 <!-- JsBarcode Library -->
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<script src="{{ asset('dashboard/assets/vendor/jsbarcode/JsBarcode.all.min.js') }}"></script>
 
 <script>
     // Configure PDF.js worker

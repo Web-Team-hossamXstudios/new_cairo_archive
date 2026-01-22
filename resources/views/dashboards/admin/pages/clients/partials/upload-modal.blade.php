@@ -9,7 +9,7 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form id="uploadClientFileForm" enctype="multipart/form-data">
+            <form id="uploadClientFileForm" enctype="multipart/form-data" onsubmit="return handleClientFileUpload(event)">
                 @csrf
                 <input type="hidden" name="client_id" id="uploadClientId">
                 <div class="modal-body" style="height: calc(107vh - 140px); max-height: calc(107vh - 200px);overflow: hidden;">
@@ -53,13 +53,14 @@
                         <div class="col-md-12 mt-1">
                             <label class="form-label">القطعة <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <select name="land_id" id="uploadLandId" class="form-select" required>
+                                <select name="land_id" id="uploadLandId" class="form-select">
                                     <option value="">اختر القطعة</option>
                                 </select>
                                 <button type="button" class="btn btn-outline-primary" onclick="toggleClientNewLandForm()">
                                     <i class="ti ti-plus"></i> قطعه جديدة
                                 </button>
                             </div>
+                            <div class="invalid-feedback" id="landIdError"></div>
                         </div>
 
                         <!-- New Land Form (Hidden by default) -->
@@ -106,13 +107,9 @@
                                                 <option value="">اختر المجاورة</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <label class="form-label">رقم القطعة</label>
                                             <input type="text" name="new_land_no" id="clientNewLandNo" class="form-control" placeholder="رقم القطعة" oninput="updateClientNewLandAddress();">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">رقم الوحدة</label>
-                                            <input type="text" name="new_unit_no" id="clientNewUnitNo" class="form-control" placeholder="رقم الوحدة" oninput="updateClientNewLandAddress();">
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">العنوان</label>
@@ -182,6 +179,13 @@
                             </div>
                         </div>
 
+                        <!-- File Name/Number -->
+                        <div class="col-12">
+                            <label class="form-label">رقم الملف <span class="text-danger">*</span></label>
+                            <input type="text" name="file_name" id="clientFileName" class="form-control" placeholder="أدخل رقم الملف" required>
+                            <small class="text-muted"><i class="ti ti-info-circle me-1"></i>سيتم حفظ هذا الرقم كاسم للملف</small>
+                        </div>
+
                         <!-- PDF File -->
                         <div class="col-12">
                             <label class="form-label">ملف PDF <span class="text-danger">*</span></label>
@@ -223,8 +227,8 @@
                                 </button>
                             </div>
 
-                            <!-- Items Table -->
-                            <div class="border rounded" style="max-height: 500px; overflow-y: auto; background: white;">
+                            <!-- Items Table - Remove hidden inputs, only use checkboxes -->
+                            <div class="border rounded" style="max-height: 100%; overflow-y: auto; background: white;">
                                 <table class="table table-bordered mb-0" id="clientItemsTable" style="direction: rtl">
                                     <thead class="table-light" style="position: sticky; top: 0; z-index: 10;">
                                         <tr>
@@ -261,19 +265,22 @@
                                                                 {{ $rightItem->name }}
                                                             </label>
                                                         </div>
-                                                        <input type="hidden" name="items[{{ $rightItem->id }}][item_id]" value="{{ $rightItem->id }}">
                                                     </td>
                                                     <td class="text-center align-middle">
-                                                        <input type="number" name="items[{{ $rightItem->id }}][from_page]"
-                                                            class="form-control form-control-sm text-center d-none page-input"
-                                                            id="clientFromPage{{ $rightItem->id }}"
-                                                            min="1" placeholder="من">
+                                                        <select class="form-select form-select-sm text-center d-none page-select"
+                                                            data-item-id="{{ $rightItem->id }}"
+                                                            data-type="from"
+                                                            id="clientFromPage{{ $rightItem->id }}">
+                                                            <option value=""></option>
+                                                        </select>
                                                     </td>
                                                     <td class="text-center align-middle">
-                                                        <input type="number" name="items[{{ $rightItem->id }}][to_page]"
-                                                            class="form-control form-control-sm text-center d-none page-input"
-                                                            id="clientToPage{{ $rightItem->id }}"
-                                                            min="1" placeholder="إلى">
+                                                        <select class="form-select form-select-sm text-center d-none page-select"
+                                                            data-item-id="{{ $rightItem->id }}"
+                                                            data-type="to"
+                                                            id="clientToPage{{ $rightItem->id }}">
+                                                            <option value=""></option>
+                                                        </select>
                                                     </td>
                                                 @else
                                                     <td class="align-middle"></td>
@@ -291,19 +298,22 @@
                                                                 {{ $leftItem->name }}
                                                             </label>
                                                         </div>
-                                                        <input type="hidden" name="items[{{ $leftItem->id }}][item_id]" value="{{ $leftItem->id }}">
                                                     </td>
                                                     <td class="text-center align-middle">
-                                                        <input type="number" name="items[{{ $leftItem->id }}][from_page]"
-                                                            class="form-control form-control-sm text-center d-none page-input"
-                                                            id="clientFromPage{{ $leftItem->id }}"
-                                                            min="1" placeholder="من">
+                                                        <select class="form-select form-select-sm text-center d-none page-select"
+                                                            data-item-id="{{ $leftItem->id }}"
+                                                            data-type="from"
+                                                            id="clientFromPage{{ $leftItem->id }}">
+                                                            <option value="">من</option>
+                                                        </select>
                                                     </td>
                                                     <td class="text-center align-middle">
-                                                        <input type="number" name="items[{{ $leftItem->id }}][to_page]"
-                                                            class="form-control form-control-sm text-center d-none page-input"
-                                                            id="clientToPage{{ $leftItem->id }}"
-                                                            min="1" placeholder="إلى">
+                                                        <select class="form-select form-select-sm text-center d-none page-select"
+                                                            data-item-id="{{ $leftItem->id }}"
+                                                            data-type="to"
+                                                            id="clientToPage{{ $leftItem->id }}">
+                                                            <option value="">إلى</option>
+                                                        </select>
                                                     </td>
                                                 @else
                                                     <td class="align-middle"></td>
@@ -326,12 +336,13 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="uploadClientFileBtn">
                             <i class="ti ti-upload me-2"></i>
                             رفع ومعالجة
                         </button>
                     </div>
                 </div>
+
             </form>
         </div>
     </div>
@@ -341,6 +352,163 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <script>
+// ============================================
+// MAIN FORM SUBMISSION HANDLER
+// ============================================
+function handleClientFileUpload(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    console.log('=== handleClientFileUpload called ===');
+
+    const form = document.getElementById('uploadClientFileForm');
+    const submitBtn = document.getElementById('uploadClientFileBtn');
+
+    // Clear previous errors
+    document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+
+    // Validate client_id
+    const clientId = document.getElementById('uploadClientId').value;
+    if (!clientId) {
+        showToast.error('خطأ: لم يتم تحديد العميل');
+        console.error('Client ID is missing');
+        return false;
+    }
+    console.log('Client ID:', clientId);
+
+    // Validate land selection
+    const landId = document.getElementById('uploadLandId').value;
+    const newLandFormVisible = !document.getElementById('clientNewLandForm').classList.contains('d-none');
+
+    if (!landId && !newLandFormVisible) {
+        showToast.error('يجب اختيار القطعة أو إنشاء قطعة جديدة');
+        document.getElementById('uploadLandId').classList.add('is-invalid');
+        return false;
+    }
+    console.log('Land ID:', landId, 'New Land Form Visible:', newLandFormVisible);
+
+    // Validate file
+    const fileInput = document.getElementById('clientPdfFileInput');
+    if (!fileInput.files || fileInput.files.length === 0) {
+        showToast.error('يجب اختيار ملف PDF');
+        fileInput.classList.add('is-invalid');
+        return false;
+    }
+    console.log('File selected:', fileInput.files[0].name);
+
+    // Validate file name
+    const fileName = document.getElementById('clientFileName').value.trim();
+    if (!fileName) {
+        showToast.error('يجب إدخال رقم الملف');
+        document.getElementById('clientFileName').classList.add('is-invalid');
+        return false;
+    }
+    console.log('File name:', fileName);
+
+    // Prepare FormData
+    const formData = new FormData(form);
+
+    // Collect selected items with page ranges
+    const selectedItems = [];
+    document.querySelectorAll('.client-item-checkbox:checked').forEach(checkbox => {
+        const itemId = checkbox.dataset.itemId;
+        const fromPageSelect = document.getElementById('clientFromPage' + itemId);
+        const toPageSelect = document.getElementById('clientToPage' + itemId);
+        const fromPage = fromPageSelect ? fromPageSelect.value : '';
+        const toPage = toPageSelect ? toPageSelect.value : '';
+
+        selectedItems.push({
+            item_id: itemId,
+            from_page: fromPage || null,
+            to_page: toPage || null
+        });
+    });
+
+    // Add items as JSON
+    formData.append('items_json', JSON.stringify(selectedItems));
+
+    console.log('Selected items:', selectedItems);
+    console.log('FormData entries:');
+    for (let pair of formData.entries()) {
+        if (pair[0] !== 'document') {
+            console.log('  ' + pair[0] + ': ' + pair[1]);
+        } else {
+            console.log('  document: [File]');
+        }
+    }
+
+    // Disable submit button
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>جاري الرفع...';
+
+    // Send request
+    fetch('{{ route("admin.files.store") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw { status: response.status, data: data };
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        if (data.success) {
+            showToast.success(data.message || 'تم رفع الملف بنجاح! جاري معالجته...');
+
+            // Hide modal
+            const modalEl = document.getElementById('uploadFileModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
+                modal.hide();
+            }
+
+            // Reload page after delay
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        } else {
+            // Handle validation errors
+            if (data.errors) {
+                const errorMessages = Object.values(data.errors).flat();
+                errorMessages.forEach(msg => showToast.error(msg));
+                console.error('Validation errors:', data.errors);
+            } else {
+                showToast.error(data.error || data.message || 'حدث خطأ أثناء رفع الملف');
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Upload error:', error);
+        if (error.data && error.data.errors) {
+            const errorMessages = Object.values(error.data.errors).flat();
+            errorMessages.forEach(msg => showToast.error(msg));
+        } else if (error.data && error.data.message) {
+            showToast.error(error.data.message);
+        } else {
+            showToast.error('حدث خطأ في الاتصال بالخادم');
+        }
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="ti ti-upload me-2"></i>رفع ومعالجة';
+    });
+
+    return false; // Prevent default form submission
+}
+
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
 // Auto-populate address from location selections
 function updateClientNewLandAddress() {
     const governorateSelect = document.getElementById('clientNewGovernorateId');
@@ -349,7 +517,6 @@ function updateClientNewLandAddress() {
     const zoneSelect = document.getElementById('clientNewZoneId');
     const areaSelect = document.getElementById('clientNewAreaId');
     const landNo = document.getElementById('clientNewLandNo').value;
-    const unitNo = document.getElementById('clientNewUnitNo').value;
 
     let addressParts = [];
 
@@ -382,10 +549,6 @@ function updateClientNewLandAddress() {
         addressParts.push('قطعة رقم: ' + landNo);
     }
 
-    if (unitNo) {
-        addressParts.push('وحدة رقم: ' + unitNo);
-    }
-
     document.getElementById('clientNewAddress').value = addressParts.join(' - ');
 }
 
@@ -412,13 +575,46 @@ document.addEventListener('DOMContentLoaded', function() {
     if (newLandForm) {
         newLandFormObserver.observe(newLandForm, { attributes: true, attributeFilter: ['class'] });
     }
+
+    // Reset modal when hidden
+    const modalEl = document.getElementById('uploadFileModal');
+    if (modalEl) {
+        modalEl.addEventListener('hidden.bs.modal', function() {
+            // Reset form
+            const form = document.getElementById('uploadClientFileForm');
+            if (form) form.reset();
+
+            // Reset preview
+            const placeholder = document.getElementById('clientPdfPlaceholder');
+            const canvas = document.getElementById('clientPdfCanvas');
+            const loading = document.getElementById('clientPdfLoading');
+
+            if (canvas) canvas.style.display = 'none';
+            if (loading) loading.classList.add('d-none');
+            if (placeholder) {
+                placeholder.classList.remove('d-none');
+                placeholder.innerHTML = '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
+            }
+
+            // Reset land form
+            document.getElementById('clientNewLandForm')?.classList.add('d-none');
+
+            // Reset storage collapse
+            document.getElementById('clientStorageLocationCollapse')?.classList.remove('show');
+
+            // Reset checkboxes
+            deselectAllClientItems();
+
+            // Clear validation errors
+            document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+        });
+    }
 });
 
 // Create New Land via AJAX
 function createNewLandAjax() {
     const clientId = document.getElementById('uploadClientId').value;
     const landNo = document.getElementById('clientNewLandNo').value;
-    const unitNo = document.getElementById('clientNewUnitNo').value;
     const governorateId = document.getElementById('clientNewGovernorateIdHidden').value;
     const cityId = document.getElementById('clientNewCityIdHidden').value;
     const districtId = document.getElementById('clientNewDistrictId').value;
@@ -452,7 +648,6 @@ function createNewLandAjax() {
         body: JSON.stringify({
             client_id: clientId,
             land_no: landNo,
-            unit_no: unitNo,
             governorate_id: governorateId,
             city_id: cityId || null,
             district_id: districtId || null,
@@ -480,7 +675,6 @@ function createNewLandAjax() {
 
             // Clear the form fields
             document.getElementById('clientNewLandNo').value = '';
-            document.getElementById('clientNewUnitNo').value = '';
             document.getElementById('clientNewGovernorateId').value = '';
             document.getElementById('clientNewCityId').innerHTML = '<option value="">اختر المدينة</option>';
             document.getElementById('clientNewDistrictId').innerHTML = '<option value="">اختر الحي</option>';

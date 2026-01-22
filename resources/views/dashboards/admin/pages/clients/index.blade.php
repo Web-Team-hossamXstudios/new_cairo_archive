@@ -58,7 +58,7 @@
 
                 <!-- Stats Cards -->
                 <div class="row ">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
@@ -88,7 +88,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
@@ -103,28 +103,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-md bg-warning-subtle text-warning rounded me-3">
-                                        <i class="ti ti-clock fs-4"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="mb-0">
-                                            {{ \App\Models\Client::whereDate('created_at', today())->count() }}</h4>
-                                        <small class="text-muted">عملاء اليوم</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Search & Filters Card -->
+                <!-- Unified Search Card -->
                 @php
                     $hasFilters =
-                        request()->filled('search') ||
                         request()->filled('national_id') ||
                         request()->filled('governorate_id') ||
                         request('trashed') === 'only';
@@ -133,81 +116,64 @@
                     <div class="col-12">
                         <div class="card" style="border-radius: var(--ins-border-radius);">
                             <div class="card-body">
-                                <!-- Barcode Scanner Section -->
-                                <div class="mb-1 pb-3 border-bottom">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <i class="ti ti-barcode fs-4 me-2 text-dark"></i>
-                                        <h6 class="mb-0 fw-semibold">البحث بالباركود (الماسح الضوئي)</h6>
-                                    </div>
-                                    <div class="row align-items-center">
-                                        <div class="col-md-8">
-                                            <div class="input-group input-group-lg shadow-sm border border-dark border-opacity-25 overflow-hidden"
-                                                style="border-radius: var(--ins-border-radius);">
-                                                <span class="input-group-text bg-dark text-white border-0">
-                                                    <i class="ti ti-scan"></i>
+                                <!-- Unified Search Section -->
+                                <form method="GET" action="{{ route('admin.clients.index') }}" id="unifiedSearchForm">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-lg-2 col-md-3">
+                                            <label class="form-label fw-semibold mb-2">نوع البحث</label>
+                                            <select id="searchType" name="search_type" class="form-select form-select-lg shadow-sm"
+                                                style="border-radius: var(--ins-border-radius); height: 48px;" onchange="updateSearchPlaceholder()">
+                                                <option value="name" {{ request('search_type') == 'name' ? 'selected' : '' }}>اسم العميل</option>
+                                                <option value="area" {{ request('search_type') == 'area' ? 'selected' : '' }}>المنطقة</option>
+                                                <option value="land_no" {{ request('search_type') == 'land_no' ? 'selected' : '' }}>رقم القطعة</option>
+                                                <option value="file_no" {{ request('search_type') == 'file_no' ? 'selected' : '' }}>رقم الملف</option>
+                                                <option value="barcode" {{ request('search_type') == 'barcode' ? 'selected' : '' }}>كود الباركود</option>
+                                                <option value="national_id" {{ request('search_type') == 'national_id' ? 'selected' : '' }}>الرقم القومي</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-7 col-md-6">
+                                            <label class="form-label fw-semibold mb-2">البحث</label>
+                                            <div class="input-group shadow-sm border border-primary border-opacity-25 overflow-hidden"
+                                                style="border-radius: var(--ins-border-radius); height: 48px;">
+                                                <span class="input-group-text bg-primary text-white border-0 px-3">
+                                                    <i class="ti ti-search fs-5"></i>
                                                 </span>
-                                                <input type="text" id="barcodeSearchInput"
-                                                    class="form-control border-0 fs-5"
-                                                    placeholder="امسح الباركود أو أدخله يدوياً..." autocomplete="off"
-                                                    autofocus>
-                                                <button type="button" class="btn btn-dark border-0 fs-5"
-                                                    onclick="searchByBarcode()">
+                                                <input type="text" id="unifiedSearchInput" name="search"
+                                                    class="form-control border-0"
+                                                    placeholder="امسح الباركود أو أدخله يدوياً..."
+                                                    value="{{ request('search') }}"
+                                                    autocomplete="off"
+                                                    autofocus
+                                                    style="font-size: 15px;">
+                                                <button type="submit" class="btn btn-primary border-0 px-4">
                                                     <i class="ti ti-search me-1"></i> بحث
                                                 </button>
                                             </div>
-                                            <small class="text-muted mt-1 d-block">
-                                                <i class="ti ti-info-circle me-1"></i>
-                                                استخدم جهاز الماسح الضوئي لمسح الباركود أو أدخل رقم الباركود يدوياً ثم
-                                                اضغط Enter
-                                            </small>
                                         </div>
-                                        <div class="col-md-4 text-center">
-                                            <div id="barcodeScannerStatus"
-                                                class="d-flex align-items-center justify-content-center gap-2">
-                                                <span class="badge bg-success-subtle text-success fs-6 px-3 py-2">
-                                                    <i class="ti ti-device-desktop-analytics me-1"></i>
-                                                    جاهز للمسح
-                                                </span>
+                                        <div class="col-lg-3 col-md-3">
+                                            <div class="d-flex gap-2 align-items-center" style="height: 48px;">
+                                                <a href="{{ route('admin.clients.index') }}"
+                                                    id="resetButton"
+                                                    class="btn btn-secondary shadow-sm flex-fill"
+                                                    style="border-radius: var(--ins-border-radius); height: 100%;">
+                                                    <i class="ti ti-refresh me-1"></i> إعادة
+                                                </a>
+                                                <button type="button"
+                                                    class="btn btn-outline-primary shadow-sm"
+                                                    style="border-radius: var(--ins-border-radius); height: 100%; aspect-ratio: 1/1;"
+                                                    data-bs-toggle="collapse" data-bs-target="#advancedFilters"
+                                                    aria-expanded="{{ $hasFilters ? 'true' : 'false' }}">
+                                                    <i class="ti {{ $hasFilters ? 'ti-eye-off' : 'ti-filter' }} fs-5"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <!-- Client Search & Filters Section -->
-                                <form method="GET" action="{{ route('admin.clients.index') }}">
-                                    <div class="row d-flex align-items-end justify-content-start">
-                                        <div class="col-md-6 mb-2">
-                                            <label class="form-label fw-semibold">بحث</label>
-                                            <div class="input-group shadow-sm border border-secondary border-opacity-10 overflow-hidden bg-body"
-                                                style="border-radius: var(--ins-border-radius);">
-                                                <input type="text" name="search"
-                                                    class="form-control border-0 bg-transparent"
-                                                    placeholder="الاسم، الرقم القومي، كود العميل، الموبايل..."
-                                                    value="{{ request('search') }}">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 mb-2 d-flex align-items-center gap-2">
-                                            <div class="d-flex flex-wrap gap-1">
-                                                <button type="submit" class="btn btn-primary shadow-sm px-3"
-                                                    style="border-radius: var(--ins-border-radius);">
-                                                    <i class="ti ti-filter me-1"></i> فلترة
-                                                </button>
-                                                <a href="{{ route('admin.clients.index') }}"
-                                                    style="border-radius: var(--ins-border-radius);"
-                                                    class="btn btn-secondary shadow-sm px-3">
-                                                    <i class="ti ti-refresh me-1"></i> إعادة تعيين
-                                                </a>
-                                            </div>
-
-                                            <button
-                                                class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1 shadow-sm"
-                                                style="border-radius: var(--ins-border-radius);" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#advancedFilters"
-                                                aria-expanded="{{ $hasFilters ? 'true' : 'false' }}">
-                                                <i class="ti {{ $hasFilters ? 'ti-eye-off' : 'ti-filter' }}"></i>
-                                                <span>{{ $hasFilters ? 'إخفاء الفلاتر' : 'فلاتر متقدمة' }}</span>
-                                            </button>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <small class="text-muted mt-2 d-block">
+                                                <i class="ti ti-info-circle me-1"></i>
+                                                <span id="searchHint">استخدم جهاز الماسح الضوئي لمسح الباركود أو أدخله يدوياً</span>
+                                            </small>
                                         </div>
                                     </div>
 
@@ -356,15 +322,14 @@
                                                             </div>
 
                                                             {{-- File Numbers --}}
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-1">
                                                                 <small class="text-muted d-block mb-1"><strong><i
                                                                             class="ti ti-files me-1"></i>أرقام
                                                                         الملفات:</strong></small>
                                                                 @if ($client->mainFiles && $client->mainFiles->count() > 0)
                                                                     @foreach ($client->mainFiles as $file)
                                                                         <div class="mb-1">
-                                                                            <span
-                                                                                class="badge bg-primary-subtle text-primary">{{ $file->file_name }}</span>
+                                                                            <span class="badge bg-primary-subtle text-primary">{{ $file->file_name }}</span>
                                                                         </div>
                                                                         @if (!$loop->last)
                                                                             <hr class="my-1">
@@ -383,19 +348,20 @@
                                                                 @if ($client->lands && $client->lands->count() > 0)
                                                                     @foreach ($client->lands as $land)
                                                                         <div class="mb-1">
-                                                                            <small class="d-block">
-
+                                                                            <small class="d-block fs-5">
                                                                                 @if ($land->district)
-                                                                                    , {{ $land->district->name }}
+                                                                                    ({{ $land->district->name }})
                                                                                 @endif
+                                                                                ->
                                                                                 @if ($land->zone)
-                                                                                    , {{ $land->zone->name }}
+                                                                                    ({{ $land->zone->name }})
                                                                                 @endif
+                                                                                ->
                                                                                 @if ($land->area)
-                                                                                    , {{ $land->area->name }}
+                                                                                    ({{ $land->area->name }})
                                                                                 @endif
-                                                                                <br>
-                                                                                <strong>{{ $land->land_no }}</strong>
+-> قطعه
+                                                                                <strong>({{ $land->land_no }})</strong>
                                                                             </small>
                                                                         </div>
                                                                         @if (!$loop->last)
@@ -408,14 +374,14 @@
                                                             </div>
 
                                                             {{-- Physical Locations & Page Counts --}}
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-3">
                                                                 <small class="text-muted d-block mb-1"><strong><i
                                                                             class="ti ti-building-warehouse me-1"></i>موقع
                                                                         التخزين:</strong></small>
                                                                 @if ($client->mainFiles && $client->mainFiles->count() > 0)
                                                                     @foreach ($client->mainFiles as $file)
                                                                         <div class="mb-1">
-                                                                            <small class="d-block">
+                                                                            <small class="d-block fs-5">
                                                                                 (غرفة {{ $file->room?->name ?? '-' }})
                                                                                 @if ($file->lane)
                                                                                     -> (ممر {{ $file->lane->name }})
@@ -495,6 +461,13 @@
                                                                         <i class="ti ti-edit"></i>
                                                                     </button>
                                                                 @endcan
+                                                                @can('files.upload')
+                                                                    {{-- <button class="btn btn-soft-success btn-sm"
+                                                                        onclick="uploadFile({{ $client->id }})"
+                                                                        title="رفع ملف">
+                                                                        <i class="ti ti-upload"></i>
+                                                                    </button> --}}
+                                                                @endcan
                                                                 @can('clients.delete')
                                                                     <button class="btn btn-soft-danger btn-sm"
                                                                         onclick="deleteClient({{ $client->id }}, '{{ $client->name }}')"
@@ -519,10 +492,11 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="3" class="text-center py-4">
+                                                    <td colspan="3" class="text-center py-5">
                                                         <div class="text-muted">
-                                                            <i class="ti ti-users-minus fs-1 d-block mb-2"></i>
-                                                            لا يوجد عملاء
+                                                            <i class="ti ti-search fs-1 d-block mb-3 opacity-50"></i>
+                                                            <h5 class="mb-2">لا توجد نتائج</h5>
+                                                            <p class="mb-0">لم يتم العثور على عملاء مطابقين لمعايير البحث</p>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -578,11 +552,13 @@
                                                                 <button class="btn btn-soft-warning btn-sm"
                                                                     onclick="editClient({{ $client->id }})"><i
                                                                         class="ti ti-edit"></i></button>
-                                                                <button class="btn btn-soft-success btn-sm"
-                                                                    onclick="uploadFile({{ $client->id }})"><i
-                                                                        class="ti ti-upload"></i></button>
+                                                                @can('files.upload')
+                                                                    <button class="btn btn-soft-success btn-sm"
+                                                                        onclick="uploadFile({{ $client->id }})"><i
+                                                                            class="ti ti-upload"></i></button>
+                                                                @endcan
                                                                 <button class="btn btn-soft-danger btn-sm"
-                                                                    onclick="deleteClient({{ $client->id }}, '{{ $client->name }}')"><i
+                                                                    onclick="deleteClient({{ $client->id }}, '{{ $client->name }}'"><i
                                                                         class="ti ti-trash"></i></button>
                                                             @else
                                                                 <button class="btn btn-soft-success btn-sm"
@@ -597,10 +573,11 @@
                                                 </div>
                                             </div>
                                         @empty
-                                            <div class="col-12 text-center py-4">
+                                            <div class="col-12 text-center py-5">
                                                 <div class="text-muted">
-                                                    <i class="ti ti-users-minus fs-1 d-block mb-2"></i>
-                                                    لا يوجد عملاء
+                                                    <i class="ti ti-search fs-1 d-block mb-3 opacity-50"></i>
+                                                    <h5 class="mb-2">لا توجد نتائج</h5>
+                                                    <p class="mb-0">لم يتم العثور على عملاء مطابقين لمعايير البحث</p>
                                                 </div>
                                             </div>
                                         @endforelse
@@ -624,7 +601,7 @@
     @include('dashboards.admin.pages.clients.partials.scripts')
     {{-- @include('dashboards.shared.scripts') --}}
 
-    {{-- <script>
+    <script>
         const ROUTES = {
             create: "{{ route('admin.clients.create') }}",
             store: "{{ route('admin.clients.store') }}",
@@ -665,7 +642,110 @@
         document.addEventListener('DOMContentLoaded', function() {
             const savedView = localStorage.getItem('clientsView') || 'list';
             toggleView(savedView);
+
+            // Auto-focus on search input
+            const searchInput = document.getElementById('unifiedSearchInput');
+            const searchTypeSelect = document.getElementById('searchType');
+
+            if (searchInput) {
+                // Clear URL and input on page load if search type is barcode
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('search_type') === 'barcode' && urlParams.has('search')) {
+                    window.history.replaceState({}, '', window.location.pathname);
+                    searchInput.value = '';
+                }
+
+                searchInput.focus();
+
+                // Barcode scanner variables
+                let lastKeyTime = 0;
+                let scannerBuffer = '';
+
+                // Detect barcode scanner input
+                searchInput.addEventListener('keydown', function(e) {
+                    const currentTime = Date.now();
+                    const timeDiff = currentTime - lastKeyTime;
+
+                    // Fast typing detected (< 50ms between keys) = barcode scanner
+                    if (timeDiff < 50 && lastKeyTime > 0) {
+                        // Scanner detected - if there's old content, clear it
+                        if (this.value.length > 0 && scannerBuffer.length === 0) {
+                            // Clear URL and input before new scan
+                            window.history.replaceState({}, '', window.location.pathname);
+                            this.value = '';
+                            searchTypeSelect.value = 'barcode';
+                        }
+                        scannerBuffer += e.key;
+                    } else if (timeDiff > 100) {
+                        // Manual typing or new scan starting
+                        scannerBuffer = '';
+                    }
+
+                    lastKeyTime = currentTime;
+                });
+
+                // Submit on Enter
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+
+                        const value = this.value.trim();
+
+                        // Auto-detect barcode pattern
+                        if (value.length >= 5 && /^[A-Z0-9-]+$/i.test(value)) {
+                            searchTypeSelect.value = 'barcode';
+                        }
+
+                        // Submit the form
+                        document.getElementById('unifiedSearchForm').submit();
+
+                        // Reset scanner buffer
+                        scannerBuffer = '';
+                    }
+                });
+
+                // Select all on focus
+                searchInput.addEventListener('focus', function() {
+                    if (this.value) {
+                        this.select();
+                    }
+                });
+            }
+
+            // Update placeholder on page load
+            updateSearchPlaceholder();
         });
+
+        // Update search placeholder based on search type
+        function updateSearchPlaceholder() {
+            const searchType = document.getElementById('searchType').value;
+            const searchInput = document.getElementById('unifiedSearchInput');
+            const searchHint = document.getElementById('searchHint');
+
+            const placeholders = {
+                'name': 'أدخل اسم العميل...',
+                'area': 'أدخل اسم المنطقة...',
+                'land_no': 'أدخل رقم القطعة...',
+                'file_no': 'أدخل رقم الملف...',
+                'barcode': 'امسح الباركود أو أدخله يدوياً...',
+                'national_id': 'أدخل الرقم القومي...'
+            };
+
+            const hints = {
+                'name': 'ابحث عن العميل باستخدام الاسم',
+                'area': 'ابحث عن العملاء في منطقة معينة',
+                'land_no': 'ابحث عن القطعة باستخدام رقم القطعة',
+                'file_no': 'ابحث عن الملف باستخدام رقم الملف',
+                'barcode': 'استخدم جهاز الماسح الضوئي لمسح الباركود أو أدخله يدوياً',
+                'national_id': 'ابحث عن العميل باستخدام الرقم القومي'
+            };
+
+            searchInput.placeholder = placeholders[searchType] || placeholders['barcode'];
+            searchHint.textContent = hints[searchType] || hints['barcode'];
+
+            // Re-focus after type change
+            searchInput.focus();
+        }
 
         // Select All Checkbox
         document.getElementById('selectAll')?.addEventListener('change', function() {
@@ -735,10 +815,6 @@
             });
         }
 
-        // Upload File
-        function uploadFile(clientId) {
-            window.location.href = ROUTES.uploadFile + '?client_id=' + clientId;
-        }
 
         // Bulk Operations
         function getSelectedIds() {
@@ -824,7 +900,7 @@
                 }
             });
         }
-    </script> --}}
+    </script>
 
 
     <!-- PDF.js Library (if not already loaded) -->

@@ -433,7 +433,7 @@
                                                                 class="badge bg-danger-subtle text-danger">غير نشط</span>
                                                         @endif
                                                     </td>
-                                                    <td class="text-center" width="200">
+                                                    <td class="text-center" width="250">
                                                         @if ($user->trashed())
                                                             @can('users.restore')
                                                                 <button class="btn btn-soft-success btn-sm"
@@ -456,6 +456,9 @@
                                                                 <button class="btn btn-soft-warning btn-sm"
                                                                     onclick="editRecord({{ $user->id }})"
                                                                     title="تعديل"><i class="ti ti-pencil"></i></button>
+                                                                <button class="btn btn-soft-primary btn-sm"
+                                                                    onclick="changePassword({{ $user->id }}, '{{ $user->name }}')"
+                                                                    title="تغيير كلمة المرور"><i class="ti ti-key"></i></button>
                                                             @endcan
                                                             @can('users.delete')
                                                                 @if ($user->id !== auth()->id())
@@ -559,6 +562,9 @@
                                                                         onclick="editRecord({{ $user->id }})"
                                                                         title="تعديل"><i
                                                                             class="ti ti-pencil"></i></button>
+                                                                    <button class="btn btn-soft-primary btn-sm"
+                                                                        onclick="changePassword({{ $user->id }}, '{{ $user->name }}')"
+                                                                        title="تغيير كلمة المرور"><i class="ti ti-key"></i></button>
                                                                 @endcan
                                                                 @can('users.delete')
                                                                     @if ($user->id !== auth()->id())
@@ -611,6 +617,9 @@
     @endcan
     @can('users.bulk-upload')
         @include('dashboards.admin.pages.users.partials.bulk-upload-modal')
+    @endcan
+    @can('users.edit')
+        @include('dashboards.admin.pages.users.partials.change-password-modal')
     @endcan
 
     @include('dashboards.shared.theme_settings')

@@ -171,7 +171,7 @@
                                                                 <i class="ti ti-shield"></i>
                                                             </div>
                                                             <div>
-                                                                <h6 class="mb-0">{{ ucfirst(str_replace('-', ' ', $role->name)) }}</h6>
+                                                                <h6 class="mb-0">{{ translate_role_name($role->name) }}</h6>
                                                                 <small class="text-muted">{{ $role->guard_name ?? 'web' }}</small>
                                                             </div>
                                                         </div>
@@ -190,7 +190,7 @@
                                                             <button class="btn btn-soft-warning btn-sm" onclick="editRole({{ $role->id }})" title="تعديل"><i class="ti ti-pencil"></i></button>
                                                             @endcan
                                                             @can('roles.delete')
-                                                            <button class="btn btn-soft-danger btn-sm" onclick="deleteRole({{ $role->id }})" title="حذف"><i class="ti ti-trash"></i></button>
+                                                            <button class="btn btn-soft-danger btn-sm" onclick="deleteRole({{ $role->id }}, '{{ $role->name }}')" title="حذف"><i class="ti ti-trash"></i></button>
                                                             @endcan
                                                         @endif
                                                     </td>
@@ -224,7 +224,7 @@
                                                                     <i class="ti ti-shield fs-5"></i>
                                                                 </div>
                                                                 <div>
-                                                                    <h6 class="mb-0">{{ ucfirst(str_replace('-', ' ', $role->name)) }}</h6>
+                                                                    <h6 class="mb-0">{{ translate_role_name($role->name) }}</h6>
                                                                     <small class="text-muted">{{ $role->guard_name ?? 'web' }}</small>
                                                                 </div>
                                                             </div>
@@ -238,7 +238,7 @@
                                                                 <small class="text-muted">الصلاحيات:</small>
                                                                 <div class="mt-1">
                                                                     @foreach($role->permissions->take(3) as $permission)
-                                                                        <span class="badge bg-light text-dark me-1 mb-1">{{ $permission->name }}</span>
+                                                                        <span class="badge bg-light text-dark me-1 mb-1">{{ translate_permission($permission->name) }}</span>
                                                                     @endforeach
                                                                     @if($role->permissions->count() > 3)
                                                                         <span class="badge bg-light text-dark">+{{ $role->permissions->count() - 3 }} أخرى</span>
@@ -253,7 +253,7 @@
                                                                 <button class="btn btn-soft-warning btn-sm" onclick="editRole({{ $role->id }})" title="تعديل"><i class="ti ti-pencil"></i></button>
                                                                 @endcan
                                                                 @can('roles.delete')
-                                                                <button class="btn btn-soft-danger btn-sm" onclick="deleteRole({{ $role->id }})" title="حذف"><i class="ti ti-trash"></i></button>
+                                                                <button class="btn btn-soft-danger btn-sm" onclick="deleteRole({{ $role->id }}, '{{ $role->name }}')" title="حذف"><i class="ti ti-trash"></i></button>
                                                                 @endcan
                                                             @endif
                                                         </div>
@@ -296,7 +296,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">اسم الدور <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control" required placeholder="مثال: Manager">
+                            <input type="text" name="name" class="form-control" required placeholder="مثال: مدير">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">الصلاحيات</label>
@@ -306,14 +306,14 @@
                                         <div class="form-check">
                                             <input class="form-check-input module-check" type="checkbox" id="createModule{{ $loop->index }}" data-module="{{ $module }}">
                                             <label class="form-check-label fw-bold" for="createModule{{ $loop->index }}">
-                                                {{ ucfirst(str_replace('-', ' ', $module)) }}
+                                                {{ translate_module($module) }}
                                             </label>
                                         </div>
                                         <div class="ms-4 mt-1">
                                             @foreach($perms as $perm)
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input perm-check" type="checkbox" name="permissions[]" value="{{ $perm->name }}" id="createPerm{{ $perm->id }}" data-module="{{ $module }}">
-                                                    <label class="form-check-label small" for="createPerm{{ $perm->id }}">{{ $perm->name }}</label>
+                                                    <label class="form-check-label small" for="createPerm{{ $perm->id }}">{{ translate_permission($perm->name) }}</label>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -355,14 +355,14 @@
                                         <div class="form-check">
                                             <input class="form-check-input edit-module-check" type="checkbox" id="editModule{{ $loop->index }}" data-module="{{ $module }}">
                                             <label class="form-check-label fw-bold" for="editModule{{ $loop->index }}">
-                                                {{ ucfirst(str_replace('-', ' ', $module)) }}
+                                                {{ translate_module($module) }}
                                             </label>
                                         </div>
                                         <div class="ms-4 mt-1">
                                             @foreach($perms as $perm)
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input edit-perm-check" type="checkbox" name="permissions[]" value="{{ $perm->name }}" id="editPerm{{ $perm->id }}" data-module="{{ $module }}">
-                                                    <label class="form-check-label small" for="editPerm{{ $perm->id }}">{{ $perm->name }}</label>
+                                                    <label class="form-check-label small" for="editPerm{{ $perm->id }}">{{ translate_permission($perm->name) }}</label>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -510,11 +510,11 @@
         fetch(`{{ url('admin/roles') }}/${id}/edit`)
             .then(res => res.json())
             .then(data => {
-                document.getElementById('viewRoleName').textContent = data.name;
+                document.getElementById('viewRoleName').textContent = translate_role_name(data.name);
                 document.getElementById('viewRolePermCount').textContent = (data.permissions?.length || 0) + ' صلاحية';
 
                 const permsHtml = (data.permissions || []).map(perm =>
-                    `<div class="col-md-4"><span class="badge bg-light text-dark border w-100 py-2">${perm}</span></div>`
+                    `<div class="col-md-4"><span class="badge bg-light text-dark border w-100 py-2">${translate_permission(perm)}</span></div>`
                 ).join('');
                 document.getElementById('viewRolePermissions').innerHTML = permsHtml || '<div class="col-12 text-muted text-center">لا توجد صلاحيات</div>';
 
@@ -522,22 +522,144 @@
             });
     }
 
+    // Helper functions for translation
+    function translate_role_name(roleName) {
+        const translations = {
+            'Super Admin': 'المدير العام',
+            'super-admin': 'المدير العام',
+            'Admin': 'مدير',
+            'admin': 'مدير',
+            'Manager': 'مدير',
+            'manager': 'مدير',
+            'Employee': 'موظف',
+            'employee': 'موظف',
+            'Viewer': 'مشاهد',
+            'viewer': 'مشاهد',
+        };
+        return translations[roleName] || roleName.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+
+    function translate_permission(permission) {
+        const translations = {
+            // Client Management
+            'clients.view': 'عرض العملاء',
+            'clients.create': 'إضافة عميل',
+            'clients.edit': 'تعديل عميل',
+            'clients.delete': 'حذف عميل',
+            'clients.restore': 'استعادة عميل',
+            'clients.force-delete': 'حذف نهائي للعميل',
+            'clients.export': 'تصدير العملاء',
+            'clients.bulk-upload': 'استيراد عملاء',
+            'clients.bulk-download': 'تصدير عملاء',
+            'clients.bulk-delete': 'حذف مجموعة عملاء',
+            'clients.bulk-restore': 'استعادة مجموعة عملاء',
+            'clients.bulk-force-delete': 'حذف نهائي لمجموعة عملاء',
+
+            // Land Management
+            'lands.view': 'عرض القطع',
+            'lands.create': 'إضافة قطعة',
+            'lands.edit': 'تعديل قطعة',
+            'lands.delete': 'حذف قطعة',
+            'lands.restore': 'استعادة قطعة',
+            'lands.force-delete': 'حذف نهائي للقطعة',
+
+            // File Management
+            'files.view': 'عرض الملفات',
+            'files.create': 'إضافة ملف',
+            'files.upload': 'رفع ملفات',
+            'files.edit': 'تعديل ملف',
+            'files.delete': 'حذف ملفات',
+            'files.download': 'تحميل ملفات',
+
+            // Physical Locations
+            'physical_locations.view': 'عرض مواقع التخزين',
+            'physical_locations.create': 'إضافة موقع تخزين',
+            'physical_locations.edit': 'تعديل موقع تخزين',
+            'physical_locations.delete': 'حذف موقع تخزين',
+            'physical_locations.manage': 'إدارة مواقع التخزين',
+
+            // Geographic Areas
+            'geographic_areas.view': 'عرض المناطق الجغرافية',
+            'geographic_areas.create': 'إضافة منطقة جغرافية',
+            'geographic_areas.edit': 'تعديل منطقة جغرافية',
+            'geographic_areas.delete': 'حذف منطقة جغرافية',
+            'geographic_areas.manage': 'إدارة المناطق الجغرافية',
+            'geographic-areas.view': 'عرض المناطق الجغرافية',
+            'geographic-areas.create': 'إضافة منطقة جغرافية',
+            'geographic-areas.edit': 'تعديل منطقة جغرافية',
+            'geographic-areas.delete': 'حذف منطقة جغرافية',
+            'geographic-areas.manage': 'إدارة المناطق الجغرافية',
+
+            // Items
+            'items.view': 'عرض أنواع المحتوى',
+            'items.create': 'إضافة نوع محتوى',
+            'items.edit': 'تعديل نوع محتوى',
+            'items.delete': 'حذف نوع محتوى',
+            'items.manage': 'إدارة أنواع المحتوى',
+
+            // Import
+            'import.access': 'الوصول للاستيراد',
+            'import.view': 'عرض عمليات الاستيراد',
+            'import.execute': 'تنفيذ الاستيراد',
+            'import.delete': 'حذف عملية استيراد',
+
+            // User Management
+            'users.view': 'عرض المستخدمين',
+            'users.create': 'إضافة مستخدم',
+            'users.edit': 'تعديل مستخدم',
+            'users.delete': 'حذف مستخدم',
+            'users.restore': 'استعادة مستخدم',
+            'users.force-delete': 'حذف نهائي للمستخدم',
+            'users.bulk-upload': 'استيراد مستخدمين',
+            'users.bulk-download': 'تصدير مستخدمين',
+            'users.bulk-delete': 'حذف مجموعة مستخدمين',
+            'users.bulk-restore': 'استعادة مجموعة مستخدمين',
+            'users.bulk-force-delete': 'حذف نهائي لمجموعة مستخدمين',
+
+            // Roles & Permissions
+            'roles.view': 'عرض الأدوار',
+            'roles.create': 'إضافة دور',
+            'roles.edit': 'تعديل دور',
+            'roles.delete': 'حذف دور',
+            'roles.restore': 'استعادة دور',
+            'roles.force-delete': 'حذف نهائي للدور',
+            'roles.manage': 'إدارة الأدوار',
+            'roles.bulk-delete': 'حذف مجموعة أدوار',
+            'roles.bulk-download': 'تصدير الأدوار',
+
+            // Reports
+            'reports.view': 'عرض التقارير',
+            'reports.export': 'تصدير التقارير',
+            'reports.create': 'إنشاء تقرير',
+        };
+
+        return translations[permission] || permission;
+    }
+
     // Delete Role
-    function deleteRole(id) {
-        if (confirm('هل أنت متأكد من حذف هذا الدور؟')) {
-            fetch(`{{ url('admin/roles') }}/${id}/destroy`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) location.reload();
-                else alert(data.message || 'حدث خطأ');
-            });
-        }
+    function deleteRole(id, name) {
+        document.getElementById('deleteRoleId').value = id;
+        document.getElementById('deleteRoleName').textContent = translate_role_name(name);
+        new bootstrap.Modal(document.getElementById('deleteRoleModal')).show();
+    }
+
+    function confirmDeleteRole() {
+        const id = document.getElementById('deleteRoleId').value;
+        fetch(`{{ url('admin/roles') }}/${id}/destroy`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'حدث خطأ');
+            }
+        });
     }
     </script>
 </body>

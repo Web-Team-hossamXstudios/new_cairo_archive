@@ -284,6 +284,31 @@ class UserController extends Controller
         }
     }
 
+    public function changePassword(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'password' => 'required|string|min:8|confirmed',
+            ]);
+
+            DB::beginTransaction();
+
+            $user = User::findOrFail($id);
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+            DB::commit();
+
+            Log::info('Password changed for user: ' . $user->name . ' by ' . auth()->user()->name);
+
+            return response()->json(['success' => true, 'message' => 'Password changed successfully.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Password change error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Failed to change password.'], 500);
+        }
+    }
+
     /**
      * Bulk soft delete users
      *

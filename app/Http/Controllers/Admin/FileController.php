@@ -299,8 +299,8 @@ class FileController extends Controller
                 'rack_id' => 'nullable|exists:racks,id',
                 'document' => 'nullable|file|mimes:pdf|max:51200',
             ], [
-                'file_name.required' => 'اسم الملف مطلوب',
-                'file_name.max' => 'اسم الملف يجب ألا يتجاوز 255 حرف',
+                'file_name.required' => 'رقم الملف مطلوب',
+                'file_name.max' => 'رقم الملف يجب ألا يتجاوز 255 حرف',
                 'document.mimes' => 'يجب أن يكون الملف بصيغة PDF',
                 'document.max' => 'حجم الملف يجب ألا يتجاوز 50 ميجابايت',
             ]);

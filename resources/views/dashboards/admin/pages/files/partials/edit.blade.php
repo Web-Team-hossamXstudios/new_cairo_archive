@@ -25,7 +25,7 @@
 
             <!-- File Name -->
             <div class="col-md-6">
-                <label class="form-label">اسم الملف <span class="text-danger">*</span></label>
+                <label class="form-label">رقم الملف <span class="text-danger">*</span></label>
                 <input type="text" name="file_name" class="form-control"
                     value="{{ $file->file_name }}" required>
             </div>

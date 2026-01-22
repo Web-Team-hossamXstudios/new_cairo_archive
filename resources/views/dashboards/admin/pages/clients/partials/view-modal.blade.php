@@ -137,7 +137,7 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body p-0" style="height: calc(100vh - 70px); background: #f8fafc;">
+            <div class="modal-body p-0" style="height: calc(107vh - 70px); background: #f8fafc; max-height: 107vh;">
                 <div id="fileViewerContent" class="w-100 h-100"></div>
             </div>
         </div>

@@ -545,12 +545,12 @@
 
                                         @forelse($permissions as $group => $groupPermissions)
                                             <div class="mb-3">
-                                                <h6 class="text-uppercase text-muted small fw-bold mb-2">{{ $group }}</h6>
+                                                <h6 class="text-uppercase text-muted small fw-bold mb-2">{{ translate_module($group) }}</h6>
                                                 <div class="d-flex flex-wrap">
                                                     @foreach($groupPermissions as $permission)
                                                         <span class="permission-badge">
                                                             <i class="ti ti-check text-success me-1"></i>
-                                                            {{ str_replace($group . '.', '', $permission->name) }}
+                                                            {{ translate_permission($permission->name) }}
                                                         </span>
                                                     @endforeach
                                                 </div>

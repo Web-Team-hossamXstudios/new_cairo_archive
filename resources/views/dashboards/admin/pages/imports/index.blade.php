@@ -121,7 +121,7 @@
                                             <div class="input-group shadow-sm border border-secondary border-opacity-10 overflow-hidden bg-body"
                                                 style="border-radius: var(--ins-border-radius);">
                                                 <input type="text" name="search" class="form-control border-0 bg-transparent"
-                                                    placeholder="اسم الملف..." value="{{ request('search') }}">
+                                                    placeholder="رقم الملف..." value="{{ request('search') }}">
                                             </div>
                                         </div>
 
@@ -236,7 +236,7 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>النوع</th>
-                                                <th>اسم الملف</th>
+                                                <th>رقم الملف</th>
                                                 <th>الصفوف</th>
                                                 <th>نجح</th>
                                                 <th>فشل</th>

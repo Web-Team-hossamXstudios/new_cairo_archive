@@ -151,7 +151,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th class="text-muted">اسم الملف</th>
+                                        <th class="text-muted">رقم الملف</th>
                                         <td>{{ $import->original_filename }}</td>
                                     </tr>
                                     <tr>

@@ -15,6 +15,7 @@
 
         <!--- Sidenav Menu -->
         <ul class="side-nav">
+            @can('users.view')
             <!-- Dashboard -->
             <li class="side-nav-item">
                 <a href="{{ route('admin.dashboard') }}"
@@ -23,6 +24,7 @@
                     <span class="menu-text">لوحة التحكم</span>
                 </a>
             </li>
+            @endcan
 
             <!-- ==================== Archive System Module ==================== -->
             <li class="side-nav-title mt-2">نظام الأرشيف</li>
@@ -39,7 +41,7 @@
             @endcan
 
             <!-- Archive Lands -->
-            @can('lands.view')
+            {{-- @can('lands.view')
                 <li class="side-nav-item">
                     <a href="{{ route('admin.lands.index') }}"
                         class="side-nav-link {{ request()->routeIs('admin.lands.*') ? 'active' : '' }}">
@@ -58,7 +60,7 @@
                         <span class="menu-text">إدارة الملفات</span>
                     </a>
                 </li>
-            @endcan
+            @endcan --}}
 
 
             <!-- ==================== System Settings ==================== -->
