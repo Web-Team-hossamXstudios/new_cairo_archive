@@ -49,10 +49,10 @@
                                         <label class="form-label fw-bold">نوع الاستيراد <span class="text-danger">*</span></label>
                                         <select name="type" class="form-select form-select-lg" required>
                                             <option value="">اختر نوع البيانات</option>
-                                            <option value="archive">أرشيف (البيانات الكاملة مع الموقع الفيزيائي)</option>
-                                            <option value="full">استيراد كامل (عملاء + أراضي + مناطق)</option>
+                                            <option value="archive">أرشيف (البيانات الكاملة مع موقع التخزين)</option>
+                                            <option value="full">استيراد كامل (عملاء + قطع + مناطق)</option>
                                             <option value="clients">عملاء فقط</option>
-                                            <option value="lands">أراضي فقط</option>
+                                            <option value="lands">قطع فقط</option>
                                             <option value="geographic">مناطق جغرافية فقط</option>
                                         </select>
                                         <div class="form-text">
@@ -115,7 +115,7 @@
                                         <tbody>
                                             <tr><td>رقم الملف</td><td>رقم ملف العميل</td><td>-</td></tr>
                                             <tr><td>المالك</td><td>اسم المالك/العميل</td><td><span class="badge bg-danger">مطلوب</span></td></tr>
-                                            <tr><td>القطعه</td><td>رقم قطعة الأرض</td><td><span class="badge bg-danger">مطلوب</span></td></tr>
+                                            <tr><td>القطعه</td><td>رقم قطعة القطعة</td><td><span class="badge bg-danger">مطلوب</span></td></tr>
                                             <tr><td>الحي</td><td>اسم الحي</td><td>-</td></tr>
                                             <tr><td>المنطقة</td><td>اسم المنطقة</td><td>-</td></tr>
                                             <tr><td>المجاورة</td><td>اسم القطاع/المجاورة</td><td>-</td></tr>

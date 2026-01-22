@@ -51,13 +51,13 @@
 
                         <!-- Land Selection -->
                         <div class="col-md-12 mt-1">
-                            <label class="form-label">الأرض <span class="text-danger">*</span></label>
+                            <label class="form-label">القطعة <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <select name="land_id" id="uploadLandId" class="form-select" required>
-                                    <option value="">اختر الأرض</option>
+                                    <option value="">اختر القطعة</option>
                                 </select>
                                 <button type="button" class="btn btn-outline-primary" onclick="toggleClientNewLandForm()">
-                                    <i class="ti ti-plus"></i> أرض جديدة
+                                    <i class="ti ti-plus"></i> قطعه جديدة
                                 </button>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                         <div id="clientNewLandForm" class="col-12 d-none">
                             <div class="card border-primary">
                                 <div class="card-header bg-primary-subtle d-flex justify-content-between align-items-center">
-                                    <h6 class="mb-0 text-primary"><i class="ti ti-map-pin me-2"></i>إضافة أرض جديدة</h6>
+                                    <h6 class="mb-0 text-primary"><i class="ti ti-map-pin me-2"></i>إضافة قطعه جديدة</h6>
                                     <button type="button" class="btn-close btn-sm" onclick="toggleClientNewLandForm()"></button>
                                 </div>
                                 <div class="card-body">
@@ -107,8 +107,8 @@
                                             </select>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">رقم الأرض</label>
-                                            <input type="text" name="new_land_no" id="clientNewLandNo" class="form-control" placeholder="رقم الأرض" oninput="updateClientNewLandAddress();">
+                                            <label class="form-label">رقم القطعة</label>
+                                            <input type="text" name="new_land_no" id="clientNewLandNo" class="form-control" placeholder="رقم القطعة" oninput="updateClientNewLandAddress();">
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">رقم الوحدة</label>
@@ -125,7 +125,7 @@
                                         </div>
                                         <div class="col-12">
                                             <button type="button" class="btn btn-success w-100" onclick="createNewLandAjax()">
-                                                <i class="ti ti-plus me-1"></i>إنشاء الأرض وتحديدها
+                                                <i class="ti ti-plus me-1"></i>إنشاء القطعة وتحديدها
                                             </button>
                                         </div>
                                     </div>
@@ -465,7 +465,7 @@ function createNewLandAjax() {
     .then(res => res.json())
     .then(data => {
         if (data.success && data.land) {
-            showToast.success('تم إنشاء الأرض بنجاح');
+            showToast.success('تم إنشاء القطعة بنجاح');
 
             // Add the new land to the select dropdown
             const landSelect = document.getElementById('uploadLandId');
@@ -489,7 +489,7 @@ function createNewLandAjax() {
             document.getElementById('clientNewAddress').value = '';
             document.getElementById('clientNewNotes').value = '';
         } else {
-            showToast.error(data.message || 'حدث خطأ أثناء إنشاء الأرض');
+            showToast.error(data.message || 'حدث خطأ أثناء إنشاء القطعة');
         }
     })
     .catch(error => {

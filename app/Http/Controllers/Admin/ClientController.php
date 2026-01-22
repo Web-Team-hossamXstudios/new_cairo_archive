@@ -19,7 +19,20 @@ class ClientController extends Controller
     {
         try {
             $query = Client::query()
-                ->withCount(['lands', 'mainFiles as files_count']);
+                ->withCount(['lands', 'mainFiles as files_count'])
+                ->with([
+                    'lands.governorate',
+                    'lands.city',
+                    'lands.district',
+                    'lands.zone',
+                    'lands.area',
+                    'mainFiles.room',
+                    'mainFiles.lane',
+                    'mainFiles.stand',
+                    'mainFiles.rack',
+                    'mainFiles.items'
+                ])
+                ->orderBy('excel_row_number');
 
             if ($request->filled('search')) {
                 $query->search($request->search);
@@ -122,6 +135,11 @@ class ClientController extends Controller
                 'lands.district',
                 'lands.zone',
                 'lands.area',
+                'mainFiles.items',
+                'mainFiles.room',
+                'mainFiles.lane',
+                'mainFiles.stand',
+                'mainFiles.rack',
                 'lands.mainFiles' => fn($q) => $q->with([
                     'items',
                     'room',
@@ -136,7 +154,8 @@ class ClientController extends Controller
 
             return response()->json([
                 'success' => true,
-                'client' => $client
+                'client' => $client,
+                'files' => $client->mainFiles
             ]);
         } catch (\Exception $e) {
             Log::error('ClientController@show: ' . $e->getMessage());

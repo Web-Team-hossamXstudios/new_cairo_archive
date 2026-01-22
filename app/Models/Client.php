@@ -22,6 +22,7 @@ class Client extends Model implements HasMedia
         'telephone',
         'mobile',
         'notes',
+        'excel_row_number',
     ];
 
     protected $casts = [

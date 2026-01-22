@@ -517,7 +517,7 @@ class ImportController extends Controller
 
         if (in_array($type, ['full', 'lands'])) {
             if (empty($row['land_no'])) {
-                $errors[] = 'رقم الأرض مطلوب';
+                $errors[] = 'رقم القطعة مطلوب';
             }
             if (empty($row['governorate'])) {
                 $errors[] = 'المحافظة مطلوبة';

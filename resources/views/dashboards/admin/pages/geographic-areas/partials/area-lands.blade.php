@@ -2,7 +2,7 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>رقم الأرض</th>
+                <th>رقم القطعة</th>
                 <th>العميل</th>
                 <th>المساحة</th>
                 <th>الإجراءات</th>
@@ -22,7 +22,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4" class="text-center text-muted">لا توجد أراضي في هذا القطاع</td>
+                    <td colspan="4" class="text-center text-muted">لا توجد قطع في هذا القطاع</td>
                 </tr>
             @endforelse
         </tbody>

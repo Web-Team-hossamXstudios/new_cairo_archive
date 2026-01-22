@@ -202,7 +202,7 @@
                                                 <th>الباركود</th>
                                                 <th>الملف</th>
                                                 <th>العميل</th>
-                                                <th>الأرض</th>
+                                                <th>القطعة</th>
                                                 <th>الصفحات</th>
                                                 <th>الحالة</th>
                                                 <th width="180" class="text-center">الإجراءات</th>
@@ -559,13 +559,13 @@
         const select = document.getElementById('landSelect');
         select.innerHTML = '<option value="">جاري التحميل...</option>';
         if (!clientId) {
-            select.innerHTML = '<option value="">اختر الأرض</option>';
+            select.innerHTML = '<option value="">اختر القطعة</option>';
             return;
         }
         fetch(`{{ url('admin/clients') }}/${clientId}/lands`)
             .then(res => res.json())
             .then(data => {
-                select.innerHTML = '<option value="">اختر الأرض</option>';
+                select.innerHTML = '<option value="">اختر القطعة</option>';
                 (data.lands || data).forEach(land => {
                     select.innerHTML += `<option value="${land.id}">${land.land_no || ''} - ${land.address || ''}</option>`;
                 });
@@ -901,7 +901,7 @@
                                             <i class="ti ti-map-pin"></i>
                                         </div>
                                         <div>
-                                            <small class="text-muted d-block">الأرض</small>
+                                            <small class="text-muted d-block">القطعة</small>
                                             <strong>${file.land?.land_no || 'غير محدد'}</strong>
                                         </div>
                                     </div>
@@ -912,7 +912,7 @@
                                             <i class="ti ti-building"></i>
                                         </div>
                                         <div>
-                                            <small class="text-muted d-block">الموقع الفيزيائي</small>
+                                            <small class="text-muted d-block">موقع التخزين</small>
                                             <strong>${file.room?.name || 'غير محدد'} - ${file.rack?.name || ''}</strong>
                                         </div>
                                     </div>

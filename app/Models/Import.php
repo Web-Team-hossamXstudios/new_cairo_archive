@@ -70,7 +70,7 @@ class Import extends Model implements HasMedia
         return match ($this->type) {
             'full' => 'استيراد كامل',
             'clients' => 'عملاء فقط',
-            'lands' => 'أراضي فقط',
+            'lands' => 'قطع فقط',
             'geographic' => 'مناطق جغرافية',
             default => 'غير معروف',
         };

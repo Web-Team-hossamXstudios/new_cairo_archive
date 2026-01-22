@@ -5,7 +5,7 @@
             <div class="modal-header modal-header-dark">
                 <h5 class="modal-title">
                     <i class="ti ti-map-pin"></i>
-                    تفاصيل الأرض
+                    تفاصيل القطعة
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -14,7 +14,7 @@
                 <div class="form-section">
                     <div class="form-section-header">
                         <i class="ti ti-user"></i>
-                        <h6>معلومات العميل والأرض</h6>
+                        <h6>معلومات العميل والقطعة</h6>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -34,7 +34,7 @@
                                     <i class="ti ti-hash"></i>
                                 </div>
                                 <div>
-                                    <small class="text-muted d-block">رقم الأرض</small>
+                                    <small class="text-muted d-block">رقم القطعة</small>
                                     <span class="fw-semibold" id="showLandNo">-</span>
                                 </div>
                             </div>

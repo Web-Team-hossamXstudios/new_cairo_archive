@@ -13,12 +13,12 @@
                 <div class="avatar avatar-xl bg-danger-subtle text-danger rounded-circle mx-auto mb-3">
                     <i class="ti ti-trash fs-1"></i>
                 </div>
-                <h5 class="mb-2">هل أنت متأكد من حذف هذه الأرض؟</h5>
-                <p class="text-muted mb-0">رقم الأرض: <span id="deleteLandNo"></span></p>
+                <h5 class="mb-2">هل أنت متأكد من حذف هذه القطعة؟</h5>
+                <p class="text-muted mb-0">رقم القطعة: <span id="deleteLandNo"></span></p>
                 <input type="hidden" id="deleteLandId">
                 <div class="alert alert-warning mt-3 text-start">
                     <i class="ti ti-info-circle me-1"></i>
-                    <small>سيتم حذف الأرض وجميع الملفات المرتبطة بها</small>
+                    <small>سيتم حذف القطعة وجميع الملفات المرتبطة بها</small>
                 </div>
             </div>
             <div class="modal-footer">

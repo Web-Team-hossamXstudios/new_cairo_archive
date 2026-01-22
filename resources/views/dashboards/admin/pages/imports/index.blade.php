@@ -175,7 +175,7 @@
                 </div>
 
                 <!-- Sample Files Download -->
-                <div class="card" style="border-radius: var(--ins-border-radius);">
+                {{-- <div class="card" style="border-radius: var(--ins-border-radius);">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center gap-3">
                             <h5 class="card-title mb-0">تحميل ملفات النموذج</h5>
@@ -205,7 +205,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Data Section -->
                 <div class="row">
@@ -261,8 +261,8 @@
                                                     </td>
                                                     <td>{{ $import->original_filename ?? '-' }}</td>
                                                     <td>{{ $import->total_rows ?? 0 }}</td>
-                                                    <td><span class="badge bg-success-subtle text-success">{{ $import->success_count ?? 0 }}</span></td>
-                                                    <td><span class="badge bg-danger-subtle text-danger">{{ $import->failed_count ?? 0 }}</span></td>
+                                                    <td><span class="badge bg-success-subtle text-success">{{ $import->success_rows ?? 0 }}</span></td>
+                                                    <td><span class="badge bg-danger-subtle text-danger">{{ $import->failed_rows ?? 0 }}</span></td>
                                                     <td>
                                                         @switch($import->status)
                                                             @case('pending') <span class="badge bg-secondary">معلق</span> @break
@@ -277,7 +277,7 @@
                                                             <button class="btn btn-soft-info btn-sm" onclick="showImport({{ $import->id }})" title="عرض">
                                                                 <i class="ti ti-eye"></i>
                                                             </button>
-                                                            @if($import->failed_count > 0)
+                                                            @if($import->failed_rows > 0)
                                                             <a href="{{ route('admin.imports.errors', $import->id) }}" class="btn btn-soft-danger btn-sm" title="تحميل الأخطاء">
                                                                 <i class="ti ti-download"></i>
                                                             </a>
@@ -331,15 +331,15 @@
                                                             @endswitch
                                                         </div>
                                                         <div class="d-flex gap-2 mb-3">
-                                                            <span class="badge bg-success-subtle text-success"><i class="ti ti-check me-1"></i>{{ $import->success_count ?? 0 }} نجح</span>
-                                                            <span class="badge bg-danger-subtle text-danger"><i class="ti ti-x me-1"></i>{{ $import->failed_count ?? 0 }} فشل</span>
+                                                            <span class="badge bg-success-subtle text-success"><i class="ti ti-check me-1"></i>{{ $import->success_rows ?? 0 }} نجح</span>
+                                                            <span class="badge bg-danger-subtle text-danger"><i class="ti ti-x me-1"></i>{{ $import->failed_rows ?? 0 }} فشل</span>
                                                         </div>
                                                         <small class="text-muted d-block"><i class="ti ti-stack me-1"></i>{{ $import->total_rows ?? 0 }} صف</small>
                                                     </div>
                                                     <div class="card-footer bg-transparent border-top-0 pt-0">
                                                         <div class="d-flex justify-content-between">
                                                             <button class="btn btn-soft-info btn-sm" onclick="showImport({{ $import->id }})"><i class="ti ti-eye"></i> عرض</button>
-                                                            @if($import->failed_count > 0)
+                                                            @if($import->failed_rows > 0)
                                                             <a href="{{ route('admin.imports.errors', $import->id) }}" class="btn btn-soft-danger btn-sm"><i class="ti ti-download"></i> الأخطاء</a>
                                                             @endif
                                                         </div>
@@ -375,17 +375,21 @@
                 <form id="importForm" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">نوع البيانات <span class="text-danger">*</span></label>
-                            <select name="type" class="form-select" required>
-                                <option value="">اختر النوع</option>
-                                <option value="archive">أرشيف (بيانات كاملة)</option>
-                                <option value="full">استيراد كامل</option>
-                                <option value="clients">عملاء فقط</option>
-                                <option value="lands">أراضي فقط</option>
-                                <option value="geographic">محافظات ومناطق</option>
-                            </select>
-                        </div>
+                     <div class="mb-3">
+                                        <label class="form-label fw-bold">نوع الاستيراد <span class="text-danger">*</span></label>
+                                        <select name="type" class="form-select form-select-lg" required>
+                                            <option value="">اختر نوع البيانات</option>
+                                            <option value="archive">أرشيف (البيانات الكاملة مع موقع التخزين)</option>
+                                            <option value="full">استيراد كامل (عملاء + أراضي + مناطق)</option>
+                                            <option value="clients">عملاء فقط</option>
+                                            <option value="lands">أراضي فقط</option>
+                                            <option value="geographic">مناطق جغرافية فقط</option>
+                                        </select>
+                                        <div class="form-text">
+                                            <strong>أرشيف:</strong> يتضمن رقم الملف، المالك، القطعة، الحي، المنطقة، المجاورة، الغرفة، الممر، الستاند، الرف
+                                        </div>
+                                    </div>
+
                         <div class="mb-3">
                             <label class="form-label">ملف Excel <span class="text-danger">*</span></label>
                             <input type="file" name="file" class="form-control" accept=".xlsx,.xls,.csv" required>

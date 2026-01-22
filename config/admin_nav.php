@@ -31,7 +31,7 @@ return [
             ],
         ],
         [
-            'title' => 'إدارة الأراضي',
+            'title' => 'إدارة القطع',
             'title_en' => 'Lands',
             'icon' => 'ti ti-map-2',
             'route' => 'admin.lands.index',

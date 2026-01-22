@@ -4,7 +4,7 @@
 <head>
     @include('dashboards.shared.meta')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>إدارة الأراضي - نظام أرشيف القاهرة الجديدة</title>
+    <title>إدارة القطع - نظام أرشيف القاهرة الجديدة</title>
 </head>
 
 <body>
@@ -22,12 +22,12 @@
                                 <div class="d-flex align-items-start align-items-md-center">
                                     <div>
                                         <span class="badge badge-default fw-normal shadow px-2 fst-italic fs-sm d-inline-flex align-items-center">
-                                            <i class="ti ti-map-2 me-1"></i> إدارة الأراضي
+                                            <i class="ti ti-map-2 me-1"></i> إدارة القطع
                                         </span>
                                         <nav aria-label="breadcrumb">
                                             <ol class="breadcrumb mb-0 mt-1">
                                                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
-                                                <li class="breadcrumb-item active">الأراضي</li>
+                                                <li class="breadcrumb-item active">القطع</li>
                                             </ol>
                                         </nav>
                                     </div>
@@ -35,7 +35,7 @@
                                 <div class="d-flex gap-2 mt-2 mt-lg-0">
                                     @can('lands.create')
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createLandModal">
-                                        <i class="ti ti-plus me-1"></i> إضافة أرض
+                                        <i class="ti ti-plus me-1"></i> إضافة قطعه
                                     </button>
                                     @endcan
                                 </div>
@@ -55,7 +55,7 @@
                                     </div>
                                     <div>
                                         <h4 class="mb-0">{{ \App\Models\Land::count() }}</h4>
-                                        <small class="text-muted">إجمالي الأراضي</small>
+                                        <small class="text-muted">إجمالي القطع</small>
                                     </div>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                                     </div>
                                     <div>
                                         <h4 class="mb-0">{{ \App\Models\Land::whereDate('created_at', today())->count() }}</h4>
-                                        <small class="text-muted">أراضي اليوم</small>
+                                        <small class="text-muted">قطع اليوم</small>
                                     </div>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@
                                     <div class="input-group shadow-sm border border-secondary border-opacity-10 overflow-hidden bg-body"
                                         style="border-radius: var(--ins-border-radius);">
                                         <input type="text" name="search" class="form-control border-0 bg-transparent"
-                                            placeholder="رقم الأرض، العنوان..." value="{{ request('search') }}">
+                                            placeholder="رقم القطعة، العنوان..." value="{{ request('search') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-2 mb-2">
@@ -167,8 +167,8 @@
                         <div class="card" style="border-radius: var(--ins-border-radius);">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center gap-3">
-                                    <h5 class="card-title mb-0">الأراضي</h5>
-                                    <span class="badge bg-primary-subtle text-primary">{{ $lands->total() ?? 0 }} أرض</span>
+                                    <h5 class="card-title mb-0">القطع</h5>
+                                    <span class="badge bg-primary-subtle text-primary">{{ $lands->total() ?? 0 }} قطعه</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
                                     <!-- Bulk Actions -->
@@ -209,7 +209,7 @@
                                             <tr>
                                                 <th width="10"><input type="checkbox" class="form-check-input" id="selectAll"></th>
                                                 <th>العميل</th>
-                                                <th>رقم الأرض</th>
+                                                <th>رقم القطعة</th>
                                                 <th>رقم الوحدة</th>
                                                 <th>المحافظة</th>
                                                 <th>المدينة</th>
@@ -268,7 +268,7 @@
                                                     <td colspan="8" class="text-center py-4">
                                                         <div class="text-muted">
                                                             <i class="ti ti-map-off fs-1 d-block mb-2"></i>
-                                                            لا توجد أراضي
+                                                            لا توجد قطع
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -321,7 +321,7 @@
                                             <div class="col-12 text-center py-4">
                                                 <div class="text-muted">
                                                     <i class="ti ti-map-off fs-1 d-block mb-2"></i>
-                                                    لا توجد أراضي
+                                                    لا توجد قطع
                                                 </div>
                                             </div>
                                         @endforelse
@@ -347,7 +347,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">إضافة أرض جديدة</h5>
+                    <h5 class="modal-title">إضافة قطعه جديدة</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form id="createLandForm">
@@ -364,7 +364,7 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label">رقم الأرض</label>
+                                <label class="form-label">رقم القطعة</label>
                                 <input type="text" name="land_no" class="form-control">
                             </div>
                             <div class="col-md-3">
@@ -924,7 +924,7 @@
     function bulkDelete() {
         const ids = getSelectedIds();
         if (ids.length === 0) return;
-        if (!confirm(`هل أنت متأكد من حذف ${ids.length} أرض؟`)) return;
+        if (!confirm(`هل أنت متأكد من حذف ${ids.length} قطعه؟`)) return;
 
         fetch('{{ route("admin.lands.bulk-delete") }}', {
             method: 'POST',
@@ -967,7 +967,7 @@
     function bulkForceDelete() {
         const ids = getSelectedIds();
         if (ids.length === 0) return;
-        if (!confirm(`هل أنت متأكد من الحذف النهائي لـ ${ids.length} أرض؟ لا يمكن التراجع عن هذا الإجراء.`)) return;
+        if (!confirm(`هل أنت متأكد من الحذف النهائي لـ ${ids.length} قطعه؟ لا يمكن التراجع عن هذا الإجراء.`)) return;
 
         fetch('{{ route("admin.lands.bulk-force-delete") }}', {
             method: 'POST',
@@ -1003,7 +1003,7 @@
 
     // Force Delete Land
     function forceDeleteLand(id, landNo) {
-        if (!confirm(`هل أنت متأكد من الحذف النهائي للأرض "${landNo}"؟ لا يمكن التراجع عن هذا الإجراء.`)) return;
+        if (!confirm(`هل أنت متأكد من الحذف النهائي للقطعه "${landNo}"؟ لا يمكن التراجع عن هذا الإجراء.`)) return;
 
         fetch(`{{ url('admin/lands') }}/${id}/force-delete`, {
             method: 'POST',

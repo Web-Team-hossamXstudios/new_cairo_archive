@@ -38,7 +38,7 @@
 
             <!-- Land (Read Only) -->
             <div class="col-md-6">
-                <label class="form-label">الأرض</label>
+                <label class="form-label">القطعة</label>
                 <input type="text" class="form-control" value="{{ $file->land?->land_no ?? 'غير محدد' }}" readonly>
             </div>
 

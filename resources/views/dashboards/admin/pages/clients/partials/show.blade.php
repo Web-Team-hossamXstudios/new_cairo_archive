@@ -19,7 +19,7 @@
                     <div class="col-6">
                         <div class="card bg-success-subtle border-0 text-center p-3">
                             <div class="fs-4 fw-bold text-success">{{ $client->lands->count() }}</div>
-                            <small class="text-muted">أرض</small>
+                            <small class="text-muted">قطعه</small>
                         </div>
                     </div>
                     <div class="col-6">
@@ -105,8 +105,8 @@
     <!-- Lands & Files Section -->
     <div class="col-md-8">
         <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="mb-0 fw-bold"><i class="ti ti-map-2 me-2 text-primary"></i> الأراضي المملوكة</h5>
-            <span class="badge bg-primary-subtle text-primary px-3 py-2">{{ $client->lands->count() }} أرض</span>
+            <h5 class="mb-0 fw-bold"><i class="ti ti-map-2 me-2 text-primary"></i> القطع المملوكة</h5>
+            <span class="badge bg-primary-subtle text-primary px-3 py-2">{{ $client->lands->count() }} قطعه</span>
         </div>
 
         @forelse($client->lands as $land)
@@ -296,7 +296,7 @@
                         @else
                             <div class="text-center text-muted py-5">
                                 <i class="ti ti-file-off fs-1 d-block mb-3 opacity-50"></i>
-                                <p class="mb-0">لا توجد ملفات لهذه الأرض</p>
+                                <p class="mb-0">لا توجد ملفات لهذه القطعة</p>
                             </div>
                         @endif
                     </div>
@@ -306,7 +306,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center py-5">
                     <i class="ti ti-map-off fs-1 d-block mb-3 text-muted opacity-50"></i>
-                    <h6 class="text-muted">لا توجد أراضي مسجلة لهذا العميل</h6>
+                    <h6 class="text-muted">لا توجد قطع مسجلة لهذا العميل</h6>
                 </div>
             </div>
         @endforelse

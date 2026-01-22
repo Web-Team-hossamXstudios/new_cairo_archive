@@ -5,7 +5,7 @@
             <div class="modal-header modal-header-warning">
                 <h5 class="modal-title">
                     <i class="ti ti-edit"></i>
-                    تعديل الأرض
+                    تعديل القطعة
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -17,7 +17,7 @@
                     <div class="form-section">
                         <div class="form-section-header">
                             <i class="ti ti-user"></i>
-                            <h6>بيانات العميل والأرض</h6>
+                            <h6>بيانات العميل والقطعة</h6>
                         </div>
                         <div class="row g-3">
                             <div class="col-md-6">
@@ -33,10 +33,10 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label">رقم الأرض</label>
+                                <label class="form-label">رقم القطعة</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="ti ti-hash text-warning"></i></span>
-                                    <input type="text" name="land_no" id="editLandNo" class="form-control" placeholder="رقم الأرض">
+                                    <input type="text" name="land_no" id="editLandNo" class="form-control" placeholder="رقم القطعة">
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -114,7 +114,7 @@
                     <div class="warning-box">
                         <i class="ti ti-alert-triangle"></i>
                         <div>
-                            <strong>تنبيه:</strong> سيتم تحديث بيانات الأرض فوراً. تأكد من صحة البيانات قبل الحفظ.
+                            <strong>تنبيه:</strong> سيتم تحديث بيانات القطعة فوراً. تأكد من صحة البيانات قبل الحفظ.
                         </div>
                     </div>
                 </div>

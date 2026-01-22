@@ -28,10 +28,10 @@ class PermissionSeeder extends Seeder
                 'clients.export' => 'تصدير العملاء',
 
                 // Land Management
-                'lands.view' => 'عرض الأراضي',
-                'lands.create' => 'إضافة أرض',
-                'lands.edit' => 'تعديل أرض',
-                'lands.delete' => 'حذف أرض',
+                'lands.view' => 'عرض القطع',
+                'lands.create' => 'إضافة قطعه',
+                'lands.edit' => 'تعديل قطعه',
+                'lands.delete' => 'حذف قطعه',
 
                 // File Management
                 'files.view' => 'عرض الملفات',
@@ -122,13 +122,13 @@ class PermissionSeeder extends Seeder
 
                 'Viewer' => [
                     'clients.view',
-                    'lands.view',
-                    'files.view', 'files.download',
-                    'physical_locations.view',
-                    'geographic_areas.view',
-                    'geographic-areas.view',
-                    'items.view',
-                    'reports.view',
+                    // 'lands.view',
+                    // 'files.view', 'files.download',
+                    // 'physical_locations.view',
+                    // 'geographic_areas.view',
+                    // 'geographic-areas.view',
+                    // 'items.view',
+                    // 'reports.view',
                 ],
             ];
 

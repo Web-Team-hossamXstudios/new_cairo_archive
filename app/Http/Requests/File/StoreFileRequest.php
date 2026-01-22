@@ -30,7 +30,7 @@ class StoreFileRequest extends FormRequest
     {
         return [
             'client_id.required' => 'العميل مطلوب',
-            'land_id.required' => 'الأرض مطلوبة',
+            'land_id.required' => 'القطعة مطلوبة',
             'document.required' => 'ملف PDF مطلوب',
             'document.mimes' => 'يجب أن يكون الملف بصيغة PDF',
             'document.max' => 'حجم الملف يجب ألا يتجاوز 50 ميجابايت',

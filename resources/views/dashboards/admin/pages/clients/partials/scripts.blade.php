@@ -354,6 +354,339 @@ function printBarcode(barcode, fileName) {
     }
 }
 
+// Print all barcodes for a client's files
+function printClientBarcodes(clientId) {
+    fetch(`{{ url('admin/clients') }}/${clientId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.client) {
+                const client = data.client;
+                const files = client.files || [];
+
+                if (files.length === 0) {
+                    alert('لا توجد ملفات لهذا العميل');
+                    return;
+                }
+
+                // Create print window
+                const printWindow = window.open('', '', 'width=800,height=600');
+
+                let barcodesHtml = '';
+                files.forEach((file, index) => {
+                    const pageCount = file.items ? file.items.length : 0;
+                    barcodesHtml += `
+                        <div class="barcode-item" style="page-break-inside: avoid; margin-bottom: 30px;">
+                            <h4 style="text-align: center; margin-bottom: 10px;">ملف: ${file.file_name}</h4>
+                            <p style="text-align: center; margin-bottom: 10px;">عدد الصفحات: ${pageCount}</p>
+                            <div style="text-align: center;">
+                                <svg id="barcode-${index}"></svg>
+                            </div>
+                            ${index < files.length - 1 ? '<hr style="margin: 20px 0;">' : ''}
+                        </div>
+                    `;
+                });
+
+                printWindow.document.write(`
+                    <html dir="rtl">
+                    <head>
+                        <title>طباعة باركودات - ${client.name}</title>
+                        <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"><\/script>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                padding: 20px;
+                            }
+                            h2 {
+                                text-align: center;
+                                margin-bottom: 30px;
+                            }
+                            .barcode-item {
+                                margin-bottom: 30px;
+                            }
+                            @media print {
+                                body { margin: 0; padding: 10px; }
+                                .no-print { display: none; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h2>باركودات ملفات العميل: ${client.name}</h2>
+                        ${barcodesHtml}
+                        <div class="no-print" style="text-align: center; margin-top: 20px;">
+                            <button onclick="window.print()" style="padding: 10px 30px; font-size: 16px; cursor: pointer;">طباعة</button>
+                            <button onclick="window.close()" style="padding: 10px 30px; font-size: 16px; cursor: pointer; margin-right: 10px;">إغلاق</button>
+                        </div>
+                        <script>
+                            window.onload = function() {
+                                ${files.map((file, index) => `
+                                    JsBarcode("#barcode-${index}", "${file.barcode}", {
+                                        format: "CODE128",
+                                        width: 2,
+                                        height: 80,
+                                        displayValue: true,
+                                        fontSize: 18,
+                                        margin: 10
+                                    });
+                                `).join('\n')}
+                            };
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            } else {
+                alert('فشل تحميل بيانات العميل');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('حدث خطأ أثناء تحميل البيانات');
+        });
+}
+
+// Bulk print barcodes for selected clients
+function bulkPrintBarcodes() {
+    const selectedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
+    const clientIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+
+    if (clientIds.length === 0) {
+        alert('الرجاء تحديد عملاء لطباعة باركوداتهم');
+        return;
+    }
+
+    // Show modal with loading state
+    const modal = new bootstrap.Modal(document.getElementById('bulkBarcodePrintModal'));
+    modal.show();
+
+    document.getElementById('barcodeModalTitle').textContent = `طباعة باركودات - ${clientIds.length} عميل`;
+    document.getElementById('bulkBarcodeContent').innerHTML = `
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">جاري التحميل...</span>
+            </div>
+            <p class="mt-3 text-muted fs-5">جاري تحميل بيانات ${clientIds.length} عميل...</p>
+        </div>
+    `;
+
+    // Fetch all clients data
+    const fetchPromises = clientIds.map(id =>
+        fetch(`{{ url('admin/clients') }}/${id}`)
+            .then(response => response.json())
+            .then(data => data.success ? data.client : null)
+    );
+
+    Promise.all(fetchPromises)
+        .then(clients => {
+            // Filter out any failed requests
+            const validClients = clients.filter(c => c !== null);
+
+            if (validClients.length === 0) {
+                alert('فشل تحميل بيانات العملاء');
+                return;
+            }
+
+            // Collect all files from all clients
+            let allBarcodes = [];
+            validClients.forEach(client => {
+                const files = client.main_files || client.files || [];
+                const lands = client.lands || [];
+
+                // Build land addresses string
+                let landAddresses = '';
+                if (lands.length > 0) {
+                    landAddresses = lands.map(land => {
+                        let address = '';
+                        if (land.district) address += land.district.name;
+                        if (land.zone) address += (address ? ', ' : '') + land.zone.name;
+                        if (land.area) address += (address ? ', ' : '') + land.area.name;
+                        if (land.land_no) address += (address ? '<br>' : '') + `<strong>قطعة: ${land.land_no}</strong>`;
+                        return address || 'غير محدد';
+                    }).join('<hr style="margin: 5px 0; border-color: #ddd;">');
+                } else {
+                    landAddresses = 'لا توجد قطع';
+                }
+
+                // If client has files, add them
+                if (files.length > 0) {
+                    files.forEach(file => {
+                        const pageCount = file.items ? file.items.length : 1;
+
+                        // Build storage location string
+                        let storageLocation = '';
+                        if (file.room) storageLocation += `غرفة ${file.room.name}`;
+                        if (file.lane) storageLocation += ` <- ممر ${file.lane.name}`;
+                        if (file.stand) storageLocation += ` <- ستاند ${file.stand.name}`;
+                        if (file.rack) storageLocation += ` <- رف ${file.rack.name}`;
+                        if (!storageLocation) storageLocation = 'غير محدد';
+
+                        allBarcodes.push({
+                            clientName: client.name,
+                            clientNationalId: client.national_id || '-',
+                            clientMobile: client.mobile || '-',
+                            excelRowNumber: client.excel_row_number || '-',
+                            fileName: file.file_name,
+                            barcode: file.barcode,
+                            pageCount: pageCount,
+                            storageLocation: storageLocation,
+                            landAddresses: landAddresses
+                        });
+                    });
+                } else {
+                    // If client has no files, still show client name with "لا يوجد ملف"
+                    allBarcodes.push({
+                        clientName: client.name,
+                        clientNationalId: client.national_id || '-',
+                        clientMobile: client.mobile || '-',
+                        excelRowNumber: client.excel_row_number || '-',
+                        fileName: 'لا يوجد ملف',
+                        barcode: null,
+                        pageCount: 0,
+                        storageLocation: 'غير محدد',
+                        landAddresses: landAddresses
+                    });
+                }
+            });
+
+            // Display in modal instead of new window
+            let barcodesHtml = '';
+            allBarcodes.forEach((item, index) => {
+                const barcodeSection = item.barcode
+                    ? `<div style="text-align: center; margin-top: 15px;">
+                         <svg id="barcode-${index}"></svg>
+                         <p style="margin-top: 10px; font-size: 14px; color: #666; font-family: monospace;">
+                           ${item.barcode}
+                         </p>
+                       </div>`
+                    : `<div style="text-align: center; padding: 20px; background: #f8d7da; color: #721c24; border-radius: 6px; margin-top: 10px;">
+                         <p style="margin: 0; font-size: 16px;">لا يوجد باركود لهذا العميل</p>
+                       </div>`;
+
+                barcodesHtml += `
+                    <div class="barcode-item" style="page-break-inside: avoid; margin-bottom: 30px; border: 1px solid #ddd; padding: 20px; background: white;">
+                        <!-- Client Information -->
+                        <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                            <h3 style="margin: 0; font-size: 20px; color: #333;">${item.clientName}</h3>
+                            ${item.excelRowNumber !== '-' ? `<p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">صف Excel: #${item.excelRowNumber}</p>` : ''}
+                        </div>
+
+                        <!-- File Information -->
+                        <div style="background: #fff; padding: 12px; border: 1px solid #e0e0e0; border-radius: 5px; margin-bottom: 12px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div>
+                                    <strong style="color: #555; font-size: 14px;">رقم الملف:</strong>
+                                    <p style="margin: 3px 0 0 0; font-size: 16px; color: #000;">${item.fileName}</p>
+                                </div>
+                                <div>
+                                    <strong style="color: #555; font-size: 14px;">عدد الصفحات:</strong>
+                                    <p style="margin: 3px 0 0 0; font-size: 16px; color: #000;">${item.pageCount}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Land Addresses -->
+                        <div style="background: #fff; padding: 12px; border: 1px solid #e0e0e0; border-radius: 5px; margin-bottom: 12px;">
+                            <strong style="color: #555; font-size: 14px;">عناوين القطع:</strong>
+                            <div style="margin-top: 8px; font-size: 14px; color: #333; line-height: 1.5;">
+                                ${item.landAddresses}
+                            </div>
+                        </div>
+
+                        <!-- Storage Location -->
+                        <div style="background: #fff; padding: 12px; border: 1px solid #e0e0e0; border-radius: 5px; margin-bottom: 15px;">
+                            <strong style="color: #555; font-size: 14px;">موقع التخزين:</strong>
+                            <p style="margin: 5px 0 0 0; font-size: 14px; color: #333;">${item.storageLocation}</p>
+                        </div>
+
+                        <!-- Barcode Section -->
+                        ${barcodeSection}
+                    </div>
+                `;
+            });
+
+            // Update modal content with barcodes
+            document.getElementById('bulkBarcodeContent').innerHTML = barcodesHtml;
+            document.getElementById('barcodeModalTitle').textContent = `باركودات الملفات - ${validClients.length} عميل (${allBarcodes.length} ملف)`;
+
+            // Generate barcodes after content is loaded
+            setTimeout(() => {
+                allBarcodes.forEach((item, index) => {
+                    if (item.barcode) {
+                        try {
+                            JsBarcode(`#barcode-${index}`, item.barcode, {
+                                format: "CODE128",
+                                width: 2,
+                                height: 100,
+                                displayValue: true,
+                                fontSize: 20,
+                                margin: 10
+                            });
+                        } catch(e) {
+                            console.error('Barcode generation error for ' + item.barcode + ':', e);
+                        }
+                    }
+                });
+            }, 100);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('bulkBarcodeContent').innerHTML = `
+                <div class="alert alert-danger text-center">
+                    <i class="ti ti-alert-circle fs-1"></i>
+                    <p class="mt-3">حدث خطأ أثناء تحميل بيانات العملاء</p>
+                </div>
+            `;
+        });
+}
+
+// Print barcode modal content
+function printBarcodeModal() {
+    const modalContent = document.getElementById('bulkBarcodeContent').innerHTML;
+    const modalTitle = document.getElementById('barcodeModalTitle').textContent;
+
+    const printWindow = window.open('', '', 'width=900,height=700');
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html dir="rtl">
+        <head>
+            <meta charset="UTF-8">
+            <title>${modalTitle}</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 20px;
+                    background-color: #f5f5f5;
+                }
+                .barcode-item {
+                    background: white;
+                    margin-bottom: 30px;
+                    page-break-inside: avoid;
+                }
+                @media print {
+                    body {
+                        margin: 0;
+                        padding: 10px;
+                        background-color: white;
+                    }
+                    .barcode-item {
+                        page-break-inside: avoid;
+                        border: 1px solid #333;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            ${modalContent}
+            <script>
+                window.onload = function() {
+                    window.print();
+                };
+            <\/script>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+}
+
 function printBarcodeContent() {
     const printWindow = window.open('', '', 'width=600,height=400');
     const barcodeHtml = document.getElementById('barcodeContainer').innerHTML;
@@ -631,7 +964,7 @@ function addLandRow() {
     row.className = 'card mb-2 border-primary';
     row.innerHTML = `
         <div class="card-header bg-primary-subtle d-flex justify-content-between align-items-center py-2">
-            <h6 class="mb-0 text-primary small"><i class="ti ti-map-pin me-1"></i>أرض #${landRowIndex + 1}</h6>
+            <h6 class="mb-0 text-primary small"><i class="ti ti-map-pin me-1"></i>قطعه #${landRowIndex + 1}</h6>
             <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.card').remove()">
                 <i class="ti ti-trash"></i> حذف
             </button>
@@ -670,8 +1003,8 @@ function addLandRow() {
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small">رقم الأرض <span class="text-danger">*</span></label>
-                    <input type="text" name="lands[${landRowIndex}][land_no]" class="form-control form-control-sm" placeholder="رقم الأرض" required>
+                    <label class="form-label small">رقم القطعة <span class="text-danger">*</span></label>
+                    <input type="text" name="lands[${landRowIndex}][land_no]" class="form-control form-control-sm" placeholder="رقم القطعة" required>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label small">رقم الوحدة</label>
@@ -1034,7 +1367,7 @@ function showClient(id) {
                         landsContent.appendChild(landCard);
                     });
                 } else {
-                    landsContent.innerHTML = '<div class="col-12 text-center text-muted py-4">لا توجد أراضي مسجلة</div>';
+                    landsContent.innerHTML = '<div class="col-12 text-center text-muted py-4">لا توجد قطع مسجلة</div>';
                 }
 
                 new bootstrap.Modal(document.getElementById('viewClientModal')).show();
@@ -1197,7 +1530,7 @@ function createLandCard(land) {
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="mb-0 fw-bold mx-3">
                         <i class="ti ti-map-pin text-success me-2"></i>
-                        ${land.governorate?.name || ''} - ${land.city?.name || ''} - رقم الأرض: ${land.land_no}
+                        ${land.governorate?.name || ''} - ${land.city?.name || ''} - رقم القطعة: ${land.land_no}
                     </h6>
                     <div class="d-flex align-items-center gap-2">
                         ${land.main_files && land.main_files.length > 0 && land.main_files[0].id ? `
@@ -1335,7 +1668,7 @@ function renderClientFileDetails(file, pdfUrl) {
                                                 <i class="ti ti-map-pin"></i>
                                             </div>
                                             <div>
-                                                <small class="text-muted d-block">الأرض</small>
+                                                <small class="text-muted d-block">القطعة</small>
                                                 <strong>${file.land?.land_no || 'غير محدد'}</strong>
                                             </div>
                                         </div>
@@ -1346,7 +1679,7 @@ function renderClientFileDetails(file, pdfUrl) {
                                                 <i class="ti ti-building"></i>
                                             </div>
                                             <div>
-                                                <small class="text-muted d-block">الموقع الفيزيائي</small>
+                                                <small class="text-muted d-block">موقع التخزين</small>
                                                 <strong>${file.room?.name || 'غير محدد'} - ${file.rack?.name || ''}</strong>
                                             </div>
                                         </div>
@@ -1525,7 +1858,7 @@ function uploadFile(clientId) {
 
                 // Load client lands
                 const landSelect = document.getElementById('uploadLandId');
-                landSelect.innerHTML = '<option value="">اختر الأرض</option>';
+                landSelect.innerHTML = '<option value="">اختر القطعة</option>';
                 if (data.client.lands && data.client.lands.length > 0) {
                     data.client.lands.forEach(land => {
                         const govName = land.governorate?.name || '';
@@ -2280,22 +2613,44 @@ document.getElementById('uploadClientFileForm')?.addEventListener('submit', func
     // Focus on barcode input when page loads
     setTimeout(() => barcodeInput.focus(), 500);
 
-    // Handle keydown events for barcode scanner detection
-    barcodeInput.addEventListener('keydown', function(e) {
+    // Handle input event for automatic search
+    barcodeInput.addEventListener('input', function(e) {
         const currentTime = Date.now();
+        const value = e.target.value.trim();
 
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            searchByBarcode();
-            return;
+        // Clear any existing timeout
+        if (window.barcodeSearchTimeout) {
+            clearTimeout(window.barcodeSearchTimeout);
         }
 
         // Detect rapid input (barcode scanner behavior)
-        if (currentTime - lastKeyTime < SCANNER_THRESHOLD && barcodeBuffer.length > 3) {
+        if (currentTime - lastKeyTime < SCANNER_THRESHOLD && value.length > 3) {
             updateScannerStatus('scanning');
+
+            // Auto-search after scanner completes (100ms delay)
+            window.barcodeSearchTimeout = setTimeout(() => {
+                if (value.length >= 5) { // Minimum barcode length
+                    searchByBarcode();
+                }
+            }, 100);
         }
 
         lastKeyTime = currentTime;
+    });
+
+    // Handle keydown events for Enter key
+    barcodeInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            // Clear any pending timeout
+            if (window.barcodeSearchTimeout) {
+                clearTimeout(window.barcodeSearchTimeout);
+            }
+
+            searchByBarcode();
+            return;
+        }
     });
 
     // Update scanner status indicator
@@ -2457,7 +2812,7 @@ function renderBarcodeSearchResult(data) {
             <div class="col-md-6">
                 <div class="card border-success h-100">
                     <div class="card-header bg-success text-white">
-                        <h6 class="mb-0"><i class="ti ti-building-warehouse me-2"></i>الموقع الفيزيائي</h6>
+                        <h6 class="mb-0"><i class="ti ti-building-warehouse me-2"></i>موقع التخزين</h6>
                     </div>
                     <div class="card-body">
                         <table class="table table-sm table-borderless mb-0">
@@ -2533,7 +2888,7 @@ function renderBarcodeSearchResult(data) {
             <div class="col-md-6">
                 <div class="card border-warning h-100">
                     <div class="card-header bg-warning text-dark">
-                        <h6 class="mb-0"><i class="ti ti-map-pin me-2"></i>معلومات الأرض</h6>
+                        <h6 class="mb-0"><i class="ti ti-map-pin me-2"></i>معلومات القطعة</h6>
                     </div>
                     <div class="card-body">
                         <table class="table table-sm table-borderless mb-0">
@@ -2745,7 +3100,7 @@ function renderFileDetails(file, pdfUrl) {
                                         <i class="ti ti-map-pin"></i>
                                     </div>
                                     <div>
-                                        <small class="text-muted d-block">الأرض</small>
+                                        <small class="text-muted d-block">القطعة</small>
                                         <strong>${file.land?.land_no || 'غير محدد'}</strong>
                                     </div>
                                 </div>
@@ -2756,7 +3111,7 @@ function renderFileDetails(file, pdfUrl) {
                                         <i class="ti ti-building"></i>
                                     </div>
                                     <div>
-                                        <small class="text-muted d-block">الموقع الفيزيائي</small>
+                                        <small class="text-muted d-block">موقع التخزين</small>
                                         <strong>${file.room?.name || 'غير محدد'} - ${file.rack?.name || ''}</strong>
                                     </div>
                                 </div>

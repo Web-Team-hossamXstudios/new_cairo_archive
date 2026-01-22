@@ -58,7 +58,7 @@
                                     </div>
                                     <div>
                                         <h3 class="mb-0">{{ \App\Models\Land::count() }}</h3>
-                                        <span class="text-muted">الأراضي</span>
+                                        <span class="text-muted">القطع</span>
                                     </div>
                                 </div>
                                 <div class="mt-3 pt-2 border-top">
@@ -165,7 +165,7 @@
                                             <tr>
                                                 <th>العميل</th>
                                                 <th>الرقم القومي</th>
-                                                <th>الأراضي</th>
+                                                <th>القطع</th>
                                                 <th>تاريخ الإضافة</th>
                                             </tr>
                                         </thead>
@@ -260,7 +260,7 @@
                                         <div class="flex-grow-1">
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span>{{ $gov->name }}</span>
-                                                <span class="badge bg-primary-subtle text-primary">{{ $gov->lands_count }} أرض</span>
+                                                <span class="badge bg-primary-subtle text-primary">{{ $gov->lands_count }} قطعه</span>
                                             </div>
                                             <div class="progress" style="height: 6px;">
                                                 <div class="progress-bar bg-primary" style="width: {{ ($gov->lands_count / $maxLands) * 100 }}%"></div>

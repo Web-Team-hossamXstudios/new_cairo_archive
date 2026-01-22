@@ -41,7 +41,7 @@ class StoreClientRequest extends FormRequest
             'national_id.unique' => 'الرقم القومي مسجل مسبقاً',
             'client_code.unique' => 'كود العميل مسجل مسبقاً',
             'lands.*.governorate_id.required_with' => 'المحافظة مطلوبة',
-            'lands.*.land_no.required_with' => 'رقم الأرض مطلوب',
+            'lands.*.land_no.required_with' => 'رقم القطعة مطلوب',
         ];
     }
 }

@@ -1,7 +1,7 @@
 <form onsubmit="return storeClient(this)">
     <ul class="nav nav-tabs mb-3" role="tablist">
         <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#clientDataTab">بيانات العميل</a></li>
-        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#landsTab">الأراضي</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#landsTab">القطع</a></li>
     </ul>
 
     <div class="tab-content">
@@ -49,11 +49,11 @@
             <div id="landsContainer">
                 <div class="alert alert-info">
                     <i class="ti ti-info-circle me-1"></i>
-                    يمكنك إضافة أراضي للعميل بعد إنشائه أو إضافتها الآن من هنا.
+                    يمكنك إضافة قطع للعميل بعد إنشائه أو إضافتها الآن من هنا.
                 </div>
             </div>
             <button type="button" class="btn btn-outline-primary btn-sm" onclick="addLandRow()">
-                <i class="ti ti-plus me-1"></i> إضافة أرض
+                <i class="ti ti-plus me-1"></i> إضافة قطعه
             </button>
         </div>
     </div>
@@ -84,7 +84,7 @@
             <div class="card mb-3 land-row" data-index="${landIndex}">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="mb-0">أرض ${landIndex + 1}</h6>
+                        <h6 class="mb-0">قطعه ${landIndex + 1}</h6>
                         <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeLandRow(${landIndex})">
                             <i class="ti ti-x"></i>
                         </button>
@@ -110,8 +110,8 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">رقم الأرض <span class="text-danger">*</span></label>
-                            <input type="text" name="lands[${landIndex}][land_no]" class="form-control" required placeholder="رقم الأرض">
+                            <label class="form-label">رقم القطعة <span class="text-danger">*</span></label>
+                            <input type="text" name="lands[${landIndex}][land_no]" class="form-control" required placeholder="رقم القطعة">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">رقم الوحدة</label>

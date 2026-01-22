@@ -18,10 +18,10 @@ Example: `users.view`, `clients.create`, `files.delete`
 - `clients.export` - تصدير العملاء
 
 ### Land Management
-- `lands.view` - عرض الأراضي
-- `lands.create` - إضافة أرض
-- `lands.edit` - تعديل أرض
-- `lands.delete` - حذف أرض
+- `lands.view` - عرض القطع
+- `lands.create` - إضافة قطعه
+- `lands.edit` - تعديل قطعه
+- `lands.delete` - حذف قطعه
 
 ### File Management
 - `files.view` - عرض الملفات
