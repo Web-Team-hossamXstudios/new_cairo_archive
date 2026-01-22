@@ -16,17 +16,17 @@
                 <!-- Page Header -->
                 <div class="row">
                     <div class="col-12">
-                        <div class="page-title-box mb-2 mt-3">
-                            <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between py-2 px-3 bg-body border border-secondary border-opacity-10 shadow-sm"
+                        <div class="mt-3 mb-2 page-title-box">
+                            <div class="px-3 py-2 border border-opacity-10 shadow-sm d-flex flex-column flex-lg-row align-items-lg-center justify-content-between bg-body border-secondary"
                                 style="border-radius: var(--ins-border-radius);">
                                 <div class="d-flex align-items-start align-items-md-center">
                                     <div>
                                         <span
-                                            class="badge badge-default fw-normal shadow px-2 fst-italic fs-sm d-inline-flex align-items-center">
+                                            class="px-2 shadow badge badge-default fw-normal fst-italic fs-sm d-inline-flex align-items-center">
                                             <i class="ti ti-users me-1"></i> إدارة العملاء
                                         </span>
                                         <nav aria-label="breadcrumb">
-                                            <ol class="breadcrumb mb-0">
+                                            <ol class="mb-0 breadcrumb">
                                                 <li class="breadcrumb-item"><a
                                                         href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
                                                 <li class="breadcrumb-item active" aria-current="page">العملاء</li>
@@ -35,16 +35,16 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex flex-wrap gap-2 mt-2 mt-lg-0">
+                                <div class="flex-wrap gap-2 mt-2 d-flex mt-lg-0">
                                     @can('clients.export')
-                                        <a href="#" class="btn btn-soft-success shadow-sm px-3"
+                                        <a href="#" class="px-3 shadow-sm btn btn-soft-success"
                                             style="border-radius: var(--ins-border-radius);">
                                             <i class="ti ti-download me-1"></i>
                                             <span>تصدير</span>
                                         </a>
                                     @endcan
                                     @can('clients.create')
-                                        <button type="button" class="btn btn-primary shadow-sm px-3"
+                                        <button type="button" class="px-3 shadow-sm btn btn-primary"
                                             style="border-radius: var(--ins-border-radius);" onclick="openCreateModal()">
                                             <i class="ti ti-plus me-1"></i>
                                             <span>إضافة عميل</span>
@@ -57,12 +57,12 @@
                 </div>
 
                 <!-- Stats Cards -->
-                <div class="row ">
+                <div class="row">
                     <div class="col-md-4">
-                        <div class="card border-0 shadow-sm">
+                        <div class="border-0 shadow-sm card">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-md bg-primary-subtle text-primary rounded me-3">
+                                    <div class="rounded avatar avatar-md bg-primary-subtle text-primary me-3">
                                         <i class="ti ti-users fs-4"></i>
                                     </div>
                                     <div>
@@ -74,10 +74,10 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card border-0 shadow-sm">
+                        <div class="border-0 shadow-sm card">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-md bg-success-subtle text-success rounded me-3">
+                                    <div class="rounded avatar avatar-md bg-success-subtle text-success me-3">
                                         <i class="ti ti-map-2 fs-4"></i>
                                     </div>
                                     <div>
@@ -89,10 +89,10 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card border-0 shadow-sm">
+                        <div class="border-0 shadow-sm card">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-md bg-info-subtle text-info rounded me-3">
+                                    <div class="rounded avatar avatar-md bg-info-subtle text-info me-3">
                                         <i class="ti ti-files fs-4"></i>
                                     </div>
                                     <div>
@@ -120,8 +120,8 @@
                                 <form method="GET" action="{{ route('admin.clients.index') }}" id="unifiedSearchForm">
                                     <div class="row g-2 align-items-end">
                                         <div class="col-lg-2 col-md-3">
-                                            <label class="form-label fw-semibold mb-2">نوع البحث</label>
-                                            <select id="searchType" name="search_type" class="form-select form-select-lg shadow-sm"
+                                            <label class="mb-2 form-label fw-semibold">نوع البحث</label>
+                                            <select id="searchType" name="search_type" class="shadow-sm form-select form-select-lg"
                                                 style="border-radius: var(--ins-border-radius); height: 48px;" onchange="updateSearchPlaceholder()">
                                                 <option value="name" {{ request('search_type') == 'name' ? 'selected' : '' }}>اسم العميل</option>
                                                 <option value="area" {{ request('search_type') == 'area' ? 'selected' : '' }}>المنطقة</option>
@@ -132,34 +132,34 @@
                                             </select>
                                         </div>
                                         <div class="col-lg-7 col-md-6">
-                                            <label class="form-label fw-semibold mb-2">البحث</label>
-                                            <div class="input-group shadow-sm border border-primary border-opacity-25 overflow-hidden"
+                                            <label class="mb-2 form-label fw-semibold">البحث</label>
+                                            <div class="overflow-hidden border border-opacity-25 shadow-sm input-group border-primary"
                                                 style="border-radius: var(--ins-border-radius); height: 48px;">
-                                                <span class="input-group-text bg-primary text-white border-0 px-3">
+                                                <span class="px-3 text-white border-0 input-group-text bg-primary">
                                                     <i class="ti ti-search fs-5"></i>
                                                 </span>
                                                 <input type="text" id="unifiedSearchInput" name="search"
-                                                    class="form-control border-0"
+                                                    class="border-0 form-control"
                                                     placeholder="امسح الباركود أو أدخله يدوياً..."
                                                     value="{{ request('search') }}"
                                                     autocomplete="off"
                                                     autofocus
                                                     style="font-size: 15px;">
-                                                <button type="submit" class="btn btn-primary border-0 px-4">
+                                                <button type="submit" class="px-4 border-0 btn btn-primary">
                                                     <i class="ti ti-search me-1"></i> بحث
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-3">
-                                            <div class="d-flex gap-2 align-items-center" style="height: 48px;">
+                                            <div class="gap-2 d-flex align-items-center" style="height: 48px;">
                                                 <a href="{{ route('admin.clients.index') }}"
                                                     id="resetButton"
-                                                    class="btn btn-secondary shadow-sm flex-fill"
+                                                    class="shadow-sm btn btn-secondary flex-fill"
                                                     style="border-radius: var(--ins-border-radius); height: 100%;">
                                                     <i class="ti ti-refresh me-1"></i> إعادة
                                                 </a>
                                                 <button type="button"
-                                                    class="btn btn-outline-primary shadow-sm"
+                                                    class="shadow-sm btn btn-outline-primary"
                                                     style="border-radius: var(--ins-border-radius); height: 100%; aspect-ratio: 1/1;"
                                                     data-bs-toggle="collapse" data-bs-target="#advancedFilters"
                                                     aria-expanded="{{ $hasFilters ? 'true' : 'false' }}">
@@ -170,7 +170,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <small class="text-muted mt-2 d-block">
+                                            <small class="mt-2 text-muted d-block">
                                                 <i class="ti ti-info-circle me-1"></i>
                                                 <span id="searchHint">استخدم جهاز الماسح الضوئي لمسح الباركود أو أدخله يدوياً</span>
                                             </small>
@@ -229,16 +229,16 @@
                 </div>
 
                 <!-- Data Section -->
-                <div class="row ">
+                <div class="row">
                     <div class="col-12">
                         <div class="card" style="border-radius: var(--ins-border-radius);">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center gap-3">
-                                    <h5 class="card-title mb-0">العملاء</h5>
+                                <div class="gap-3 d-flex align-items-center">
+                                    <h5 class="mb-0 card-title">العملاء</h5>
                                     <span class="badge bg-primary-subtle text-primary">{{ $clients->total() }}
                                         عميل</span>
                                 </div>
-                                <div class="d-flex align-items-center gap-2">
+                                <div class="gap-2 d-flex align-items-center">
                                     <!-- Bulk Actions -->
                                     <div class="bulk-actions d-none me-2" id="bulkActions">
                                         @if (request('trashed') != 'only')
@@ -278,10 +278,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body p-0">
+                            <div class="p-0 card-body">
                                 <!-- List View -->
                                 <div id="listView" class="table-responsive">
-                                    <table class="table table-hover mb-0">
+                                    <table class="table mb-0 table-hover">
                                         <thead class="bg-light-subtle">
                                             <tr>
                                                 <th width="10"><input type="checkbox" class="form-check-input"
@@ -299,7 +299,7 @@
                                                         <div class="row g-3">
                                                             {{-- Client Basic Info --}}
                                                             <div class="col-md-2">
-                                                                <div class="d-flex align-items-start mb-2">
+                                                                <div class="mb-2 d-flex align-items-start">
                                                                     <div
                                                                         class="avatar avatar-md bg-primary-subtle text-primary rounded-circle me-2 d-flex align-items-center justify-content-center">
                                                                         <strong>{{ mb_substr($client->name, 0, 1) }}</strong>
@@ -311,7 +311,7 @@
                                                                         {{-- <small class="text-muted d-block"><i class="ti ti-phone me-1"></i>{{ $client->mobile ?? '-' }}</small> --}}
                                                                         @if ($client->excel_row_number)
                                                                             <span
-                                                                                class="badge bg-secondary-subtle text-secondary mt-1">
+                                                                                class="mt-1 badge bg-secondary-subtle text-secondary">
                                                                                 <i
                                                                                     class="ti ti-file-spreadsheet me-1"></i>صف
                                                                                 #{{ $client->excel_row_number }}
@@ -323,7 +323,7 @@
 
                                                             {{-- File Numbers --}}
                                                             <div class="col-md-1">
-                                                                <small class="text-muted d-block mb-1"><strong><i
+                                                                <small class="mb-1 text-muted d-block"><strong><i
                                                                             class="ti ti-files me-1"></i>أرقام
                                                                         الملفات:</strong></small>
                                                                 @if ($client->mainFiles && $client->mainFiles->count() > 0)
@@ -342,7 +342,7 @@
 
                                                             {{-- Land Addresses --}}
                                                             <div class="col-md-3">
-                                                                <small class="text-muted d-block mb-1"><strong><i
+                                                                <small class="mb-1 text-muted d-block"><strong><i
                                                                             class="ti ti-map-pin me-1"></i>عناوين
                                                                         القطع:</strong></small>
                                                                 @if ($client->lands && $client->lands->count() > 0)
@@ -375,7 +375,7 @@
 
                                                             {{-- Physical Locations & Page Counts --}}
                                                             <div class="col-md-3">
-                                                                <small class="text-muted d-block mb-1"><strong><i
+                                                                <small class="mb-1 text-muted d-block"><strong><i
                                                                             class="ti ti-building-warehouse me-1"></i>موقع
                                                                         التخزين:</strong></small>
                                                                 @if ($client->mainFiles && $client->mainFiles->count() > 0)
@@ -407,10 +407,10 @@
                                                                 @endif
                                                             </div>
                                                             <div class="col-md-1">
-                                                                <small class="text-muted d-block mb-1"><strong><i
+                                                                <small class="mb-1 text-muted d-block"><strong><i
                                                                             class="ti ti-building-warehouse me-1"></i>عدد
                                                                         الصفحات:</strong></small>
-                                                                <span class="badge bg-info-subtle text-info mt-1">
+                                                                <span class="mt-1 badge bg-info-subtle text-info">
                                                                     <i
                                                                         class="ti ti-file-text me-1"></i>{{ $file->items->count() > 0 ? $file->items->count() : 1 }}
                                                                     صفحة
@@ -420,7 +420,7 @@
 
                                                             {{-- Barcodes --}}
                                                             <div class="col-md-2">
-                                                                <small class="text-muted d-block mb-1"><strong><i
+                                                                <small class="mb-1 text-muted d-block"><strong><i
                                                                             class="ti ti-barcode me-1"></i>الباركود:</strong></small>
                                                                 @if ($client->mainFiles && $client->mainFiles->count() > 0)
                                                                     @foreach ($client->mainFiles as $file)
@@ -439,7 +439,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="d-flex flex-column gap-1">
+                                                        <div class="gap-1 d-flex flex-column">
                                                             @if (request('trashed') != 'only')
                                                                 {{-- Print All Barcodes --}}
                                                                 @if ($client->mainFiles && $client->mainFiles->count() > 0)
@@ -492,9 +492,9 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="3" class="text-center py-5">
+                                                    <td colspan="3" class="py-5 text-center">
                                                         <div class="text-muted">
-                                                            <i class="ti ti-search fs-1 d-block mb-3 opacity-50"></i>
+                                                            <i class="mb-3 opacity-50 ti ti-search fs-1 d-block"></i>
                                                             <h5 class="mb-2">لا توجد نتائج</h5>
                                                             <p class="mb-0">لم يتم العثور على عملاء مطابقين لمعايير البحث</p>
                                                         </div>
@@ -506,13 +506,13 @@
                                 </div>
 
                                 <!-- Card View -->
-                                <div id="cardView" class="d-none p-3">
+                                <div id="cardView" class="p-3 d-none">
                                     <div class="row g-3">
                                         @forelse($clients as $client)
                                             <div class="col-md-4 col-lg-3" id="client-card-{{ $client->id }}">
-                                                <div class="card border shadow-sm h-100">
+                                                <div class="border shadow-sm card h-100">
                                                     <div class="card-body">
-                                                        <div class="d-flex align-items-center mb-3">
+                                                        <div class="mb-3 d-flex align-items-center">
                                                             <div
                                                                 class="avatar avatar-md bg-primary-subtle text-primary rounded-circle me-3 d-flex align-items-center justify-content-center">
                                                                 {{ mb_substr($client->name, 0, 1) }}
@@ -534,7 +534,7 @@
                                                                     class="ti ti-phone me-1"></i>
                                                                 {{ $client->mobile ?? '-' }}</small>
                                                         </div>
-                                                        <div class="d-flex gap-2 mb-3">
+                                                        <div class="gap-2 mb-3 d-flex">
                                                             <span class="badge bg-success-subtle text-success"><i
                                                                     class="ti ti-map-2 me-1"></i>{{ $client->lands_count }}
                                                                 قطعه</span>
@@ -543,7 +543,7 @@
                                                                 ملف</span>
                                                         </div>
                                                     </div>
-                                                    <div class="card-footer bg-transparent border-top-0 pt-0">
+                                                    <div class="pt-0 bg-transparent card-footer border-top-0">
                                                         <div class="d-flex justify-content-between">
                                                             @if (request('trashed') != 'only')
                                                                 <button class="btn btn-soft-info btn-sm"
@@ -573,9 +573,9 @@
                                                 </div>
                                             </div>
                                         @empty
-                                            <div class="col-12 text-center py-5">
+                                            <div class="py-5 text-center col-12">
                                                 <div class="text-muted">
-                                                    <i class="ti ti-search fs-1 d-block mb-3 opacity-50"></i>
+                                                    <i class="mb-3 opacity-50 ti ti-search fs-1 d-block"></i>
                                                     <h5 class="mb-2">لا توجد نتائج</h5>
                                                     <p class="mb-0">لم يتم العثور على عملاء مطابقين لمعايير البحث</p>
                                                 </div>
@@ -586,7 +586,7 @@
 
                                 <!-- Pagination -->
                                 @if ($clients->hasPages())
-                                    <div class="d-flex justify-content-center p-3">
+                                    <div class="p-3 d-flex justify-content-center">
                                         {{ $clients->links() }}
                                     </div>
                                 @endif
@@ -971,7 +971,7 @@
                     console.error('Error loading PDF:', error);
                     loading.classList.add('d-none');
                     placeholder.classList.remove('d-none');
-                    placeholder.innerHTML = '<i class="ti ti-alert-circle fs-1 mb-3 d-block text-danger"></i><p class="mb-0 text-danger">خطأ في تحميل الملف</p>';
+                    placeholder.innerHTML = '<i class="mb-3 ti ti-alert-circle fs-1 d-block text-danger"></i><p class="mb-0 text-danger">خطأ في تحميل الملف</p>';
                 });
             };
 
@@ -991,7 +991,7 @@
         canvas.style.display = 'none';
         loading.classList.add('d-none');
         placeholder.classList.remove('d-none');
-        placeholder.innerHTML = '<i class="ti ti-upload fs-1 mb-3 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
+        placeholder.innerHTML = '<i class="mb-3 ti ti-upload fs-1 d-block"></i><p class="mb-0">قم برفع ملف PDF لمعاينة الصفحة الأولى</p>';
 
         if (fileInput) {
             fileInput.value = '';
@@ -1019,15 +1019,61 @@
     <div class="modal fade" id="bulkBarcodePrintModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="text-white modal-header bg-primary">
                     <h5 class="modal-title">
                         <i class="ti ti-printer me-2"></i>
                         <span id="barcodeModalTitle">طباعة باركودات الملفات</span>
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body" id="bulkBarcodeContent" style="max-height: 70vh; overflow-y: auto;">
-                    <div class="text-center py-5">
+                <div class="modal-body" id="bulkBarcodeContent" style="max-height: 70vh; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 20px;">
+                <style>
+                    #bulkBarcodeContent .sticker-preview {
+                        width: 144px; /* ~38mm at 96dpi */
+                        height: 95px; /* ~25mm at 96dpi */
+                        border: 1px dashed #ccc;
+                        border-radius: 4px;
+                        background: #fff;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 4px;
+                        overflow: hidden;
+                    }
+                    #bulkBarcodeContent .barcode-area {
+                        text-align: center;
+                        width: 100%;
+                    }
+                    #bulkBarcodeContent .barcode-area svg {
+                        max-width: 136px;
+                        height: auto;
+                        max-height: 60px;
+                    }
+                    #bulkBarcodeContent .info-line {
+                        font-size: 7px;
+                        text-align: center;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 136px;
+                        margin-top: 1px;
+                        color: #333;
+                        line-height: 1.1;
+                    }
+                    #bulkBarcodeContent .info-line.client-name {
+                        font-weight: bold;
+                        color: #000;
+                    }
+                    #bulkBarcodeContent .no-barcode {
+                        font-size: 10px;
+                        color: #721c24;
+                        background: #f8d7da;
+                        padding: 8px;
+                        border-radius: 4px;
+                    }
+                </style>
+                    <div class="py-5 text-center">
                         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
                             <span class="visually-hidden">جاري التحميل...</span>
                         </div>
@@ -1058,7 +1104,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" id="fileModalBody">
-                    <div class="text-center py-5">
+                    <div class="py-5 text-center">
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">جاري التحميل...</span>
                         </div>
@@ -1087,8 +1133,6 @@
             z-index: 1054;
         }
     </style>
-
-    @include('dashboards.shared.theme_settings')
     @include('dashboards.shared.scripts')
 </body>
 
